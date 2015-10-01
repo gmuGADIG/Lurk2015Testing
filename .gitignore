@@ -3,8 +3,8 @@
 /*/
 
 # Inverse ignore some stuff
-!/JamtechAdventures/Assets/
-!/JamtechAdventures/ProjectSettings/
+!/LurkTestBuild/Assets/
+!/LurkTestBuild/ProjectSettings/
 !.gitignore
 
 
