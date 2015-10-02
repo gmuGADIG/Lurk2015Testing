@@ -18,3 +18,8 @@ ehthumbs.db
 Thumbs.db
 $RECYCLE.BIN/
 Desktop.ini
+*.meta
+
+*.meta
+
+LurkTestBuild/Assets/Prefabs.meta
