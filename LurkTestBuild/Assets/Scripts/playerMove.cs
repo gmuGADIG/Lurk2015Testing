@@ -38,9 +38,9 @@ public class playerMove : MonoBehaviour {
 		}
 	}
 
-	void LateUpdate(){
+	/*void LateUpdate(){
 		Vector3 targetPos = transform.position; //+ new Vector3(rb.velocity.x, rb.velocity.y, 0);
 		targetPos.z = -10;
 		cam.transform.position = Vector3.Lerp (cam.transform.position, targetPos, Time.deltaTime*8);
-	}
+	}*/
 }
