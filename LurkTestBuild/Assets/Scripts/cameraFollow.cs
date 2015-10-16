@@ -7,8 +7,9 @@ public class cameraFollow : MonoBehaviour {
 	public Transform player2;			// Player2
 
 	public float minDist = 5f;			// Minimum distance to zoom
-	public float maxDist = 10f;			// Maximum distance to zoom
+	//public float maxDist = 10f;			// Maximum distance to zoom
 	public float zoomScale = 1f;		// Zoom scale (multiplied to distance to get camera size)
+	public float logBase = 2;			// Base of the log used for zoom (log base [logBase](distance between players * [zoomscale]) = size of camera
 	public float lerpT = .5f;			// Lerp interpolant [0-1]
 
 	// Use this for initialization
@@ -46,9 +47,10 @@ public class cameraFollow : MonoBehaviour {
 		// Check camera bounds
 		if(distance < minDist)
 			distance = minDist;
+		/* Not really needed on a log scale
 		else if(distance > maxDist)
-			distance = maxDist;
+			distance = maxDist;*/
 
-		cam.orthographicSize = distance * zoomScale;	// Set size of camera
+		cam.orthographicSize = Mathf.Log(distance * zoomScale, logBase);	// Set size of camera
 	}
 }
