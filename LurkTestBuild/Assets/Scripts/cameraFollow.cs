@@ -18,6 +18,11 @@ public class cameraFollow : MonoBehaviour {
 			cam = FindObjectOfType<Camera>();
 		if(player1 == null || player2 == null) {
 			GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+			if(players.Length < 2){
+				Debug.LogError("Only one player tagged!");
+				return;
+			}else if(players.Length > 2)
+				Debug.LogWarning("More than two players tagged.");
 			player1 = players[0].transform;
 			player2 = players[1].transform;
 		}
