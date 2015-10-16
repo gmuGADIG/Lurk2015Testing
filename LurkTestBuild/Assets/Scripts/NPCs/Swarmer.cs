@@ -1,65 +1,114 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-//tgrehawi
+//author tgrehawi
 
 //swarming flying enemy
 public class Swarmer : MonoBehaviour {
 	
+	//the current swarm
 	static List<Swarmer> swarm;
 
-    public float speed = 2;
-    public Weights weights;
+	//max speed of the swarmer
+    public float speed = 20;
+	//boids parameters
+    public Parameters parameters;
 
 	//components;
 	Enemy en;
 	Rigidbody2D rb;
 	
+	//the local neighborhood of the swarmer
+	public IEnumerable<Swarmer> neighborhood {
+		get {
+			foreach (Swarmer other in swarm) {
+				if (other != this && (other.rb.position - rb.position).sqrMagnitude < parameters.sqrRadius) {
+					yield return other;
+				}
+			}
+		}
+	}
+
+	//init components
 	void Awake() {
 		en = GetComponent<Enemy>();
 		rb = GetComponent<Rigidbody2D>();
 	}
 	
+	//boid swarming behaviour
+    void FixedUpdate() {
+		int neighborCount = 0;
+		//aggro force
+		Vector2 aggro = Vector2.zero;
+		if (en.aggro != null) {
+            aggro = (Vector2) en.aggro.transform.position - rb.position;
+		}
+		//basic boids forces
+		Vector2 seperation = Vector2.zero;
+		Vector2 cohesion = Vector2.zero;
+		Vector2 alignment = Vector2.zero;
+		//summation
+		foreach (Swarmer neighbor in neighborhood) {
+			neighborCount ++;
+			seperation += rb.position - neighbor.rb.position;
+			cohesion += neighbor.rb.position;
+			alignment += neighbor.rb.velocity;
+		}
+		//basic boids stuff
+		if (neighborCount > 0) {
+			//average
+			seperation /= neighborCount;
+			cohesion /= neighborCount;
+			alignment /= neighborCount;
+			//set up values
+			seperation /= seperation.sqrMagnitude;
+			cohesion -= rb.position;
+			alignment = rb.velocity - alignment;
+			//apply weights
+			seperation = seperation * parameters.seperation;
+			cohesion = cohesion * parameters.cohesion;
+			alignment = alignment * parameters.alignment;
+		}
+		//more weights
+		aggro = aggro * parameters.aggro;
+		//sum and apply
+		rb.velocity += (seperation + cohesion + alignment + aggro );
+		//clamp velocity
+		if (rb.velocity.magnitude > speed) {
+			rb.velocity = rb.velocity.normalized * speed;
+		}
+	}
+
+	//add this swarmer to the swarm when it gets added to the scene
 	void OnEnable() {
-		if (swarm == null)
+		if (swarm == null) {
 			swarm = new List<Swarmer>();
+		}
 		swarm.Add(this);
 	}
-	
-    void FixedUpdate() {
-        Vector2 sum = Vector2.zero;
-        float count = 0;
-        sum = rb.velocity * weights.velocity;
-        count += weights.velocity;
-        Vector2 away = Vector2.zero; 
-        foreach (Swarmer s in swarm) {
-            if (s != this) {
-                sum += s.rb.velocity * weights.follow;
-                count += weights.follow;
-                away += (Vector2) (transform.position - s.transform.position);
-            }
-        }
-        away /= swarm.Count - 1;
-        sum += away * weights.avoid;
-        count += weights.avoid;
-        if (en.aggro != null) {
-            sum += (Vector2) (en.aggro.transform.position - transform.position) * weights.aggro;
-            count += weights.aggro;
-        }
-        sum /= count;
-        rb.velocity = sum.normalized * speed;
-    }
 
+	//remove the swarmer from the swarm when it gets removed from the scene
 	void OnDisable() {
 		swarm.Remove(this);
 	}
 	
-    [System.Serializable]
-    public class Weights {
-        public float velocity = 1;
-        public float aggro = 1;
-        public float follow = 1;
-        public float avoid = 1;
+	//show neighborhood radius
+	void OnDrawGizmosSelected() {
+		Gizmos.DrawWireSphere(transform.position, parameters.radius);
+	}
+
+	//boid swarming parameters
+	[System.Serializable]
+    public class Parameters {
+		//neighborhood radius
+		public float radius = 5;
+		//weights
+		public float seperation = 1;
+		public float cohesion = 1;
+		public float alignment = 1;
+		public float aggro = 1;
+
+		public float sqrRadius { get { return radius * radius; } }
     }
 	
 }
