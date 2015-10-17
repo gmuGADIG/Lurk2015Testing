@@ -11,6 +11,8 @@ public class Swarmer : MonoBehaviour {
 
 	//max speed of the swarmer
     public float speed = 20;
+	//acceleration of the swarmer
+	public float acceleration = 25;
 	//boids parameters
     public Parameters parameters;
 
@@ -71,8 +73,10 @@ public class Swarmer : MonoBehaviour {
 		}
 		//more weights
 		aggro = aggro * parameters.aggro;
-		//sum and apply
-		rb.velocity += (seperation + cohesion + alignment + aggro );
+		//apply acceleration
+		Vector2 acc = (seperation + cohesion + alignment + aggro);
+		acc = acc.normalized * acceleration;
+		rb.AddForce(acc * rb.mass, ForceMode2D.Force);
 		//clamp velocity
 		if (rb.velocity.magnitude > speed) {
 			rb.velocity = rb.velocity.normalized * speed;
