@@ -3,8 +3,8 @@ using System.Collections;
 
 public class scratch_StSPlatform : MonoBehaviour {
 
-	private Rigidbody2D platform_body;
-	float cycle_time = 5;
+	public Rigidbody2D platform_body;
+	public float cycle_time = 5;
 	float last_check;
 	float cur_check;
 	int direction_val = 1;
