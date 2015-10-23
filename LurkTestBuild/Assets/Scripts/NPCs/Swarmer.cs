@@ -19,7 +19,7 @@ public class Swarmer : MonoBehaviour {
 	//components;
 	Enemy en;
 	Rigidbody2D rb;
-	
+
 	//the local neighborhood of the swarmer
 	public IEnumerable<Swarmer> neighborhood {
 		get {
@@ -44,6 +44,13 @@ public class Swarmer : MonoBehaviour {
 		Vector2 aggro = Vector2.zero;
 		if (en.aggro != null) {
             aggro = (Vector2) en.aggro.transform.position - rb.position;
+		}
+		//light fear stuff
+		Vector2 light = Vector2.zero;
+		foreach (GameObject lantern in en.lanterns) {
+			Vector2 dir = rb.position - (Vector2) lantern.transform.position;
+			dir = dir.normalized * (1 / dir.magnitude);
+			light += dir;
 		}
 		//basic boids forces
 		Vector2 seperation = Vector2.zero;
@@ -73,8 +80,9 @@ public class Swarmer : MonoBehaviour {
 		}
 		//more weights
 		aggro = aggro * parameters.aggro;
+		light = light * parameters.light;
 		//apply acceleration
-		Vector2 acc = (seperation + cohesion + alignment + aggro);
+		Vector2 acc = (seperation + cohesion + alignment + aggro + light);
 		acc = acc.normalized * acceleration;
 		rb.AddForce(acc * rb.mass, ForceMode2D.Force);
 		//clamp velocity
@@ -111,6 +119,7 @@ public class Swarmer : MonoBehaviour {
 		public float cohesion = 1;
 		public float alignment = 1;
 		public float aggro = 1;
+		public float light = 1;
 
 		public float sqrRadius { get { return radius * radius; } }
     }
