@@ -14,29 +14,47 @@ public class cameraFollow : MonoBehaviour {
 	public float lerpT = .5f;			// Lerp interpolant [0-1]
 	public int damage = 1;				// Amount of damage to be given/sec when off camera
 
+	bool setup = false;					// If setup is complete
+
 	// Use this for initialization
 	void Start () {
+		FindObjects ();
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		if (!setup)
+			setup = FindObjects ();
+		else {
+			Move ();
+			Zoom ();
+			if (!IsVisible ())
+				DoDamage ();
+		}
+	}
+
+	bool FindObjects () {
 		// Find all objects if not already linked
-		if(cam == null)
-			cam = FindObjectOfType<Camera>();
+		bool camFound = false;
+
+		if (cam == null) {
+			cam = FindObjectOfType<Camera> ();
+			if (cam != null)
+				camFound = true;
+		}
 		if(player1 == null || player2 == null) {
 			GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 			if(players.Length < 2){
 				Debug.LogError("Only one player tagged!");
-				return;
+				return false;
 			}else if(players.Length > 2)
 				Debug.LogWarning("More than two players tagged.");
 			player1 = players[0].transform;
 			player2 = players[1].transform;
 		}
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		Move ();
-		Zoom ();
-		if(!IsVisible())
-			DoDamage();
+		if (!camFound)
+			return false;
+		return true;
 	}
 
 	void Move () {
