@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 
 public class Interact : MonoBehaviour
@@ -46,11 +47,9 @@ public class Interact : MonoBehaviour
 
     void Update()
     {
-
         //loop through players
         foreach (GameObject player in players)
         {
-
             //if the player is within the maximun distance in the x direction
             //I don't know if there should be a y distance or not so I didn't make one
             if ((transform.position.x - player.transform.position.x <= maxDistance) &&
@@ -76,16 +75,13 @@ public class Interact : MonoBehaviour
                     }
                     else
                     {
-                        this.OnGUI();
-                        //GUIText won't show up for some reason
-                        //display.GetComponent<GUIText>().text = interaction.text;
-                        //Text component doesn't exist???
-                        //display.GetComponent<Text>().text = interaction.text;
+                        display.GetComponent<Canvas>().enabled = true;
+                        display.GetComponent<Text>().text = interaction.text;
                     }
 
                     //if the icon is invisible and the GUIText has an empty string
                 }
-                else if (instanceIcon.activeSelf == false && display.GetComponent<GUIText>().text.Equals(""))
+                else if (instanceIcon.activeSelf == false && display.GetComponent<Text>().text.Equals(""))
                 {
 
                     //make it visible
@@ -98,16 +94,11 @@ public class Interact : MonoBehaviour
             {
 
                 //set the text to an empty string
-                display.GetComponent<GUIText>().text = "";
+                display.GetComponent<Text>().text = "";
+                display.GetComponent<Canvas>().enabled = false;
                 //make the icon invisible
                 instanceIcon.SetActive(false);
             }
         }
-    }
-
-    void OnGUI()
-    {
-        GUI.Label(new Rect(20, 20, 100, 100), interaction.text);
-        //GUILayout.Label(interaction.text);
     }
 }
