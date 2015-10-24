@@ -6,7 +6,7 @@ public class Grapple : MonoBehaviour {
     public Transform sightStart, sightEnd;
     public GameObject projectile;
     public float coolDown = 1.00f;
-    public float xSight, ySight, reach;
+    public float xMinimum, xSight, ySight, reach;
     public bool flips;
 
     //private Vector2 Lerping;
@@ -20,11 +20,20 @@ public class Grapple : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         timeLeft -= Time.deltaTime;
-        
+
+        if (flips && !projectile.activeSelf) {
+            if (player.transform.position.x < this.transform.position.x && transform.localScale.x > 0) {
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            } else if (player.transform.position.x > this.transform.position.x && transform.localScale.x < 0) {
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            }
+        }
+
         if (player.transform.position.x < this.transform.position.x + xSight &&
             player.transform.position.x > this.transform.position.x - xSight &&
             player.transform.position.y < this.transform.position.y + ySight / 2 &&
-            player.transform.position.y > this.transform.position.y - ySight / 2) {
+            player.transform.position.y > this.transform.position.y - ySight / 2 &&
+            Mathf.Abs(player.transform.position.x-this.transform.position.x) > xMinimum) {
 
             if (!projectile.activeSelf) {
 
@@ -43,13 +52,7 @@ public class Grapple : MonoBehaviour {
                 }
             }
         }
-        if (flips && !projectile.activeSelf) {
-            if (player.transform.position.x < this.transform.position.x && transform.localScale.x > 0) {
-                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-            } else if (player.transform.position.x > this.transform.position.x && transform.localScale.x < 0) {
-                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-            }
-        }
+        
         Debug.DrawLine(sightStart.position, sightEnd.position, Color.yellow);
     }
 }
