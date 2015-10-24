@@ -6,8 +6,8 @@ public class Grapple : MonoBehaviour {
     public Transform sightStart, sightEnd;
     public GameObject projectile;
     public float coolDown = 1.00f;
-    public float pullSpeed;
 
+    //private Vector2 Lerping;
     private float timeLeft = 0f;
     private GameObject player = null;
 
@@ -25,18 +25,13 @@ public class Grapple : MonoBehaviour {
                     timeLeft = coolDown;
                 }
             }
-        } else {
-            OnPlayerHit(player);
         }
-	}
-
-    public void OnPlayerHit(GameObject player) {
-        this.player = player;
-        player.GetComponent<playerMove>().enabled = false;
-        player.transform.position = Vector2.Lerp(player.transform.position, sightStart.position, Time.deltaTime*pullSpeed);
-        if(Mathf.Abs(player.transform.position.x - sightStart.position.x) < 1f) {
-            player.GetComponent<playerMove>().enabled = true;
-            this.player = null;
-        }
+        //Lerping = Vector2.Lerp(projectile.transform.position, sightStart.position, Time.deltaTime * pullSpeed);
     }
+
+    
+
+   /* public Vector2 GetLerping() {
+        return Lerping;
+    }*/
 }
