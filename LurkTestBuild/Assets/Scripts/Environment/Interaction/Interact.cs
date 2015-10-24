@@ -14,8 +14,10 @@ public class Interact : MonoBehaviour
     //Used to hold the notification Sprite that will appear above the an
     //interable object
     public GameObject icon;
-    //Used to display the interaction text
-    public TextMesh text;
+
+    //added by Ashley
+    public GameObject display;
+    //public Canvas canvas;
 
     //Used to hold all the players in the game in order to check if the are
     //close enough to the object
@@ -39,6 +41,7 @@ public class Interact : MonoBehaviour
         //gather all the players in the game
         //I assume the characters will either be tagged as character or player
         players = GameObject.FindGameObjectsWithTag("Player");
+
     }
 
     void Update()
@@ -67,22 +70,22 @@ public class Interact : MonoBehaviour
 
                         //I don't know how to run the conversation script nor do I have it
                         //but I think it might be Invoke might work
-                        Invoke("ConversationScript", 0);
+
+                        //Invoke("ConversationScript", 0);
 
                     }
                     else
                     {
-
-                        //otherwise set the text of the MeshText object to display
-                        //how to interact with this object
-                        //NOTE: the MeshText object is always being displayed, it
-                        //is just displaying an empty string when there is no text
-                        text.text = interaction.text;
+                        this.OnGUI();
+                        //GUIText won't show up for some reason
+                        //display.GetComponent<GUIText>().text = interaction.text;
+                        //Text component doesn't exist???
+                        //display.GetComponent<Text>().text = interaction.text;
                     }
 
-                    //if the icon is invisible and the TextMesh has an empty string
+                    //if the icon is invisible and the GUIText has an empty string
                 }
-                else if (instanceIcon.activeSelf == false && text.text.Equals(""))
+                else if (instanceIcon.activeSelf == false && display.GetComponent<GUIText>().text.Equals(""))
                 {
 
                     //make it visible
@@ -95,10 +98,16 @@ public class Interact : MonoBehaviour
             {
 
                 //set the text to an empty string
-                text.text = "";
+                display.GetComponent<GUIText>().text = "";
                 //make the icon invisible
                 instanceIcon.SetActive(false);
             }
         }
+    }
+
+    void OnGUI()
+    {
+        GUI.Label(new Rect(20, 20, 100, 100), interaction.text);
+        //GUILayout.Label(interaction.text);
     }
 }
