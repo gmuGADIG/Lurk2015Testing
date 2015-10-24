@@ -28,10 +28,10 @@ public class GrappleShot : MonoBehaviour {
         if (goBack) {
             ComeBack();
         } else {
-            this.transform.position = Vector2.Lerp(this.transform.position, whoShotThis.GetComponent<Grapple>().sightEnd.position, projectileSpeed * Time.deltaTime);
+            this.transform.position = Vector2.Lerp(this.transform.position, sightEnd.position, projectileSpeed * Time.deltaTime);
         }
         rope.SetPosition(0, this.transform.position);
-        rope.SetPosition(1, whoShotThis.transform.position);
+        rope.SetPosition(1, sightStart.position);
     }
 
     void OnCollisionEnter2D(Collision2D other) {
