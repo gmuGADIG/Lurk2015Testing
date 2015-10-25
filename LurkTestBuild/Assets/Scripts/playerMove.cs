@@ -28,10 +28,10 @@ public class playerMove : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		float horizontal = Input.GetAxis ("Horizontal");
-		rb.AddForce (new Vector2 (horizontal*accel, 0));
-		rb.velocity = new Vector2 (Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y);
-		rb.velocity = new Vector2 (rb.velocity.x/decel, rb.velocity.y);
-		Collider2D[] colResults = new Collider2D[1];
+		//rb.AddForce (new Vector2 (Mathf.Clamp(horizontal * accel, -maxSpeed, maxSpeed), 0));
+        //rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed) / decel, rb.velocity.y);
+        rb.velocity = new Vector2(Mathf.Clamp(horizontal * accel, -maxSpeed, maxSpeed), rb.velocity.y);
+        Collider2D[] colResults = new Collider2D[1];
 		grounded = Physics2D.OverlapAreaNonAlloc(top_left.position, bottom_right.position, colResults, ground_layers);
 		if(Input.GetAxis("Vertical") > 0.01 && grounded > 0){
 			rb.velocity = new Vector2(rb.velocity.x, jumpStrength);
