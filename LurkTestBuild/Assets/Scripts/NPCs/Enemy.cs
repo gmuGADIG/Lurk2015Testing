@@ -5,6 +5,9 @@ using System.Collections.Generic;
 //base enemy script: all enemy prefabs should have this component
 public class Enemy : MonoBehaviour {
 
+	//current aggro'd player
+	public GameObject aggro;
+
 	//iterate over this to handle player behaviours/aggro/etc
 	public IEnumerable<GameObject> players {
 		get {

@@ -21,9 +21,6 @@ public class Swarmer : MonoBehaviour {
 	Enemy en;
 	Rigidbody2D rb;
 
-	//current aggro
-	GameObject aggro;
-
 	//the local neighborhood of the swarmer
 	public IEnumerable<Swarmer> neighborhood {
 		get {
@@ -43,7 +40,7 @@ public class Swarmer : MonoBehaviour {
 
 	//pick initial aggro
 	void Start() {
-		aggro = en.players.ElementAtOrDefault(Random.Range(0, en.players.Count()));
+		en.aggro = en.players.ElementAtOrDefault(Random.Range(0, en.players.Count()));
 	}
 	
 	//boid swarming behaviour
@@ -51,13 +48,13 @@ public class Swarmer : MonoBehaviour {
 		//aggro changing
 		foreach (GameObject player in en.players) {
 			if (PointInNeighborHood(player.transform.position)) {
-				aggro = player;
+				en.aggro = player;
 			}
 		}
 		//aggro force
 		Vector2 playerForce = Vector2.zero;
-		if (aggro != null) {
-			playerForce = (Vector2) aggro.transform.position - rb.position;
+		if (en.aggro != null) {
+			playerForce = (Vector2) en.aggro.transform.position - rb.position;
 		}
 		//light fear stuff
 		Vector2 lanternForce = Vector2.zero;
