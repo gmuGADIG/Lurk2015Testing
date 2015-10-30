@@ -17,6 +17,16 @@ public class Enemy : MonoBehaviour {
 		}
 	}
 
+	//return the first lantern in the scene
+	public GameObject lantern {
+		get {
+			foreach (GameObject lantern in lanterns) {
+				return lantern;
+			}
+			return null;
+		}
+	}
+
 	//iterate over this to handle lantern behaviours
 	public IEnumerable<GameObject> lanterns {
 		get {
