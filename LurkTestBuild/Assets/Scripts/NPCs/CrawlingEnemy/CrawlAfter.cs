@@ -9,7 +9,7 @@ public class CrawlAfter : MonoBehaviour {
     private GameObject player;
     private float upDownLine, leftRightline;
     private int direction;
-    public bool onGround, onWallLeft, onWallRight, onCeiling;
+    private bool onGround, onWallLeft, onWallRight, onCeiling;
     private Vector2 upRight, downRight, upLeft, downLeft, down, up;
 
 	// Use this for initialization
