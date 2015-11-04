@@ -17,6 +17,6 @@ public class flameLightFlicker : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		float randOffset = Random.Range(-flickerStrength, flickerStrength);
-		lightComponent.intensity = Mathf.Lerp (lightComponent.intensity, originalIntensity + randOffset, Time.deltaTime*5);
+		lightComponent.intensity = Mathf.Lerp (lightComponent.intensity, originalIntensity + randOffset, Time.deltaTime*40);
 	}
 }
