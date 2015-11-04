@@ -15,6 +15,7 @@ public class GrappleShot : MonoBehaviour {
 
     void OnEnable() {
         goBack = false;
+        GetComponent<Rigidbody2D>().gravityScale = 0f;
         rope.SetPosition(0, this.transform.position);
         rope.SetPosition(1, whoShotThis.transform.position);
         sightEnd = whoShotThis.GetComponent<Grapple>().sightEnd;
@@ -26,9 +27,10 @@ public class GrappleShot : MonoBehaviour {
             goBack = true;
         }
         if (goBack) {
+            GetComponent<Rigidbody2D>().gravityScale = 0.5f;
             ComeBack();
         } else {
-            this.transform.position = Vector2.Lerp(this.transform.position, sightEnd.position, projectileSpeed * Time.deltaTime);
+            this.transform.position = Vector3.Lerp(this.transform.position, sightEnd.position, projectileSpeed * Time.deltaTime);
         }
         rope.SetPosition(0, this.transform.position);
         rope.SetPosition(1, sightStart.position);
@@ -42,7 +44,7 @@ public class GrappleShot : MonoBehaviour {
     }
 
     void ComeBack() {
-        this.transform.position = Vector2.Lerp(this.transform.position, sightStart.position, Time.deltaTime * pullSpeed); ;
+        this.transform.position = Vector3.Lerp(this.transform.position, sightStart.position, Time.deltaTime * pullSpeed); ;
         if(player != null) {
             player.transform.position = this.transform.position;
         }
