@@ -4,6 +4,7 @@ using System.Collections;
 public class flameLightFlicker : MonoBehaviour {
 
 	public float flickerStrength = 0.1f;
+    public float flickerSpeed = 20f;
 
 	private Light lightComponent;
 	private float originalIntensity;
@@ -17,6 +18,6 @@ public class flameLightFlicker : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		float randOffset = Random.Range(-flickerStrength, flickerStrength);
-		lightComponent.intensity = Mathf.Lerp (lightComponent.intensity, originalIntensity + randOffset, Time.deltaTime*40);
+		lightComponent.intensity = Mathf.Lerp (lightComponent.intensity, originalIntensity + randOffset, Time.deltaTime*flickerSpeed);
 	}
 }
