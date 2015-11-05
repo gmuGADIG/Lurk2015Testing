@@ -5,6 +5,14 @@ using UnityEngine.UI;
 
 public class Interact : MonoBehaviour
 {
+
+
+    //NOTE: I ALTERED THIS SCRIPT SO THAT IT WOULD NOT DISABLE THE
+    //    ENTIRE CANVAS FOR THE SCENE, AS WE WILL NEED THAT FOR OTHER UI
+    //    IT NOW DISABLES A TEXT BOX GAMEOBJECT WITHIN THE CANVAS
+    // LINE 68: MAY WANT TO MAKE THAT A METHOD THAT COULD BE CALLED FROM THE PLAYER(PUBLIC), ONLY IF THAT PLAYER
+    //    IS WITHIN THE RANGE FOR INTERACTION. (LINE IS 68 WITH THESE COMMENTS INCLUDED)
+
 	
 	//Used to describe the way the way the player can interact with the object
 	public TextAsset interaction;
@@ -57,7 +65,7 @@ public class Interact : MonoBehaviour
 			{
 				
 				//if arrow key up is being pressed
-				if (Input.GetKeyDown("up"))
+				if (Input.GetKeyDown("up"))  // may want to alter this to be a method, called by the character script
 				{
 					
 					//make the icon invisible
@@ -75,14 +83,14 @@ public class Interact : MonoBehaviour
 					}
 					else
 					{
-						display.GetComponent<Canvas>().enabled = true;
-						display.GetComponent<Text>().text = interaction.text;
+						display.SetActive(true);
+						display.GetComponentInChildren<Text>().text = interaction.text;
 					}
 					
 					//if the icon is invisible and the GUIText has an empty string
 				}
-				else if (instanceIcon.activeSelf == false && display.GetComponent<Text>().text.Equals(""))
-				{
+				else if (instanceIcon.activeSelf == false /* && display.GetComponentInChildren<Text>().text.Equals("")*/)// NOTE: "instanceIcon.activeSelf == false" is fine, but it since it returns a bool anyway, it means the exact same thing to say "!instanceIcon.activeSelf"
+                {
 					
 					//make it visible
 					instanceIcon.SetActive(true);
@@ -94,8 +102,9 @@ public class Interact : MonoBehaviour
 			{
 				
 				//set the text to an empty string
-				display.GetComponent<Text>().text = "";
-				display.GetComponent<Canvas>().enabled = false;
+                if(display.activeSelf)
+				    display.GetComponentInChildren<Text>().text = "";
+				display.SetActive(false);
 				//make the icon invisible
 				instanceIcon.SetActive(false);
 			}
