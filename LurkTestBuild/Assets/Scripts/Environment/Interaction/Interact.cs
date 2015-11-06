@@ -13,16 +13,19 @@ public class Interact : MonoBehaviour
 	//Used to see if the object has a conversation script
 	public bool conversation;
 	//Used to hold the notification Sprite that will appear above the an
-	//interable object
+	//interactable object
 	public GameObject icon;
 	//cavas used for displaying the UI Elements
 	public Canvas canvas;
+	//prefab gameobject which has a panel child and a text child objects
+	public GameObject display;
 
-	//Used to hold all the players in the game in order to check if the are
-	//close enough to the object
-	private GameObject[] players;
-	//An instantiated copy of icon
-	private GameObject instanceIcon;
+
+	//collider used to tell if something is in the maxDistance of the object
+	private CircleCollider2D cc2d;
+	//number of players inside the radius of the collider, needed so that when two players
+	//are within the radius of the circle, the sprite/chat doesn't disappear when one of them exits
+	private int playersInCircle = 0;
 	//component used to display the text
 	private Text text;
 	//text that still has to be displayed while cycling through the interaction text
@@ -32,100 +35,109 @@ public class Interact : MonoBehaviour
 	{
 		
 		//intantiate icon
-		instanceIcon = Instantiate(icon);
+		icon = Instantiate(icon);
 		//set its position to just above this object
-		instanceIcon.transform.position = new Vector2(transform.position.x, transform.position.y + 1.5f);
+		icon.transform.position = new Vector2(transform.position.x, transform.position.y + 1.5f);
 		//set its parent to this object so that if the parent moves, it moves
-		instanceIcon.transform.SetParent(transform);
+		icon.transform.SetParent(transform);
 		//set it to not be active so that it is not visible
-		instanceIcon.SetActive(false);
+		icon.SetActive(false);
 
-		//instantiate the canvas and make it invisble
-		canvas = Instantiate(canvas);
-		canvas.enabled = false;
+		//change the name of the display object so that it is easier to tell
+		//which object it is for
+		display.name = "Interaction for " + gameObject.name;
+		//instantiate it
+		display = Instantiate(display);
+		//make it a child of the canvas
+		display.transform.SetParent(canvas.transform);
+		//make it inactive
+		display.SetActive(false);
 
-		//get the text component from the child of the canvas
-		text = canvas.transform.FindChild("Text").gameObject.GetComponent<Text>();
-
+		//get the text component from the child of the display
+		text = display.transform.FindChild("Text").gameObject.GetComponent<Text>();
+		
 		//set the initial remaining text to be the same as interaction
 		remaining = interaction.text;
 
-		//gather all the players in the game
-		players = GameObject.FindGameObjectsWithTag("Player");
+		//adds the circle collider to this game object
+		cc2d = gameObject.AddComponent<CircleCollider2D>();
+		//makes it triggerable
+		cc2d.isTrigger = true;
+		//sets the radius of the circle to be the maxDistance
+		cc2d.radius = maxDistance;
 	}
-	
-	void Update()
-	{
-		//loop through players
-		foreach (GameObject player in players)
-		{
-			//if the player is within the maximun distance in the x direction
-			//I don't know if there should be a y distance or not so I didn't make one
-			if ((transform.position.x - player.transform.position.x <= maxDistance) &&
-			    (transform.position.x - player.transform.position.x >= -maxDistance))
+
+	public void StartKey(){
+
+		//if the icon is being displayed
+		if(icon.activeSelf){
+			//make it invisible
+			icon.SetActive(false);
+
+			//if the object has a conversation script
+			if (conversation == true)
 			{
 				
-				//if arrow key up is being pressed
-				if (Input.GetKeyDown("up"))
-				{
-					
-					//make the icon invisible
-					instanceIcon.SetActive(false);
-					
-					//if the object has a conversation script
-					if (conversation == true)
-					{
-						
-						//I don't know how to run the conversation script nor do I have it
-						//but I think it might be Invoke might work
-						
-						//Invoke("ConversationScript", 0);
-						
-					}
-					else
-					{
-						//enable the canvas and set the text to be shown
-						canvas.enabled = true;
-						text.text = remaining;
-					}
-					
-					//if the down button is being pressed and there is text to be displayed
-				}
-				else if (Input.GetKeyDown("down") && !text.text.Equals("")) {
-
-					//find where the text gets cut off and reset remaining to the text that
-					//still has to be displayed
-					TextGenerator t = text.cachedTextGenerator;
-					remaining = remaining.Substring(t.characterCountVisible);
-					text.text = remaining;
-
-					//if there is no more text to be displayed
-					if (remaining.Equals("")) {
-						//disable the canvas and reset the remaining text to be the full
-						//interaction text
-						canvas.enabled = false;
-						remaining = interaction.text;
-					}
-
-					//if the icon is invisible and the Text has an empty string
-				}
-				else if (instanceIcon.activeSelf == false && text.text.Equals(""))
-				{
-					
-					//make it visible
-					instanceIcon.SetActive(true);
-				}
+				//I don't know how to run the conversation script nor do I have it
+				//but I think it might be Invoke might work
 				
-				//if the player is not in range of the object   
+				//Invoke("ConversationScript", 0);
 			}
 			else
 			{
-				
-				//set the text to an empty string
-				text.text = "";
-				canvas.enabled = false;
-				//make the icon invisible
-				instanceIcon.SetActive(false);
+				//enable the display and set the text to be shown
+				display.SetActive(true);
+				text.text = remaining;
+			}
+		}
+	}
+
+	public void CycleKey(){
+
+		//if there are still players in the circle and the icon is not being shown
+		if(playersInCircle > 0 && icon.activeSelf == false){
+
+			//find where the text gets cut off and reset remaining to the text that
+			//still has to be displayed
+			TextGenerator t = text.cachedTextGenerator;
+			remaining = remaining.Substring(t.characterCountVisible);
+			text.text = remaining;
+		
+			//if there is no more text to be displayed
+			if (remaining.Equals("")) {
+				//disable the display and reset the remaining text to be the full
+				//interaction text and turn the icon back on
+				display.SetActive(false);
+				remaining = interaction.text;
+				icon.SetActive(true);
+			}
+		}
+	}
+
+	public void OnTriggerEnter2D(Collider2D other){
+
+		//if the circle touches a player
+		if(other.gameObject.CompareTag("Player")){
+			//make the icon visible and increment the player counter
+			icon.SetActive(true);
+			playersInCircle++;
+		}
+	}
+
+	public void OnTriggerExit2D(Collider2D other){
+
+		//if a player leaves the circle
+		if (other.gameObject.CompareTag("Player")) {
+			//decrement the player counter
+			playersInCircle--;
+
+			//then check if there are no more players in the circle
+			if(playersInCircle == 0){
+				//make the icon invisible, make the display inactive, and reset
+				//the remaining text back to the initial
+				icon.SetActive(false);
+				display.SetActive(false);
+				remaining = interaction.text;
 			}
 		}
 	}
