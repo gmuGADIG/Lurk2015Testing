@@ -15,17 +15,18 @@ public class Interact : MonoBehaviour
 	//Used to hold the notification Sprite that will appear above the an
 	//interable object
 	public GameObject icon;
-	
-	//added by Ashley
-	public GameObject display;
-	//public Canvas canvas;
-	
+	//cavas used for displaying the UI Elements
+	public Canvas canvas;
+
 	//Used to hold all the players in the game in order to check if the are
 	//close enough to the object
 	private GameObject[] players;
 	//An instantiated copy of icon
 	private GameObject instanceIcon;
-	
+	//component used to display the text
+	private Text text;
+	//text that still has to be displayed while cycling through the interaction text
+	private string remaining;
 	
 	void Start()
 	{
@@ -38,11 +39,19 @@ public class Interact : MonoBehaviour
 		instanceIcon.transform.SetParent(transform);
 		//set it to not be active so that it is not visible
 		instanceIcon.SetActive(false);
-		
+
+		//instantiate the canvas and make it invisble
+		canvas = Instantiate(canvas);
+		canvas.enabled = false;
+
+		//get the text component from the child of the canvas
+		text = canvas.transform.FindChild("Text").gameObject.GetComponent<Text>();
+
+		//set the initial remaining text to be the same as interaction
+		remaining = interaction.text;
+
 		//gather all the players in the game
-		//I assume the characters will either be tagged as character or player
 		players = GameObject.FindGameObjectsWithTag("Player");
-		
 	}
 	
 	void Update()
@@ -75,13 +84,32 @@ public class Interact : MonoBehaviour
 					}
 					else
 					{
-						display.GetComponent<Canvas>().enabled = true;
-						display.GetComponent<Text>().text = interaction.text;
+						//enable the canvas and set the text to be shown
+						canvas.enabled = true;
+						text.text = remaining;
 					}
 					
-					//if the icon is invisible and the GUIText has an empty string
+					//if the down button is being pressed and there is text to be displayed
 				}
-				else if (instanceIcon.activeSelf == false && display.GetComponent<Text>().text.Equals(""))
+				else if (Input.GetKeyDown("down") && !text.text.Equals("")) {
+
+					//find where the text gets cut off and reset remaining to the text that
+					//still has to be displayed
+					TextGenerator t = text.cachedTextGenerator;
+					remaining = remaining.Substring(t.characterCountVisible);
+					text.text = remaining;
+
+					//if there is no more text to be displayed
+					if (remaining.Equals("")) {
+						//disable the canvas and reset the remaining text to be the full
+						//interaction text
+						canvas.enabled = false;
+						remaining = interaction.text;
+					}
+
+					//if the icon is invisible and the Text has an empty string
+				}
+				else if (instanceIcon.activeSelf == false && text.text.Equals(""))
 				{
 					
 					//make it visible
@@ -94,8 +122,8 @@ public class Interact : MonoBehaviour
 			{
 				
 				//set the text to an empty string
-				display.GetComponent<Text>().text = "";
-				display.GetComponent<Canvas>().enabled = false;
+				text.text = "";
+				canvas.enabled = false;
 				//make the icon invisible
 				instanceIcon.SetActive(false);
 			}
