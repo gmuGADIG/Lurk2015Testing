@@ -14,6 +14,4 @@ public class LinearProjectile : MonoBehaviour {
 		transform.right = velocity.normalized;
 	}
 
-
-
 }
