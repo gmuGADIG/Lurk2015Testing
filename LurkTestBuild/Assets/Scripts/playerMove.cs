@@ -21,7 +21,6 @@ public class playerMove : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		rb = this.GetComponent<Rigidbody2D> ();
-		cam = Camera.main.gameObject;
 	}
 	
 	// Update is called once per frame
