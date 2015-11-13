@@ -47,7 +47,7 @@ public class playerMove : MonoBehaviour {
 		}
 
         // Apply movement velocity
-		rb.velocity = new Vector2(Mathf.Clamp(horizontal * accel, -maxSpeed, maxSpeed), Mathf.Clamp(rb.velocity.y, fallClamp, 9999));
+		rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x + (horizontal * accel), -maxSpeed, maxSpeed), Mathf.Clamp(rb.velocity.y, fallClamp, 9999));
 
         // Check for ground collision
         Collider2D[] colResults = new Collider2D[1];
