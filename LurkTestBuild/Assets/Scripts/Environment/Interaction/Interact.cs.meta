@@ -1,10 +1,14 @@
 fileFormatVersion: 2
-guid: 01176b5cc3b05ce47b9fd9046ea5cad4
-timeCreated: 1445057375
+guid: c55f5d4c281269749b0bc0d2b7f710cd
+timeCreated: 1445668368
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - interaction: {fileID: 4900000, guid: 70dbdcfb77f52804c839a2bd39e9f53d, type: 3}
+  - icon: {instanceID: 0}
+  - text: {instanceID: 0}
+  - canvas: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
