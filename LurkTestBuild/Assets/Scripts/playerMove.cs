@@ -17,12 +17,10 @@ public class playerMove : MonoBehaviour {
 	public int grounded = 0;
 
 	private Rigidbody2D rb;
-	private GameObject cam;
 
 	// Use this for initialization
 	void Start () {
 		rb = this.GetComponent<Rigidbody2D> ();
-		cam = Camera.main.gameObject;
 	}
 	
 	// Update is called once per frame
