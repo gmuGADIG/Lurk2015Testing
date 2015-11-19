@@ -6,10 +6,10 @@ public class scratch_flammable : MonoBehaviour {
 	//Will the object be spawned lit or not?
 	public bool lit = false;
 	//This is whatever light object happens to be attached to your flammable object.
-	Light fireLight;
+	Animator fireLight;
 
 	void Start () {
-		fireLight = (Light)this.gameObject.GetComponent<Transform> ().Find ("FlameLight").GetComponent ("Light");
+		fireLight = GetComponent<Animator> ();
 	}
 	
 	void Update () {
