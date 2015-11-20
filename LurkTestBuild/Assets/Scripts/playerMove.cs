@@ -25,16 +25,33 @@ public class playerMove : MonoBehaviour {
 
     private int triggerCount;
 
+
+	private Sprite defaultSprite;
+	public Sprite crouchSprite;
+
+	private bool direction = true;
+
+	private Animator animator;
+
     // Use this for initialization
     void Start () {
 		rb = this.GetComponent<Rigidbody2D> ();
+		animator = this.GetComponent<Animator> ();
 		cam = Camera.main.gameObject;
+		defaultSprite = GetComponent<SpriteRenderer> ().sprite;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         // Get horizontal movement
 		float horizontal = Input.GetAxis ("Horizontal");
+		if (horizontal > 0) {
+			direction = true;
+			transform.localScale = new Vector3(1, 1, 1);
+		} else if (horizontal < 0) {
+			direction = false;
+			transform.localScale = new Vector3(-1, 1, 1);
+		}
 
         // Check if climbing ladder
 		if (onLadder) {
@@ -56,6 +73,17 @@ public class playerMove : MonoBehaviour {
         // Jump
 		if(Input.GetAxis("Jump") > 0.01 && grounded > 0){
             jump();
+		}
+
+		if (grounded > 0 && Input.GetAxis ("Vertical") < -0.01) {
+			// Crouch
+			animator.SetBool("crouching", true);
+			GetComponent<BoxCollider2D>().size = new Vector2(1, 0.6f);
+			GetComponent<BoxCollider2D>().offset = new Vector2(0, -0.2f);
+		} else {
+			animator.SetBool("crouching", false);
+			GetComponent<BoxCollider2D>().size = new Vector2(1, 1);
+			GetComponent<BoxCollider2D>().offset = new Vector2(0, 0);
 		}
 	}
 
