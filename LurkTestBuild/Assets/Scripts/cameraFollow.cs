@@ -73,7 +73,6 @@ public class cameraFollow : MonoBehaviour {
         if (players.Length == 0) {
             // No players yet
         } else if (players.Length == 1) {
-            Debug.Log("Only one player tagged!");
             player1 = players[0].transform;
             player2 = null;
         } else if (players.Length == 2) {
