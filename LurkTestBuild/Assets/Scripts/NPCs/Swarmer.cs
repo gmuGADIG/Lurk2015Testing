@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 //author tgrehawi
 
@@ -16,15 +17,15 @@ public class Swarmer : MonoBehaviour {
 	//boids parameters
     public Parameters parameters;
 
-	//components;
+	//components
 	Enemy en;
 	Rigidbody2D rb;
-	
+
 	//the local neighborhood of the swarmer
 	public IEnumerable<Swarmer> neighborhood {
 		get {
 			foreach (Swarmer other in swarm) {
-				if (other != this && (other.rb.position - rb.position).sqrMagnitude < parameters.sqrRadius) {
+				if (other != this && PointInNeighborHood(other.rb.position)) {
 					yield return other;
 				}
 			}
@@ -36,20 +37,38 @@ public class Swarmer : MonoBehaviour {
 		en = GetComponent<Enemy>();
 		rb = GetComponent<Rigidbody2D>();
 	}
+
+	//pick initial aggro
+	void Start() {
+		en.aggro = en.players.ElementAtOrDefault(Random.Range(0, en.players.Count()));
+	}
 	
 	//boid swarming behaviour
     void FixedUpdate() {
-		int neighborCount = 0;
+		//aggro changing
+		foreach (GameObject player in en.players) {
+			if (PointInNeighborHood(player.transform.position)) {
+				en.aggro = player;
+			}
+		}
 		//aggro force
-		Vector2 aggro = Vector2.zero;
+		Vector2 playerForce = Vector2.zero;
 		if (en.aggro != null) {
-            aggro = (Vector2) en.aggro.transform.position - rb.position;
+			playerForce = (Vector2) en.aggro.transform.position - rb.position;
+		}
+		//light fear stuff
+		Vector2 lanternForce = Vector2.zero;
+		foreach (GameObject lantern in en.lanterns) {
+			Vector2 dir = rb.position - (Vector2) lantern.transform.position;
+			dir = dir.normalized * (1 / dir.magnitude);
+			lanternForce += dir;
 		}
 		//basic boids forces
 		Vector2 seperation = Vector2.zero;
 		Vector2 cohesion = Vector2.zero;
 		Vector2 alignment = Vector2.zero;
 		//summation
+		int neighborCount = 0;
 		foreach (Swarmer neighbor in neighborhood) {
 			neighborCount ++;
 			seperation += rb.position - neighbor.rb.position;
@@ -72,9 +91,10 @@ public class Swarmer : MonoBehaviour {
 			alignment = alignment * parameters.alignment;
 		}
 		//more weights
-		aggro = aggro * parameters.aggro;
+		playerForce = playerForce * parameters.player;
+		lanternForce = lanternForce * parameters.lantern;
 		//apply acceleration
-		Vector2 acc = (seperation + cohesion + alignment + aggro);
+		Vector2 acc = (seperation + cohesion + alignment + playerForce + lanternForce);
 		acc = acc.normalized * acceleration;
 		rb.AddForce(acc * rb.mass, ForceMode2D.Force);
 		//clamp velocity
@@ -101,6 +121,10 @@ public class Swarmer : MonoBehaviour {
 		Gizmos.DrawWireSphere(transform.position, parameters.radius);
 	}
 
+	public bool PointInNeighborHood(Vector2 point) {
+		return (point - rb.position).sqrMagnitude <= parameters.sqrRadius;
+	}
+
 	//boid swarming parameters
 	[System.Serializable]
     public class Parameters {
@@ -110,9 +134,11 @@ public class Swarmer : MonoBehaviour {
 		public float seperation = 1;
 		public float cohesion = 1;
 		public float alignment = 1;
-		public float aggro = 1;
+		public float player = 1;
+		public float lantern = 1;
 
 		public float sqrRadius { get { return radius * radius; } }
+
     }
 	
 }
