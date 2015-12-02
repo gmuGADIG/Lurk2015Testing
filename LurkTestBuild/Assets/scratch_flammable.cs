@@ -9,13 +9,11 @@ public class scratch_flammable : MonoBehaviour {
 	Animator fireLight;
 
 	void Start () {
-		fireLight = GetComponent<Animator> ();
+		fireLight = GetComponent<Animator>();
 	}
 	
 	void Update () {
-		//If your object is not lit, neither is the light, and vice versa.
-		fireLight.enabled = this.lit;
-		//Also make calls here to whatever graphical or instantiation is necessary (Animations, lights, etc).
+
 	}
 
 	/* Important shizz regarding how these scripts work:
@@ -38,7 +36,7 @@ public class scratch_flammable : MonoBehaviour {
 		scratch_extinguish snuff = col.gameObject.GetComponentInChildren<scratch_extinguish> ();
 		if(snuff && this.lit == true){
 			this.lit = false;
-			fireLight.enabled = false;
+			fireLight.SetBool ("Lit", lit);
 			//This is so extinguishing takes precedence over being lit.
 			return;
 		}
@@ -47,6 +45,7 @@ public class scratch_flammable : MonoBehaviour {
 		
 		if(lighter && lighter.lit == true && this.lit != true) {
 			this.lit = true;
+			fireLight.SetBool ("Lit", lit);
 		}
 	}
 }
