@@ -32,11 +32,10 @@ public class Inventory : MonoBehaviour
 		{
 			inv [0] = item;
 			UpdateSprites();
+			return true;
 		}
-		else
-			return false;
 
-		return true;
+		return false;
 	}
 
 	// Removes item0 and returns it

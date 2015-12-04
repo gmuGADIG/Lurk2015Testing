@@ -2,6 +2,20 @@
 using System.Collections;
 using UnityEngine.UI;
 
+/* +------------------------+
+ * |Controls from design doc|
+ * +------------------------+
+ * Left/right arrow...move left/right
+ * Space..............jump
+ * Down + X...........pick up/drop item
+ * Z..................use item/attack
+ * 
+ * C (held)...........show aim line
+ * C + X..............throw item
+ * Down + Left/right..crouch
+ * Up.................Interact/climb ladder
+ * */
+
 public class playerMove : MonoBehaviour {
 
 	public float maxSpeed = 10;
