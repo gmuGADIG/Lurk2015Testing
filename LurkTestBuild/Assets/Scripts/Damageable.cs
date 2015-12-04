@@ -8,14 +8,30 @@ public class Damageable : MonoBehaviour {
 	public bool triggersDealDamage = true;
 	public DeathBehaviour deathBehaviour = DeathBehaviour.DoNothing;
 
-	public UnityEvent onTakeDamage;
+	public DamageTakenEvent onTakeDamage;
 	public UnityEvent onDeath;
 
-	public void TakeDamage() {
-		health --;
-		onTakeDamage.Invoke();
+	public void TakeDamage(int damage = 1) {
+		TakeDamage(damage, Vector2.zero);
+	}
+
+	public void TakeDamage(int damage, Vector2 direction) {
+		health -= damage;
+		onTakeDamage.Invoke(damage, direction);
 		if (health <= 0) {
+			health = 0;
 			Die();
+		}
+	}
+
+	public void TakeDamageFrom(GameObject other) {
+		if (other.tag == damagingTag) {
+			Vector2 direction = transform.position - other.transform.position;
+            Damager damager = other.GetComponent<Damager>();
+			TakeDamage(damager == null ? 1 : damager.damage, direction);
+			if (damager != null) {
+				damager.onDealDamage.Invoke(this, direction);
+			}
 		}
 	}
 
@@ -31,15 +47,13 @@ public class Damageable : MonoBehaviour {
 		}
 	}
 
-	void OnCollisonEnter(Collider other) {
-		if (other.tag == damagingTag) {
-			TakeDamage();
-		}
+	void OnCollisonEnter2D(Collision2D collision) {
+		TakeDamageFrom(collision.gameObject);
 	}
 
-	void OnTriggerEnter(Collider other) {
-		if (triggersDealDamage && other.tag == damagingTag) {
-			TakeDamage();
+	void OnTriggerEnter2D(Collider2D collider) {
+		if (triggersDealDamage) {
+			TakeDamageFrom(collider.gameObject);
 		}
 	}
 
@@ -48,3 +62,6 @@ public class Damageable : MonoBehaviour {
 	}
 
 }
+
+[System.Serializable]
+public class DamageTakenEvent : UnityEvent<int, Vector2> { }
