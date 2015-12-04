@@ -32,11 +32,13 @@ public class playerMove : MonoBehaviour {
 	private bool direction = true;
 
 	private Animator animator;
+	private Inventory inventory;
 
     // Use this for initialization
     void Start () {
-		rb = this.GetComponent<Rigidbody2D> ();
-		animator = this.GetComponent<Animator> ();
+		rb = GetComponent<Rigidbody2D> ();
+		animator = GetComponent<Animator> ();
+		inventory = GetComponent<Inventory> ();
 		cam = Camera.main.gameObject;
 		defaultSprite = GetComponent<SpriteRenderer> ().sprite;
 	}
@@ -61,6 +63,11 @@ public class playerMove : MonoBehaviour {
                 offLadder();
                 jump();
             }
+		}
+
+		// Pickup/drop items
+		if (Input.GetAxis ("Vertical") < -0.01 && Input.GetAxis ("Fire2") > 0.01) {
+
 		}
 
         // Apply movement velocity
