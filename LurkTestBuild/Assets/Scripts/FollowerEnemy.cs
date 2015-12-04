@@ -8,6 +8,7 @@ public class FollowerEnemy : Enemy {
     //how far away can the enemy detect aggro
     public float aggroDistance = 100f;
     Vector3 collideYDist;
+    Vector3 collideXDist;
     Vector3 aggroCollideDist;
     //platform layer
     LayerMask platform = 1 << 8;
@@ -25,6 +26,7 @@ public class FollowerEnemy : Enemy {
     {
         body = GetComponent<Rigidbody2D>();
         collideYDist = new Vector3(0, GetComponent<Collider2D>().bounds.extents.y + .1f, 0);
+        collideXDist = new Vector3(GetComponent<Collider2D>().bounds.extents.x, 0, 0);
         aggroCollideDist = new Vector3(0, aggro.GetComponent<Collider2D>().bounds.extents.y + .1f, 0);
         path = new List<GameObject>();
 		platforms = new Hashtable();
@@ -45,7 +47,7 @@ public class FollowerEnemy : Enemy {
                 currentAggroPlatform = hit.collider.gameObject;
                 currentEnemyPlatform = getPlatform();
                 //check that path is empty and enemy and player are on a platform
-                if (currentAggroPlatform != null && currentEnemyPlatform != null && path.Count == 0)
+                if (currentAggroPlatform != null && currentEnemyPlatform != null && path.Count == 0 && currentAggroPlatform != currentEnemyPlatform)
                 {
                     //clear the platforms map
                     platforms.Clear();
@@ -56,10 +58,10 @@ public class FollowerEnemy : Enemy {
                     {
                         path.Insert(path.Count, currentAggroPlatform);
                     }
-                    for (int i=0; i < path.Count; i++)
-                    {
-                        Debug.Log(path[i]);
-                    }
+                    //for (int i = 0; i < path.Count; i++)
+                    //{
+                    //    Debug.Log(path[i]);
+                    //}
                     //used to check path that was found
                 }
             }
@@ -89,6 +91,7 @@ public class FollowerEnemy : Enemy {
                         if (currentEnemyPlatform != currentAggroPlatform)
                         {
                             //get jumpPos based on targetPlatform
+                            currentEnemyPlatform = getPlatform();
                             if (targetPlatform == currentEnemyPlatform.GetComponent<PlatformJumping>().jumpDownRight || targetPlatform == currentEnemyPlatform.GetComponent<PlatformJumping>().jumpUpRight)
                             {
                                 jumpPos = new Vector3(currentEnemyPlatform.transform.position.x + currentEnemyPlatform.GetComponent<Collider2D>().bounds.extents.x - .2f, transform.position.y, 0);
@@ -97,6 +100,7 @@ public class FollowerEnemy : Enemy {
                             {
                                 jumpPos = new Vector3(currentEnemyPlatform.transform.position.x - currentEnemyPlatform.GetComponent<Collider2D>().bounds.extents.x + .2f, transform.position.y, 0);
                             }
+                            Debug.Log(jumpPos);
                         }
 					}
                 }
@@ -110,20 +114,24 @@ public class FollowerEnemy : Enemy {
                         if (currentAggroPlatform != currentEnemyPlatform)
                         {
                             //enemy is close to jumpPos
-                            if (Mathf.Abs(jumpPos.x - transform.position.x) < .1 && targetPlatform.transform.position.y > transform.position.y)
+                            if (isGrounded())
                             {
-                                //get the force needed to jump and jump
-                                Vector2 force = CalculateForce();
-                                body.AddForce(force, ForceMode2D.Impulse);
-                                targetPlatform = null;
-                                jumpPos = Vector2.zero;
-                            }
-                            else
-                            {
-                                //get direction to jumpPos and move enemy
-                                direction = new Vector2(targetPlatform.transform.position.x - transform.position.x, 0);
-                                direction.Normalize();
-                                transform.Translate(direction * 5 * Time.deltaTime);
+                                if (Mathf.Abs(jumpPos.x - transform.position.x) < .25f && targetPlatform.transform.position.y > transform.position.y)
+                                {
+                                    //get the force needed to jump and jump
+                                    Vector2 force = CalculateForce();
+                                    Debug.DrawLine(transform.position, force);
+                                    body.velocity = force;
+                                   // targetPlatform = null;
+                                   // jumpPos = Vector2.zero;
+                                }
+                                else
+                                {
+                                    //get direction to jumpPos and move enemy
+                                    direction = new Vector2(targetPlatform.transform.position.x - transform.position.x, 0);
+                                    direction.Normalize();
+                                    transform.Translate(direction * 5 * Time.deltaTime);
+                                }
                             }
                         }
                         else
@@ -153,16 +161,19 @@ public class FollowerEnemy : Enemy {
     Vector2 CalculateForce()
     {
         Vector3 targetPos = targetPlatform.transform.position;
-        targetPos.x += .2f;
-        targetPos.y += .5f;
+        targetPos.y += .6f;
         Vector3 dir = targetPos - transform.position;
+        if (dir.x > 0)
+            dir.x += 1f;
+        else
+            dir.x -= 1f;
         Vector3 dirFlat = dir;
         dirFlat.y = 0;
 
         float height = dir.y;
         float xz = dirFlat.magnitude;
 
-        float v0y = height / 2 + .7f* Physics.gravity.magnitude * 4;
+        float v0y = height / 2 + 1f* Physics.gravity.magnitude * 4;
         float v0xz = xz / 2 + xz;
 
         Vector3 result = dirFlat.normalized;
@@ -175,20 +186,35 @@ public class FollowerEnemy : Enemy {
 
     GameObject getPlatform()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position - collideYDist, -transform.up, .1f, platform);
-        if (hit.collider != null)
+        RaycastHit2D hitLeft = Physics2D.Raycast(transform.position - collideYDist - collideXDist, -transform.up - transform.right * 1.1f, .1f, platform);
+        RaycastHit2D hitRight = Physics2D.Raycast(transform.position - collideYDist + collideXDist, -transform.up + transform.right * 1.1f, .1f, platform);
+        if (hitLeft.collider != null)
         {
-            return hit.collider.gameObject;
+            return hitLeft.collider.gameObject;
+        }
+        else if (hitRight.collider != null)
+        {
+            return hitRight.collider.gameObject;
         }
         return null;
     }
 
     bool isGrounded()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position - collideYDist, -transform.up, .1f, platform);
-        if (hit.collider != null)
+        //RaycastHit2D hit = Physics2D.Raycast(transform.position - collideYDist, -transform.up, .1f, platform);
+        //if (hit.collider != null)
+        //{
+        //    return true;
+        //}
+        RaycastHit2D hitLeft = Physics2D.Raycast(transform.position - collideYDist - collideXDist, -transform.up - transform.right * 1.1f, .1f, platform);
+        RaycastHit2D hitRight = Physics2D.Raycast(transform.position - collideYDist + collideXDist, -transform.up + transform.right * 1.1f, .1f, platform);
+        if (hitLeft.collider != null)
         {
-            return true;
+            return hitLeft.collider.gameObject;
+        }
+        else if (hitRight.collider != null)
+        {
+            return hitRight.collider.gameObject;
         }
         return false;
     }
