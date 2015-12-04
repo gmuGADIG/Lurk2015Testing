@@ -44,6 +44,7 @@ public class Inventory : MonoBehaviour
 	{
 		GameObject temp = inv [0];
 		inv [0] = null;
+		UpdateSprites ();
 		return temp;
 	}
 

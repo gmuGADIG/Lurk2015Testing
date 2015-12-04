@@ -21,7 +21,7 @@ public class Throw : MonoBehaviour
 	public float startWidth = .1f;
 	public float endWidth = .1f;
 	public Material mat;
-	public float z = -.1f;					// Z height to draw line
+	public float z = -1f;					// Z height to draw line
 	#endregion
 
 	LineRenderer line;
@@ -39,6 +39,7 @@ public class Throw : MonoBehaviour
 
 		// Setup line
 		line = gameObject.AddComponent<LineRenderer>();
+		line.transform.parent = transform.parent;
 		startColor.a = startAlpha;
 		endColor.a = endAlpha;
 		line.SetColors(startColor, endColor);
@@ -66,7 +67,7 @@ public class Throw : MonoBehaviour
 			if(obj != null)
 			{
 				thrown = (GameObject)Instantiate(obj, transform.position, Quaternion.identity);
-				thrown.GetComponent<Rigidbody>().velocity = force;
+				thrown.GetComponent<Rigidbody2D>().velocity = force;
 			}
 			angle = 0;
 			pressed = false;
@@ -85,7 +86,7 @@ public class Throw : MonoBehaviour
 		Vector2 velocity = force;
 		for (int i = 0; i < maxVerts; ++i)
 		{
-			line.SetPosition(i, position + new Vector2(0, 0));
+			line.SetPosition(i, new Vector3(position.x, position.y, z));
 			
 			position += velocity * timeSeg + 0.5f * Physics2D.gravity * timeSeg * timeSeg;
 			velocity += Physics2D.gravity * timeSeg;
