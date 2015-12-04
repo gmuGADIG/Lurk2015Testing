@@ -37,6 +37,8 @@ public class playerMove : MonoBehaviour {
 	private float initialGravity;
 	public float pickupDistance = 1f;
 
+	private bool jumpPressed = false;
+
     // Use this for initialization
     void Start () {
 		rb = GetComponent<Rigidbody2D> ();
@@ -49,10 +51,11 @@ public class playerMove : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
 		float horizontal = Input.GetAxis ("Horizontal");
 		if (onLadder) {
 			horizontal = 0;
-            if(Input.GetAxis("Jump") > 0.01){
+			if(Input.GetAxis("Jump") > 0.01 && jumpPressed == false){
                 // Jump off of ladder
                 offLadder();
                 jump();
@@ -91,8 +94,10 @@ public class playerMove : MonoBehaviour {
         // Check for ground collision
         Collider2D[] colResults = new Collider2D[1];
 		grounded = Physics2D.OverlapAreaNonAlloc(top_left.position, bottom_right.position, colResults, ground_layers);
-		if(Input.GetAxis("Jump") > 0.01 && grounded > 0){
-			jump();
+		if (Input.GetAxis ("Jump") > 0.01) {
+			if (grounded > 0 && jumpPressed == false) {
+				jump ();
+			}
 		}
 
 		if (grounded > 0 && Input.GetAxis ("Vertical") < -0.01) {
@@ -104,6 +109,12 @@ public class playerMove : MonoBehaviour {
 			animator.SetBool("crouching", false);
 			GetComponent<BoxCollider2D>().size = new Vector2(1, 1);
 			GetComponent<BoxCollider2D>().offset = new Vector2(0, 0);
+		}
+		// Update jump button state
+		if (Input.GetAxis ("Jump") > 0.01) {
+			jumpPressed = true;
+		} else {
+			jumpPressed = false;
 		}
 	}
 
