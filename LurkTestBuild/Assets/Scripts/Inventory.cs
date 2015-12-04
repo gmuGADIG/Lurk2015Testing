@@ -56,13 +56,13 @@ public class Inventory : MonoBehaviour
 	public void UpdateSprites()
 	{
 		// Get object sprites from inv and set GUI images to them
-		if(inv[0] != null)
-			panels [0].GetComponent<SpriteRenderer> ().sprite = inv[0].GetComponent<SpriteRenderer> ().sprite;
+		if (inv [0] != null)
+			panels [0].GetComponent<Image>().sprite = inv[0].GetComponent<SpriteRenderer> ().sprite;
 		else
 			panels[0].GetComponent<Image>().sprite = defaultImage;
 
 		if(inv[1] != null)
-			panels [1].GetComponent<SpriteRenderer> ().sprite = inv[1].GetComponent<SpriteRenderer> ().sprite;
+			panels [1].GetComponent<Image>().sprite = inv[1].GetComponent<SpriteRenderer> ().sprite;
 		else
 			panels[1].GetComponent<Image>().sprite = defaultImage;
 	}

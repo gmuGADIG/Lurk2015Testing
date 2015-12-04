@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class Throw : MonoBehaviour
 {
 	#region Parameters
-	public Vector3 standardForce;			// Force to be added to obj after rotated by angle
+	public Vector2 standardForce;			// Force to be added to obj after rotated by angle
 	public float forceMult = 10;
 	public float timeSeg = .05f;			// time per segment (in seconds)
 	public int maxVerts = 51;				// Maximum number of vertices to use for line
@@ -25,7 +25,7 @@ public class Throw : MonoBehaviour
 	#endregion
 
 	LineRenderer line;
-	Vector3 force;
+	Vector2 force;
 	bool pressed = false;
 	GameObject thrown;
 	Inventory inv;
@@ -81,14 +81,14 @@ public class Throw : MonoBehaviour
 			line = gameObject.AddComponent<LineRenderer>();
 		line.SetVertexCount(maxVerts);
 		
-		Vector3 position = transform.position;
-		Vector3 velocity = force;
+		Vector2 position = transform.position;
+		Vector2 velocity = force;
 		for (int i = 0; i < maxVerts; ++i)
 		{
-			line.SetPosition(i, position + new Vector3(0, 0, z));
+			line.SetPosition(i, position + new Vector2(0, 0));
 			
-			position += velocity * timeSeg + 0.5f * Physics.gravity * timeSeg * timeSeg;
-			velocity += Physics.gravity * timeSeg;
+			position += velocity * timeSeg + 0.5f * Physics2D.gravity * timeSeg * timeSeg;
+			velocity += Physics2D.gravity * timeSeg;
 		}
 	}
 	#endregion
