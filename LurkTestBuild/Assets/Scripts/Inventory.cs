@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-	public Item[] inv = new Item[2];
+	public GameObject[] inv = new GameObject[2];
 	public GameObject[] panels = new GameObject[2];
 	public Sprite defaultImage;
 
@@ -19,14 +19,14 @@ public class Inventory : MonoBehaviour
 	// Switches slot 0 and 1
 	public void SwitchSlots()
 	{
-		Item temp = inv [0];
+		GameObject temp = inv [0];
 		inv [0] = inv [1];
 		inv [1] = temp;
 		UpdateSprites ();
 	}
 
 	// Returns false if inventory slot 0 is full, true otherwise
-	public bool Pickup(Item item)
+	public bool Pickup(GameObject item)
 	{
 		if (inv [0] == null)
 		{
@@ -39,17 +39,30 @@ public class Inventory : MonoBehaviour
 		return true;
 	}
 
+	// Removes item0 and returns it
+	public GameObject RemoveItem()
+	{
+		GameObject temp = inv [0];
+		inv [0] = null;
+		return temp;
+	}
+
+	public GameObject GetItem(int i = 0)
+	{
+		return inv [i];
+	}
+
 	// Should be called every time an item is changed, so it does not need to be called each frame
 	public void UpdateSprites()
 	{
 		// Get object sprites from inv and set GUI images to them
 		if(inv[0] != null)
-			panels [0].GetComponent<Image> ().sprite = inv[0].sprite;
+			panels [0].GetComponent<SpriteRenderer> ().sprite = inv[0].GetComponent<SpriteRenderer> ().sprite;
 		else
 			panels[0].GetComponent<Image>().sprite = defaultImage;
 
 		if(inv[1] != null)
-			panels [1].GetComponent<Image> ().sprite = inv[1].sprite;
+			panels [1].GetComponent<SpriteRenderer> ().sprite = inv[1].GetComponent<SpriteRenderer> ().sprite;
 		else
 			panels[1].GetComponent<Image>().sprite = defaultImage;
 	}

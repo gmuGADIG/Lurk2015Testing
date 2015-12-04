@@ -6,7 +6,6 @@ using System.Collections.Generic;
 public class Throw : MonoBehaviour
 {
 	#region Parameters
-	public GameObject obj;					// Object to be thrown (requires rigidBody)
 	public Vector3 standardForce;			// Force to be added to obj after rotated by angle
 	public float forceMult = 10;
 	public float timeSeg = .05f;			// time per segment (in seconds)
@@ -29,6 +28,7 @@ public class Throw : MonoBehaviour
 	Vector3 force;
 	bool pressed = false;
 	GameObject thrown;
+	Inventory inv;
 	#endregion
 
 	#region Awake
@@ -44,13 +44,14 @@ public class Throw : MonoBehaviour
 		line.SetColors(startColor, endColor);
 		line.SetWidth(startWidth, endWidth);
 		line.material = mat;
+		inv = GetComponent<Inventory> ();
 	}
 	#endregion
 
 	#region Update
 	void Update()
 	{
-		if(Input.GetAxisRaw ("Fire1") == 1)
+		if(Input.GetAxisRaw ("Fire1") == 1 && inv.GetItem() != null)
 		{
 			UpdateTrajectory();
 			UpdateRotation();
@@ -60,9 +61,13 @@ public class Throw : MonoBehaviour
 		{
 			MakeLineInvisable();
 			// Throw instance of object
-			thrown = (GameObject)Instantiate(obj, transform.position, Quaternion.identity);
-			thrown.GetComponent<Rigidbody>().velocity = force;
+			GameObject obj = inv.RemoveItem();	// Object to be thrown (requires rigidBody)
 
+			if(obj != null)
+			{
+				thrown = (GameObject)Instantiate(obj, transform.position, Quaternion.identity);
+				thrown.GetComponent<Rigidbody>().velocity = force;
+			}
 			angle = 0;
 			pressed = false;
 		}
