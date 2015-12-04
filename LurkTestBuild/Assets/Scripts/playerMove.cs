@@ -9,6 +9,7 @@ public class playerMove : MonoBehaviour {
 	public float decel = 1.2f;
 	public float jumpStrength = 20;
 	public float ladderClimbSpeed = 2f;
+	public bool gender = true; //Male is true
 
 	public int coins = 0;
 
@@ -170,6 +171,10 @@ public class playerMove : MonoBehaviour {
 	// Jump
 	void jump() {
 		rb.velocity = new Vector2(rb.velocity.x, jumpStrength);
+	}
+
+	bool getGender(){
+		return gender;
 	}
 
 }
