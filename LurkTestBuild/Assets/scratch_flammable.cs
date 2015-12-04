@@ -7,12 +7,13 @@ public class scratch_flammable : MonoBehaviour {
 	public bool lit = false;
 	//This is whatever light object happens to be attached to your flammable object.
 	public Light fireLight;
-	//This is the animator that handles the intensity and other animated doodads.
+	//This is the animator that handles the intensity and other animated doodads of the light.
 	Animator anim;
 
 	void Start () {
-		anim = GetComponent<Animator>();
-		fireLight = GetComponentInChildren<Light> ();
+		anim = GetComponentInChildren<Animator>();
+		fireLight = GetComponentInChildren<Light>();
+		anim.SetBool ("Lit", lit);
 	}
 	
 	void Update () {
