@@ -29,15 +29,20 @@ public class playerMove : MonoBehaviour {
 
 	private Sprite defaultSprite;
 	public Sprite crouchSprite;
+	private bool crouching = false;
 
 	private bool direction = true;
 
 	private Animator animator;
 	private Inventory inventory;
 	private float initialGravity;
-	public float pickupDistance = 1f;
 
+	// How close to pick up objects
+	public float pickupDistance = 1f;
+	// Is space/jump down
 	private bool jumpPressed = false;
+	// Slow down when crouching
+	public float crouchPenalty = 2;
 
     // Use this for initialization
     void Start () {
@@ -53,6 +58,13 @@ public class playerMove : MonoBehaviour {
 	void Update () {
 
 		float horizontal = Input.GetAxis ("Horizontal");
+		if (horizontal > 0) {
+			direction = true;
+			transform.localScale = new Vector3(1, 1, 1);
+		} else if (horizontal < 0) {
+			direction = false;
+			transform.localScale = new Vector3(-1, 1, 1);
+		}
 		if (onLadder) {
 			horizontal = 0;
 			if(Input.GetAxis("Jump") > 0.01 && jumpPressed == false){
@@ -89,7 +101,7 @@ public class playerMove : MonoBehaviour {
 		}
 
         // Apply movement velocity
-		rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x + (horizontal * accel), -maxSpeed, maxSpeed), Mathf.Clamp(rb.velocity.y, fallClamp, 9999));
+		rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x + (horizontal * accel), -maxSpeed, maxSpeed)/((crouching ? crouchPenalty : 1)), Mathf.Clamp(rb.velocity.y, fallClamp, 9999));
 
         // Check for ground collision
         Collider2D[] colResults = new Collider2D[1];
@@ -103,10 +115,12 @@ public class playerMove : MonoBehaviour {
 		if (grounded > 0 && Input.GetAxis ("Vertical") < -0.01) {
 			// Crouch
 			animator.SetBool("crouching", true);
+			crouching = true;
 			GetComponent<BoxCollider2D>().size = new Vector2(1, 0.6f);
 			GetComponent<BoxCollider2D>().offset = new Vector2(0, -0.2f);
 		} else {
 			animator.SetBool("crouching", false);
+			crouching = false;
 			GetComponent<BoxCollider2D>().size = new Vector2(1, 1);
 			GetComponent<BoxCollider2D>().offset = new Vector2(0, 0);
 		}
