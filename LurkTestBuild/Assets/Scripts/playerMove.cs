@@ -33,6 +33,8 @@ public class playerMove : MonoBehaviour {
 
 	private Animator animator;
 	private Inventory inventory;
+	private float initialGravity;
+	public float pickupDistance = 1f;
 
     // Use this for initialization
     void Start () {
@@ -41,6 +43,7 @@ public class playerMove : MonoBehaviour {
 		inventory = GetComponent<Inventory> ();
 		cam = Camera.main.gameObject;
 		defaultSprite = GetComponent<SpriteRenderer> ().sprite;
+		initialGravity = rb.gravityScale;
 	}
 	
 	// Update is called once per frame
@@ -57,7 +60,28 @@ public class playerMove : MonoBehaviour {
 
 		// Pickup/drop items
 		if (Input.GetAxis ("Vertical") < -0.01 && Input.GetAxis ("Fire2") > 0.01) {
+			// Get items
+			GameObject[] items = GameObject.FindGameObjectsWithTag("Item");
+			GameObject closestItem = null;
+			float closestDist = Mathf.Infinity;
 
+			foreach(GameObject item in items){
+				// If item is within reach
+				float itemDistance = Vector3.Distance(transform.position, item.transform.position);
+
+				if (itemDistance < pickupDistance){
+					if(closestItem == null || itemDistance < closestDist){
+						closestItem = item;
+						closestDist = itemDistance;
+					}
+				}
+			}
+
+			if (closestItem){
+				if(inventory.Pickup(closestItem)){
+					Destroy(closestItem);
+				}
+			}
 		}
 
         // Apply movement velocity
@@ -139,7 +163,7 @@ public class playerMove : MonoBehaviour {
 	// Disconnect from ladder and reapply physics
 	void offLadder() {
 		onLadder = false;
-		rb.gravityScale = 1;
+		rb.gravityScale = initialGravity;
 		fallClamp = -9999;
 	}
 	
