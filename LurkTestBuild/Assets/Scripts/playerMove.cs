@@ -18,12 +18,9 @@ public class playerMove : MonoBehaviour {
 	public int grounded = 0;
 
 	private Rigidbody2D rb;
-<<<<<<< HEAD
 	private GameObject cam;
 	private bool onLadder = false;
 	private int fallClamp = -9999;
-=======
->>>>>>> refs/remotes/origin/master
 
 	// Use this for initialization
 	void Start () {
