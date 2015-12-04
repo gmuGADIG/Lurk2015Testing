@@ -6,7 +6,7 @@ public class flammable_light_switch : StateMachineBehaviour {
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 		if (stateInfo.IsName ("On")) {
-			YOU NEED TO HAVE A LIGHT OBJECT TO ANIMATE OR YOU WON'T BE ABLE TO MESS WITH THE LIGHT';
+			
 		}
 
 		if (stateInfo.IsName ("Off")) {
@@ -16,12 +16,7 @@ public class flammable_light_switch : StateMachineBehaviour {
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-		if(animator.GetBool ("Lit") == false && stateInfo.IsName ("On")){
-			//Switch the light on
-		}
-		if(animator.GetBool ("Lit") == true && stateInfo.IsName ("Off")){
-			//Switch the light off
-		}
+
 	}
 
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
