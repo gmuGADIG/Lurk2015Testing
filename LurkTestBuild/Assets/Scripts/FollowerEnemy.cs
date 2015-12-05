@@ -133,6 +133,16 @@ public class FollowerEnemy : Enemy {
                                     transform.Translate(direction * 5 * Time.deltaTime);
                                 }
                             }
+                            else
+                            {
+                                if (targetPlatform.transform.position.y < transform.position.y)
+                                {
+                                    //get direction to jumpPos and move enemy
+                                    direction = new Vector2(targetPlatform.transform.position.x - transform.position.x, 0);
+                                    direction.Normalize();
+                                    transform.Translate(direction * 5 * Time.deltaTime);
+                                }
+                            }
                         }
                         else
                         {
