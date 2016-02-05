@@ -7,22 +7,28 @@ public class FollowerEnemy : Enemy {
     Rigidbody2D body;
     //how far away can the enemy detect aggro
     public float aggroDistance = 100f;
+    //size of enemy and aggro collider
     Vector3 collideYDist;
     Vector3 collideXDist;
     Vector3 aggroCollideDist;
     //platform layer
     LayerMask platform = 1 << 8;
 
+    //current platforms
     GameObject currentAggroPlatform;
     GameObject currentEnemyPlatform;
+    //target platform and jumpPos and direction to reach them
     GameObject targetPlatform;
     Vector2 direction;
 	Vector3 jumpPos;
     bool isJumping = false;
 
+
     List<GameObject> path;
 	Hashtable platforms;
-	// Use this for initialization
+
+
+	// initialize all variables
 	void Start ()
     {
         body = GetComponent<Rigidbody2D>();
@@ -54,7 +60,7 @@ public class FollowerEnemy : Enemy {
                     platforms.Clear();
                     path.Clear();
                     //get the path
-                    path = GetPath(currentAggroPlatform, platforms);
+                    path = GetPath(currentAggroPlatform);
                     //add aggro's platform at end of path, if a path was found
                     if (path != null)
                     {
@@ -108,6 +114,7 @@ public class FollowerEnemy : Enemy {
                             //enemy is close to jumpPos
                             if (isGrounded())
                             {
+                                //enemy is at jump position
                                 if (Mathf.Abs(jumpPos.x - transform.position.x) < .25f && targetPlatform.transform.position.y > transform.position.y)
                                 {
                                     //get the force needed to jump and jump
@@ -115,9 +122,8 @@ public class FollowerEnemy : Enemy {
                                     Debug.DrawLine(transform.position, force);
                                     isJumping = true;
                                     body.velocity = force;
-                                   // targetPlatform = null;
-                                   // jumpPos = Vector2.zero;
                                 }
+                                //enemy is moving towards target along current platform
                                 else
                                 {
                                     //get direction to jumpPos and move enemy
@@ -128,9 +134,10 @@ public class FollowerEnemy : Enemy {
                             }
                             else
                             {
+                                //target is moving from platform above target and didn't jump
                                 if (targetPlatform.transform.position.y < transform.position.y && !isJumping)
                                 {
-                                    //get direction to jumpPos and move enemy
+                                    //get direction to targetPlatform and move enemy
                                     direction = new Vector2(targetPlatform.transform.position.x - transform.position.x, 0);
                                     direction.Normalize();
                                     transform.Translate(direction * 15 * Time.deltaTime);
@@ -151,6 +158,7 @@ public class FollowerEnemy : Enemy {
         }
 	}
 
+    //player has hit new platform and gets ready for new target
     void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject == targetPlatform)
@@ -188,6 +196,7 @@ public class FollowerEnemy : Enemy {
         return result;
     }
 
+    //gets current platform for enemy
     GameObject getPlatform()
     {
         RaycastHit2D hitLeft = Physics2D.Raycast(transform.position - collideYDist - collideXDist, -transform.up - transform.right * 1.1f, .1f, platform);
@@ -203,13 +212,9 @@ public class FollowerEnemy : Enemy {
         return null;
     }
 
+    //check if enemy is grounded and return it 
     bool isGrounded()
     {
-        //RaycastHit2D hit = Physics2D.Raycast(transform.position - collideYDist, -transform.up, .1f, platform);
-        //if (hit.collider != null)
-        //{
-        //    return true;
-        //}
         RaycastHit2D hitLeft = Physics2D.Raycast(transform.position - collideYDist - collideXDist, -transform.up - transform.right * 1.1f, .1f, platform);
         RaycastHit2D hitRight = Physics2D.Raycast(transform.position - collideYDist + collideXDist, -transform.up + transform.right * 1.1f, .1f, platform);
         if (hitLeft.collider != null)
@@ -224,7 +229,7 @@ public class FollowerEnemy : Enemy {
     }
 	
 	//reconstruct path to aggro's platform
-	List<GameObject> ReconstructPath(GameObject finish, Hashtable platforms)
+	List<GameObject> ReconstructPath(GameObject finish)
 	{
 		List<GameObject> returnPath = new List<GameObject>();
 		while (platforms[finish] != null)
@@ -236,7 +241,7 @@ public class FollowerEnemy : Enemy {
 	}
 	
 	//find optimal path to aggro's platform
-	List<GameObject> GetPath(GameObject finish, Hashtable platforms)
+	List<GameObject> GetPath(GameObject finish)
 	{
         //gameobjects to check
         Queue<GameObject> openList = new Queue<GameObject>();
@@ -255,7 +260,7 @@ public class FollowerEnemy : Enemy {
             if (checking == currentEnemyPlatform)
             {
                 //rebuild path and return the list
-                return ReconstructPath(checking, platforms);
+                return ReconstructPath(checking);
             }
             else
             {
