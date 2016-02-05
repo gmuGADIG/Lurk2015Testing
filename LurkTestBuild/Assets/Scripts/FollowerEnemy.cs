@@ -265,13 +265,15 @@ public class FollowerEnemy : Enemy {
 				//check each jump path from checking
                 for (int i = 0; i < 4; i++)
                 {
+                    PlatformJumping jumping = checking.GetComponent<PlatformJumping>();
                     if (i==0)
                     {
-						//go up left
-                        if (checking.GetComponent<PlatformJumping>().jumpUpLeft != null)
+                        //go up left
+                        
+                        if (jumping.jumpUpLeft != null)
                         {
 							//get the platform if not null
-                            GameObject next = checking.GetComponent<PlatformJumping>().jumpUpLeft;
+                            GameObject next = jumping.jumpUpLeft;
 							//if not already in closedlist, add next to map with value of checking, add next to openlist
                             if (!closedList.Contains(next))
                             {
@@ -283,9 +285,9 @@ public class FollowerEnemy : Enemy {
                     else if (i == 1)
                     {
                         //go up right
-                        if (checking.GetComponent<PlatformJumping>().jumpUpRight != null)
+                        if (jumping.jumpUpRight != null)
                         {
-                            GameObject next = checking.GetComponent<PlatformJumping>().jumpUpRight;
+                            GameObject next = jumping.jumpUpRight;
                             if (!closedList.Contains(next))
                             {
                                 platforms[next] = checking;
@@ -296,9 +298,9 @@ public class FollowerEnemy : Enemy {
                     else if (i == 2)
                     {
                         //go down left
-                        if (checking.GetComponent<PlatformJumping>().jumpDownLeft != null)
+                        if (jumping.jumpDownLeft != null)
                         {
-                            GameObject next = checking.GetComponent<PlatformJumping>().jumpDownLeft;
+                            GameObject next = jumping.jumpDownLeft;
                             if (!closedList.Contains(next))
                             {
                                 platforms[next] = checking;
@@ -309,9 +311,9 @@ public class FollowerEnemy : Enemy {
                     else
                     {
                         //go down right
-                        if (checking.GetComponent<PlatformJumping>().jumpDownRight != null)
+                        if (jumping.jumpDownRight != null)
                         {
-                            GameObject next = checking.GetComponent<PlatformJumping>().jumpDownRight;
+                            GameObject next = jumping.jumpDownRight;
                             if (!closedList.Contains(next))
                             {
                                 platforms[next] = checking;
