@@ -2,6 +2,11 @@
 using System.Collections;
 using UnityEngine.UI;
 
+/// <summary>
+/// Requires Item.cs, Throw.cs, and playerMove.cs
+/// Frequently referenced by playerMove.cs and Throw.cs
+/// </summary>
+
 public class Inventory : MonoBehaviour
 {
 	public GameObject[] inv = new GameObject[2];
@@ -28,6 +33,7 @@ public class Inventory : MonoBehaviour
 	// Returns false if inventory slot 0 is full, true otherwise
 	public bool Pickup(GameObject item)
 	{
+		Debug.Log (inv [0]);
 		if (inv [0] == null)
 		{
 			inv [0] = item;

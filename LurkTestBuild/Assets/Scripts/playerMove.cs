@@ -106,10 +106,10 @@ public class playerMove : MonoBehaviour {
 					}
 				}
 			}
-
+			// Pickup item
 			if (closestItem){
 				if(inventory.Pickup(closestItem)){
-					Destroy(closestItem);
+					closestItem.GetComponent<Item>().setItemState(false);
 				}
 			}
 		}
