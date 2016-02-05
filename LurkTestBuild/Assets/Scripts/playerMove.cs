@@ -8,7 +8,8 @@ using UnityEngine.UI;
  * Left/right arrow...move left/right
  * Space..............jump
  * Down + X...........pick up/drop item
- * Z..................use item/attack
+ * Z..................swap item
+ * X..................use item
  * 
  * C (held)...........show aim line
  * C + X..............throw item
@@ -58,6 +59,8 @@ public class playerMove : MonoBehaviour {
 	private bool jumpPressed = false;
 	// Is x down
 	private bool xPressed = false;
+	// Is z down
+	private bool zPressed = false;
 	// Slow down when crouching
 	public float crouchPenalty = 2;
 
@@ -92,7 +95,7 @@ public class playerMove : MonoBehaviour {
 		}
 
 		// Pickup/drop items
-		if (Input.GetAxisRaw ("Vertical") < 0 && Input.GetAxis ("Fire2") > 0.01 && !xPressed) {
+		if (Input.GetAxisRaw ("Vertical") < 0 && Input.GetAxis ("X") > 0.01 && !xPressed) {
 			// Get items
 			GameObject[] items = GameObject.FindGameObjectsWithTag("Item");
 			GameObject closestItem = null;
@@ -111,15 +114,28 @@ public class playerMove : MonoBehaviour {
 			}
 
 			if (closestItem){
+				//Try to pick up item
 				if(inventory.Pickup(closestItem)){
-					closestItem.SendMessage("setItemState", false);
+					closestItem.SendMessage("SetItemState", false);
 				}else{
+					// Need to switch items
 					GameObject droppedItem = inventory.Drop();
 					inventory.Pickup(closestItem);
-					closestItem.SendMessage("setItemState", false);
-					droppedItem.SendMessage("setItemState", true);
+					closestItem.SendMessage("SetItemState", false);
+					droppedItem.SendMessage("SetItemState", true);
+				}
+			}else{
+				// Not near an item, just drop primary item
+				GameObject droppedItem = inventory.Drop();
+				if(droppedItem){
+					droppedItem.SendMessage("SetItemState", true);
 				}
 			}
+		}
+
+		// Swap items between inventory slots
+		if (Input.GetAxisRaw ("Z") > 0 && !zPressed) {
+			inventory.Swap ();
 		}
 
         // Apply movement velocity
@@ -152,8 +168,14 @@ public class playerMove : MonoBehaviour {
 		} else {
 			jumpPressed = false;
 		}
+		// Update z state
+		if (Input.GetAxisRaw ("Z") > 0) {
+			zPressed = true;
+		} else {
+			zPressed = false;
+		}
 		// Update x state
-		if (Input.GetAxis ("Fire2") > 0.01) {
+		if (Input.GetAxisRaw ("X") > 0) {
 			xPressed = true;
 		} else {
 			xPressed = false;

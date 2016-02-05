@@ -48,7 +48,8 @@ public class Inventory : MonoBehaviour
 	{
 		if (inv [0] != null)
 		{
-			inv [0].transform.position = transform.position;
+			// TP to player (with a small offset to avoid ground clipping)
+			inv [0].transform.position = transform.position + new Vector3(0, 0.1f, 0);
 			GameObject tempObject = inv [0];
 			RemoveItem();
 			UpdateSprites();
@@ -56,6 +57,13 @@ public class Inventory : MonoBehaviour
 		}
 		
 		return null;
+	}
+
+	public void Swap(){
+		GameObject[] tempInv = (GameObject[])inv.Clone();
+		inv [0] = tempInv [1];
+		inv [1] = tempInv [0];
+		UpdateSprites();
 	}
 
 	// Removes item0 and returns it

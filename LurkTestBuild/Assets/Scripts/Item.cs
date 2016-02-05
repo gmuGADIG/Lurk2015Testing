@@ -14,10 +14,13 @@ public class Item : MonoBehaviour
 	public SpriteRenderer sr;
 	// Cache the collider
 	public Collider2D col;
+	// Cache the rigidbody2d
+	public Rigidbody2D rb2d;
 
 	public void Start (){
 		sr = GetComponent <SpriteRenderer>();
 		col = GetComponent <Collider2D>();
+		rb2d = GetComponent <Rigidbody2D>();
 	}
 
 	public void Update(){
@@ -30,15 +33,16 @@ public class Item : MonoBehaviour
 		}
 	}
 
-	public bool useItem(){
+	public bool UseItem(){
 		// Does nothing by default.
 		// Should be overridden in the extended script.
 		// True = sucess, false = fail
 		return true;
 	}
 	
-	public void setItemState(bool state){
+	public void SetItemState(bool state){
 		isVisible = state;
 		col.enabled = state;
+		rb2d.isKinematic = !state;
 	}
 }
