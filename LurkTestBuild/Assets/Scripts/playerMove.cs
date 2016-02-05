@@ -46,6 +46,7 @@ public class playerMove : MonoBehaviour {
 	private bool crouching = false;
 
 	private bool direction = true;
+    public bool getDirection() { return direction; }
 
 	private Animator animator;
 	private Inventory inventory;

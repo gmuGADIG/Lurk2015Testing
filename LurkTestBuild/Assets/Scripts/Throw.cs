@@ -29,6 +29,7 @@ public class Throw : MonoBehaviour
 	bool pressed = false;
 	GameObject thrown;
 	Inventory inv;
+    playerMove player;
 	#endregion
 
 	#region Awake
@@ -36,6 +37,7 @@ public class Throw : MonoBehaviour
 	{
 		standardForce = transform.right * forceMult;
 		force = transform.right * forceMult;
+        player = GetComponent<playerMove>();
 
 		// Setup line
 		line = gameObject.AddComponent<LineRenderer>();
@@ -52,12 +54,13 @@ public class Throw : MonoBehaviour
 	#region Update
 	void Update()
 	{
-		if(Input.GetAxisRaw ("Fire1") == 1 && inv.GetItem() != null)
+		if(Input.GetAxisRaw ("Fire1") == 1 /*&& inv.GetItem() != null*/)
 		{
 			UpdateTrajectory();
 			UpdateRotation();
 			MakeLineVisable();
 			pressed = true;
+            Debug.Log(angle);
 		}else if(pressed == true)
 		{
 			MakeLineInvisable();
@@ -84,7 +87,12 @@ public class Throw : MonoBehaviour
 		
 		Vector2 position = transform.position;
 		Vector2 velocity = force;
-		for (int i = 0; i < maxVerts; ++i)
+        if(player.getDirection())
+        {
+            velocity.x = Mathf.Abs(velocity.x);
+        }else
+            velocity.x = -Mathf.Abs(velocity.x);
+        for (int i = 0; i < maxVerts; ++i)
 		{
 			line.SetPosition(i, new Vector3(position.x, position.y, z));
 			
@@ -97,14 +105,15 @@ public class Throw : MonoBehaviour
 	#region UpdateRotation
 	void UpdateRotation()
 	{
-		angle += rotSpeed * Time.deltaTime;	// Change direction by rotSpeed * time since last update
+		angle += rotSpeed * Time.deltaTime; // Change direction by rotSpeed * time since last update
 
-		if(angle >= 90)
-			rotSpeed *= -1;
-		else if(angle <= 0)
-			rotSpeed *= -1;
+        if (angle >= 90)
+            rotSpeed *= -1;
+        else if (angle <= 0)
+            rotSpeed *= -1;
 
-		force = Quaternion.Euler (0, 0, angle) * standardForce;
+
+        force = Quaternion.Euler (0, 0, angle) * standardForce;
 	}
 	#endregion
 
