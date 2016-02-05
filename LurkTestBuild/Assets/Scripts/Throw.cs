@@ -10,18 +10,18 @@ public class Throw : MonoBehaviour
 	public float forceMult = 10;
 	public float timeSeg = .05f;			// time per segment (in seconds)
 	public int maxVerts = 51;				// Maximum number of vertices to use for line
-	public float angle = 0f;				// Direction of throw
-	public float rotSpeed = 20f;			// Degrees to rotate/sec
+	public float rotSpeed = 20f;            // Degrees to rotate/sec
+    float angle = 0f;                       // Direction of throw
 
-	#region LineProperties
-	public Color startColor = Color.red;
-	public Color endColor = Color.magenta;
-	public float startAlpha = .5f;
-	public float endAlpha = .5f;
-	public float startWidth = .1f;
-	public float endWidth = .1f;
+    #region LineProperties
+    Color startColor = Color.red;
+	Color endColor = Color.magenta;
+	float startAlpha = .5f;
+	float endAlpha = .5f;
+	float startWidth = .1f;
+	float endWidth = .1f;
 	public Material mat;
-	public float z = -1f;					// Z height to draw line
+	float z = -1f;					// Z height to draw line
 	#endregion
 
 	LineRenderer line;
@@ -54,27 +54,43 @@ public class Throw : MonoBehaviour
 	#region Update
 	void Update()
 	{
-		if(Input.GetAxisRaw ("Fire1") == 1 /*&& inv.GetItem() != null*/)
+		if(Input.GetAxisRaw ("C") == 1 && inv.GetItem() != null)
 		{
 			UpdateTrajectory();
 			UpdateRotation();
 			MakeLineVisable();
 			pressed = true;
-            Debug.Log(angle);
-		}else if(pressed == true)
-		{
-			MakeLineInvisable();
-			// Throw instance of object
-			GameObject obj = inv.RemoveItem();	// Object to be thrown (requires rigidBody)
-
-			if(obj != null)
-			{
-				thrown = (GameObject)Instantiate(obj, transform.position, Quaternion.identity);
-				thrown.GetComponent<Rigidbody2D>().velocity = force;
-			}
-			angle = 0;
-			pressed = false;
 		}
+        if (pressed == true)
+		{
+            if (Input.GetAxisRaw("V") == 1)
+            {
+                MakeLineInvisable();
+                // Throw instance of object
+                GameObject obj = inv.RemoveItem();  // Object to be thrown (requires rigidBody)
+
+                if (obj != null)
+                {
+                    obj.transform.position = transform.position;
+                    obj.SendMessage("setItemState", true);
+                    if (player.getDirection())
+                        obj.GetComponent<Rigidbody2D>().velocity = force;
+                    else
+                    {
+                        force.x = -force.x;
+                        obj.GetComponent<Rigidbody2D>().velocity = force;
+                    }
+                }
+            }
+            else if (Input.GetAxisRaw("C") <= 0)
+            {
+                MakeLineInvisable();
+                angle = 0;
+                force = transform.right * forceMult;
+                pressed = false;
+            }
+        }
+        else {}
 	}
 	#endregion
 
