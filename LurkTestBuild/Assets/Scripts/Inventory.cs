@@ -29,18 +29,32 @@ public class Inventory : MonoBehaviour
 		inv [1] = temp;
 		UpdateSprites ();
 	}
-
+	
 	// Returns false if inventory slot 0 is full, true otherwise
 	public bool Pickup(GameObject item)
 	{
-		Debug.Log (inv [0]);
 		if (inv [0] == null)
 		{
 			inv [0] = item;
 			UpdateSprites();
 			return true;
 		}
+		
+		return false;
+	}
 
+	// Returns false if inventory slot 0 is empty, true otherwise
+	public bool Drop(GameObject item)
+	{
+		if (inv [0] != null)
+		{
+			inv [0].transform.position = transform.position;
+			inv [0].SendMessage("setItemState", true);
+			inv [0] = null;
+			UpdateSprites();
+			return true;
+		}
+		
 		return false;
 	}
 
