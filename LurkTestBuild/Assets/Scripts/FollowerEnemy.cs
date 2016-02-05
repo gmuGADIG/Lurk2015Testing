@@ -18,6 +18,7 @@ public class FollowerEnemy : Enemy {
     GameObject targetPlatform;
     Vector2 direction;
 	Vector3 jumpPos;
+    bool isJumping = false;
 
     List<GameObject> path;
 	Hashtable platforms;
@@ -47,10 +48,11 @@ public class FollowerEnemy : Enemy {
                 currentAggroPlatform = hit.collider.gameObject;
                 currentEnemyPlatform = getPlatform();
                 //check that path is empty and enemy and player are on a platform
-                if (currentAggroPlatform != null && currentEnemyPlatform != null && path.Count == 0 && currentAggroPlatform != currentEnemyPlatform)
+                if (currentAggroPlatform != null && currentEnemyPlatform != null && (path.Count == 0 || currentAggroPlatform != path[path.Count-1]) && currentAggroPlatform != currentEnemyPlatform)
                 {
                     //clear the platforms map
                     platforms.Clear();
+                    path.Clear();
                     //get the path
                     path = GetPath(currentAggroPlatform, platforms);
                     //add aggro's platform at end of path, if a path was found
@@ -58,17 +60,7 @@ public class FollowerEnemy : Enemy {
                     {
                         path.Insert(path.Count, currentAggroPlatform);
                     }
-                    //for (int i = 0; i < path.Count; i++)
-                    //{
-                    //    Debug.Log(path[i]);
-                    //}
-                    //used to check path that was found
                 }
-            }
-            else
-            {
-                //player has left platform, clear path to prepare for new path
-                path.Clear();
             }
 
             //player movement
@@ -121,6 +113,7 @@ public class FollowerEnemy : Enemy {
                                     //get the force needed to jump and jump
                                     Vector2 force = CalculateForce();
                                     Debug.DrawLine(transform.position, force);
+                                    isJumping = true;
                                     body.velocity = force;
                                    // targetPlatform = null;
                                    // jumpPos = Vector2.zero;
@@ -135,12 +128,12 @@ public class FollowerEnemy : Enemy {
                             }
                             else
                             {
-                                if (targetPlatform.transform.position.y < transform.position.y)
+                                if (targetPlatform.transform.position.y < transform.position.y && !isJumping)
                                 {
                                     //get direction to jumpPos and move enemy
                                     direction = new Vector2(targetPlatform.transform.position.x - transform.position.x, 0);
                                     direction.Normalize();
-                                    transform.Translate(direction * 5 * Time.deltaTime);
+                                    transform.Translate(direction * 15 * Time.deltaTime);
                                 }
                             }
                         }
@@ -164,6 +157,7 @@ public class FollowerEnemy : Enemy {
         {
             targetPlatform = null;
             jumpPos = Vector2.zero;
+            isJumping = false;
         }
     }
 
