@@ -12,9 +12,12 @@ public class Item : MonoBehaviour
 	public bool isVisible = true;
 	// Cache the sprite renderer
 	public SpriteRenderer sr;
+	// Cache the collider
+	public Collider2D col;
 
 	public void Start (){
 		sr = GetComponent <SpriteRenderer>();
+		col = GetComponent <Collider2D>();
 	}
 
 	public void Update(){
@@ -36,5 +39,6 @@ public class Item : MonoBehaviour
 	
 	public void setItemState(bool state){
 		isVisible = state;
+		col.enabled = state;
 	}
 }

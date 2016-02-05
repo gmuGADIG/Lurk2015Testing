@@ -56,6 +56,8 @@ public class playerMove : MonoBehaviour {
 	public float pickupDistance = 1f;
 	// Is space/jump down
 	private bool jumpPressed = false;
+	// Is x down
+	private bool xPressed = false;
 	// Slow down when crouching
 	public float crouchPenalty = 2;
 
@@ -90,7 +92,7 @@ public class playerMove : MonoBehaviour {
 		}
 
 		// Pickup/drop items
-		if (Input.GetAxis ("Vertical") < -0.01 && Input.GetAxis ("Fire2") > 0.01) {
+		if (Input.GetAxisRaw ("Vertical") < 0 && Input.GetAxis ("Fire2") > 0.01 && !xPressed) {
 			// Get items
 			GameObject[] items = GameObject.FindGameObjectsWithTag("Item");
 			GameObject closestItem = null;
@@ -101,7 +103,7 @@ public class playerMove : MonoBehaviour {
 				float itemDistance = Vector3.Distance(transform.position, item.transform.position);
 
 				if (itemDistance < pickupDistance){
-					if(closestItem == null || itemDistance < closestDist){
+					if((closestItem == null || itemDistance < closestDist) && item.GetComponent<Item>().isVisible){
 						closestItem = item;
 						closestDist = itemDistance;
 					}
@@ -110,7 +112,12 @@ public class playerMove : MonoBehaviour {
 
 			if (closestItem){
 				if(inventory.Pickup(closestItem)){
-					Destroy(closestItem);
+					closestItem.SendMessage("setItemState", false);
+				}else{
+					GameObject droppedItem = inventory.Drop();
+					inventory.Pickup(closestItem);
+					closestItem.SendMessage("setItemState", false);
+					droppedItem.SendMessage("setItemState", true);
 				}
 			}
 		}
@@ -144,6 +151,12 @@ public class playerMove : MonoBehaviour {
 			jumpPressed = true;
 		} else {
 			jumpPressed = false;
+		}
+		// Update x state
+		if (Input.GetAxis ("Fire2") > 0.01) {
+			xPressed = true;
+		} else {
+			xPressed = false;
 		}
 	}
 

@@ -43,19 +43,19 @@ public class Inventory : MonoBehaviour
 		return false;
 	}
 
-	// Returns false if inventory slot 0 is empty, true otherwise
-	public bool Drop(GameObject item)
+	// Returns null if inventory slot 0 is empty, the gameObject otherwise
+	public GameObject Drop()
 	{
 		if (inv [0] != null)
 		{
 			inv [0].transform.position = transform.position;
-			inv [0].SendMessage("setItemState", true);
-			inv [0] = null;
+			GameObject tempObject = inv [0];
+			RemoveItem();
 			UpdateSprites();
-			return true;
+			return tempObject;
 		}
 		
-		return false;
+		return null;
 	}
 
 	// Removes item0 and returns it
