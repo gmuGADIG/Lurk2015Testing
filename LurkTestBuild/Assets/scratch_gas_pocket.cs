@@ -3,9 +3,12 @@ using System.Collections;
 
 public class scratch_gas_pocket : MonoBehaviour {
 
+    //The distance at which the gas pocket will kill the player after detonating.
 	public float bomb_radius = 3;
+    //The time it takes for the pocket to re-arm.
 	public float bomb_recharge = 5;
 	private float last_detonation_time;
+    //Turn the gas pocket on or off.
 	public bool active = true;
 	//If one_blast is true, the object will destroy itself after detonating the first time.
 	public bool one_blast = false;
@@ -42,7 +45,8 @@ public class scratch_gas_pocket : MonoBehaviour {
 		Collider2D[] affected = Physics2D.OverlapCircleAll (new Vector2(thispos.x, thispos.y), bomb_radius);
 		foreach (Collider2D target in affected) {
 			if(target.gameObject.tag == "Player"){
-				Debug.Log ("Player killed!");
+                //Replace this with the code that will kill the player and cause appropriate game effects. Like dying.
+                Debug.Log ("Player killed!");
 			}
 		}
 		if (one_blast) {
@@ -50,8 +54,3 @@ public class scratch_gas_pocket : MonoBehaviour {
 		}
 	}
 }
-
-//Gas explodes once, then slowly filters back in? Temporary hazard clearance?
-	//Needs a recharge timer, and a way to indicate that it's back.
-//Gas explodes once, and destroys the object?
-//Should be able to pick one or the other.
