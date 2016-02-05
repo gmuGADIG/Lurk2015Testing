@@ -8,8 +8,6 @@ public class Damager : MonoBehaviour {
 
 	public DamageDealtEvent onDealDamage;
 
-
-
 }
 
 [System.Serializable]
