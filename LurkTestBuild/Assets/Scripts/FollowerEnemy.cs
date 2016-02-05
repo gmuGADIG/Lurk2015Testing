@@ -98,7 +98,6 @@ public class FollowerEnemy : Enemy {
                             {
                                 jumpPos = new Vector3(currentEnemyPlatform.transform.position.x - currentEnemyPlatform.GetComponent<Collider2D>().bounds.extents.x + .2f, transform.position.y, 0);
                             }
-                            Debug.Log(jumpPos);
                         }
 					}
                 }
@@ -119,7 +118,6 @@ public class FollowerEnemy : Enemy {
                                 {
                                     //get the force needed to jump and jump
                                     Vector2 force = CalculateForce();
-                                    Debug.DrawLine(transform.position, force);
                                     isJumping = true;
                                     body.velocity = force;
                                 }
