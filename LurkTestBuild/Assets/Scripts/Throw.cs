@@ -63,7 +63,7 @@ public class Throw : MonoBehaviour
 		}
         if (pressed == true)
 		{
-            if (Input.GetAxisRaw("V") == 1)
+            if (Input.GetAxisRaw("X") == 1)
             {
                 MakeLineInvisable();
                 // Throw instance of object
@@ -72,7 +72,7 @@ public class Throw : MonoBehaviour
                 if (obj != null)
                 {
                     obj.transform.position = transform.position;
-                    obj.SendMessage("setItemState", true);
+                    obj.SendMessage("SetItemState", true);
                     if (player.getDirection())
                         obj.GetComponent<Rigidbody2D>().velocity = force;
                     else
