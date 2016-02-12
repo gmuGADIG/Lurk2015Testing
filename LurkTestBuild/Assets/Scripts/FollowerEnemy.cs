@@ -7,24 +7,33 @@ public class FollowerEnemy : Enemy {
     Rigidbody2D body;
     //how far away can the enemy detect aggro
     public float aggroDistance = 100f;
+    //size of enemy and aggro collider
     Vector3 collideYDist;
+    Vector3 collideXDist;
     Vector3 aggroCollideDist;
     //platform layer
     LayerMask platform = 1 << 8;
 
+    //current platforms
     GameObject currentAggroPlatform;
     GameObject currentEnemyPlatform;
+    //target platform and jumpPos and direction to reach them
     GameObject targetPlatform;
     Vector2 direction;
 	Vector3 jumpPos;
+    bool isJumping = false;
+
 
     List<GameObject> path;
 	Hashtable platforms;
-	// Use this for initialization
+
+
+	// initialize all variables
 	void Start ()
     {
         body = GetComponent<Rigidbody2D>();
         collideYDist = new Vector3(0, GetComponent<Collider2D>().bounds.extents.y + .1f, 0);
+        collideXDist = new Vector3(GetComponent<Collider2D>().bounds.extents.x, 0, 0);
         aggroCollideDist = new Vector3(0, aggro.GetComponent<Collider2D>().bounds.extents.y + .1f, 0);
         path = new List<GameObject>();
 		platforms = new Hashtable();
@@ -45,28 +54,19 @@ public class FollowerEnemy : Enemy {
                 currentAggroPlatform = hit.collider.gameObject;
                 currentEnemyPlatform = getPlatform();
                 //check that path is empty and enemy and player are on a platform
-                if (currentAggroPlatform != null && currentEnemyPlatform != null && path.Count == 0)
+                if (currentAggroPlatform != null && currentEnemyPlatform != null && (path.Count == 0 || currentAggroPlatform != path[path.Count-1]) && currentAggroPlatform != currentEnemyPlatform)
                 {
                     //clear the platforms map
                     platforms.Clear();
+                    path.Clear();
                     //get the path
-                    path = GetPath(currentAggroPlatform, platforms);
+                    path = GetPath(currentAggroPlatform);
                     //add aggro's platform at end of path, if a path was found
                     if (path != null)
                     {
                         path.Insert(path.Count, currentAggroPlatform);
                     }
-                    for (int i=0; i < path.Count; i++)
-                    {
-                        Debug.Log(path[i]);
-                    }
-                    //used to check path that was found
                 }
-            }
-            else
-            {
-                //player has left platform, clear path to prepare for new path
-                path.Clear();
             }
 
             //player movement
@@ -89,6 +89,7 @@ public class FollowerEnemy : Enemy {
                         if (currentEnemyPlatform != currentAggroPlatform)
                         {
                             //get jumpPos based on targetPlatform
+                            currentEnemyPlatform = getPlatform();
                             if (targetPlatform == currentEnemyPlatform.GetComponent<PlatformJumping>().jumpDownRight || targetPlatform == currentEnemyPlatform.GetComponent<PlatformJumping>().jumpUpRight)
                             {
                                 jumpPos = new Vector3(currentEnemyPlatform.transform.position.x + currentEnemyPlatform.GetComponent<Collider2D>().bounds.extents.x - .2f, transform.position.y, 0);
@@ -110,20 +111,35 @@ public class FollowerEnemy : Enemy {
                         if (currentAggroPlatform != currentEnemyPlatform)
                         {
                             //enemy is close to jumpPos
-                            if (Mathf.Abs(jumpPos.x - transform.position.x) < .1 && targetPlatform.transform.position.y > transform.position.y)
+                            if (isGrounded())
                             {
-                                //get the force needed to jump and jump
-                                Vector2 force = CalculateForce();
-                                body.AddForce(force, ForceMode2D.Impulse);
-                                targetPlatform = null;
-                                jumpPos = Vector2.zero;
+                                //enemy is at jump position
+                                if (Mathf.Abs(jumpPos.x - transform.position.x) < .25f && targetPlatform.transform.position.y > transform.position.y)
+                                {
+                                    //get the force needed to jump and jump
+                                    Vector2 force = CalculateForce();
+                                    isJumping = true;
+                                    body.velocity = force;
+                                }
+                                //enemy is moving towards target along current platform
+                                else
+                                {
+                                    //get direction to jumpPos and move enemy
+                                    direction = new Vector2(targetPlatform.transform.position.x - transform.position.x, 0);
+                                    direction.Normalize();
+                                    transform.Translate(direction * 5 * Time.deltaTime);
+                                }
                             }
                             else
                             {
-                                //get direction to jumpPos and move enemy
-                                direction = new Vector2(targetPlatform.transform.position.x - transform.position.x, 0);
-                                direction.Normalize();
-                                transform.Translate(direction * 5 * Time.deltaTime);
+                                //target is moving from platform above target and didn't jump
+                                if (targetPlatform.transform.position.y < transform.position.y && !isJumping)
+                                {
+                                    //get direction to targetPlatform and move enemy
+                                    direction = new Vector2(targetPlatform.transform.position.x - transform.position.x, 0);
+                                    direction.Normalize();
+                                    transform.Translate(direction * 15 * Time.deltaTime);
+                                }
                             }
                         }
                         else
@@ -140,12 +156,14 @@ public class FollowerEnemy : Enemy {
         }
 	}
 
+    //player has hit new platform and gets ready for new target
     void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject == targetPlatform)
         {
             targetPlatform = null;
             jumpPos = Vector2.zero;
+            isJumping = false;
         }
     }
 
@@ -153,16 +171,19 @@ public class FollowerEnemy : Enemy {
     Vector2 CalculateForce()
     {
         Vector3 targetPos = targetPlatform.transform.position;
-        targetPos.x += .2f;
-        targetPos.y += .5f;
+        targetPos.y += .6f;
         Vector3 dir = targetPos - transform.position;
+        if (dir.x > 0)
+            dir.x += 1f;
+        else
+            dir.x -= 1f;
         Vector3 dirFlat = dir;
         dirFlat.y = 0;
 
         float height = dir.y;
         float xz = dirFlat.magnitude;
 
-        float v0y = height / 2 + .7f* Physics.gravity.magnitude * 4;
+        float v0y = height / 2 + 1f* Physics.gravity.magnitude * 4;
         float v0xz = xz / 2 + xz;
 
         Vector3 result = dirFlat.normalized;
@@ -173,28 +194,40 @@ public class FollowerEnemy : Enemy {
         return result;
     }
 
+    //gets current platform for enemy
     GameObject getPlatform()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position - collideYDist, -transform.up, .1f, platform);
-        if (hit.collider != null)
+        RaycastHit2D hitLeft = Physics2D.Raycast(transform.position - collideYDist - collideXDist, -transform.up - transform.right * 1.1f, .1f, platform);
+        RaycastHit2D hitRight = Physics2D.Raycast(transform.position - collideYDist + collideXDist, -transform.up + transform.right * 1.1f, .1f, platform);
+        if (hitLeft.collider != null)
         {
-            return hit.collider.gameObject;
+            return hitLeft.collider.gameObject;
+        }
+        else if (hitRight.collider != null)
+        {
+            return hitRight.collider.gameObject;
         }
         return null;
     }
 
+    //check if enemy is grounded and return it 
     bool isGrounded()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position - collideYDist, -transform.up, .1f, platform);
-        if (hit.collider != null)
+        RaycastHit2D hitLeft = Physics2D.Raycast(transform.position - collideYDist - collideXDist, -transform.up - transform.right * 1.1f, .1f, platform);
+        RaycastHit2D hitRight = Physics2D.Raycast(transform.position - collideYDist + collideXDist, -transform.up + transform.right * 1.1f, .1f, platform);
+        if (hitLeft.collider != null)
         {
-            return true;
+            return hitLeft.collider.gameObject;
+        }
+        else if (hitRight.collider != null)
+        {
+            return hitRight.collider.gameObject;
         }
         return false;
     }
 	
 	//reconstruct path to aggro's platform
-	List<GameObject> ReconstructPath(GameObject finish, Hashtable platforms)
+	List<GameObject> ReconstructPath(GameObject finish)
 	{
 		List<GameObject> returnPath = new List<GameObject>();
 		while (platforms[finish] != null)
@@ -206,7 +239,7 @@ public class FollowerEnemy : Enemy {
 	}
 	
 	//find optimal path to aggro's platform
-	List<GameObject> GetPath(GameObject finish, Hashtable platforms)
+	List<GameObject> GetPath(GameObject finish)
 	{
         //gameobjects to check
         Queue<GameObject> openList = new Queue<GameObject>();
@@ -225,20 +258,22 @@ public class FollowerEnemy : Enemy {
             if (checking == currentEnemyPlatform)
             {
                 //rebuild path and return the list
-                return ReconstructPath(checking, platforms);
+                return ReconstructPath(checking);
             }
             else
             {
 				//check each jump path from checking
                 for (int i = 0; i < 4; i++)
                 {
+                    PlatformJumping jumping = checking.GetComponent<PlatformJumping>();
                     if (i==0)
                     {
-						//go up left
-                        if (checking.GetComponent<PlatformJumping>().jumpUpLeft != null)
+                        //go up left
+                        
+                        if (jumping.jumpUpLeft != null)
                         {
 							//get the platform if not null
-                            GameObject next = checking.GetComponent<PlatformJumping>().jumpUpLeft;
+                            GameObject next = jumping.jumpUpLeft;
 							//if not already in closedlist, add next to map with value of checking, add next to openlist
                             if (!closedList.Contains(next))
                             {
@@ -250,9 +285,9 @@ public class FollowerEnemy : Enemy {
                     else if (i == 1)
                     {
                         //go up right
-                        if (checking.GetComponent<PlatformJumping>().jumpUpRight != null)
+                        if (jumping.jumpUpRight != null)
                         {
-                            GameObject next = checking.GetComponent<PlatformJumping>().jumpUpRight;
+                            GameObject next = jumping.jumpUpRight;
                             if (!closedList.Contains(next))
                             {
                                 platforms[next] = checking;
@@ -263,9 +298,9 @@ public class FollowerEnemy : Enemy {
                     else if (i == 2)
                     {
                         //go down left
-                        if (checking.GetComponent<PlatformJumping>().jumpDownLeft != null)
+                        if (jumping.jumpDownLeft != null)
                         {
-                            GameObject next = checking.GetComponent<PlatformJumping>().jumpDownLeft;
+                            GameObject next = jumping.jumpDownLeft;
                             if (!closedList.Contains(next))
                             {
                                 platforms[next] = checking;
@@ -276,9 +311,9 @@ public class FollowerEnemy : Enemy {
                     else
                     {
                         //go down right
-                        if (checking.GetComponent<PlatformJumping>().jumpDownRight != null)
+                        if (jumping.jumpDownRight != null)
                         {
-                            GameObject next = checking.GetComponent<PlatformJumping>().jumpDownRight;
+                            GameObject next = jumping.jumpDownRight;
                             if (!closedList.Contains(next))
                             {
                                 platforms[next] = checking;

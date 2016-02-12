@@ -67,6 +67,7 @@ public class playerMove : MonoBehaviour {
 		}
 		if (onLadder) {
 			horizontal = 0;
+
 			if(Input.GetAxis("Jump") > 0.01 && jumpPressed == false){
                 // Jump off of ladder
                 offLadder();
