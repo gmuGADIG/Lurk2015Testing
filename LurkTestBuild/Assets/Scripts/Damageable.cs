@@ -18,6 +18,7 @@ public class Damageable : MonoBehaviour {
 	public void TakeDamage(int damage, Vector2 direction) {
 		health -= damage;
 		onTakeDamage.Invoke(damage, direction);
+		SendMessage("OnTakeDamage", new Damage(damage, direction));
 		if (health <= 0) {
 			health = 0;
 			Die();
@@ -31,12 +32,14 @@ public class Damageable : MonoBehaviour {
 			TakeDamage(damager == null ? 1 : damager.damage, direction);
 			if (damager != null) {
 				damager.onDealDamage.Invoke(this, direction);
+				damager.SendMessage("OnDealDamage", this);
 			}
 		}
 	}
 
 	public void Die() {
 		onDeath.Invoke();
+		SendMessage("OnDeath");
 		switch (deathBehaviour) {
 			case DeathBehaviour.Destroy:
 				Destroy(gameObject);
@@ -65,3 +68,13 @@ public class Damageable : MonoBehaviour {
 
 [System.Serializable]
 public class DamageTakenEvent : UnityEvent<int, Vector2> { }
+
+public struct Damage {
+	float damage;
+	Vector2 direction;
+
+	public Damage(float damage, Vector2 direction) {
+		this.damage = damage;
+		this.direction = direction;
+	}
+}
