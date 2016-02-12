@@ -9,7 +9,6 @@ public class FollowPath : MonoBehaviour {
 	float t = 0;
 
 	void Update() {
-		float length = path.length;
 		float dt = (speed * Time.deltaTime) / path.length;
 		t += dt;
 		switch (endBehaviour) {
