@@ -2,6 +2,21 @@
 using System.Collections;
 using UnityEngine.UI;
 
+/* +------------------------+
+ * |Controls from design doc|
+ * +------------------------+
+ * Left/right arrow...move left/right
+ * Space..............jump
+ * Down + X...........pick up/drop item
+ * Z..................swap item
+ * X..................use item
+ * 
+ * C (held)...........show aim line
+ * C + X..............throw item
+ * Down + Left/right..crouch
+ * Up.................Interact/climb ladder
+ * */
+
 public class playerMove : MonoBehaviour {
 
 	public float maxSpeed = 10;
@@ -32,6 +47,7 @@ public class playerMove : MonoBehaviour {
 	private bool crouching = false;
 
 	private bool direction = true;
+    public bool getDirection() { return direction; }
 
 	private Animator animator;
 	private Inventory inventory;
@@ -41,6 +57,10 @@ public class playerMove : MonoBehaviour {
 	public float pickupDistance = 1f;
 	// Is space/jump down
 	private bool jumpPressed = false;
+	// Is x down
+	private bool xPressed = false;
+	// Is z down
+	private bool zPressed = false;
 	// Slow down when crouching
 	public float crouchPenalty = 2;
 
@@ -67,7 +87,6 @@ public class playerMove : MonoBehaviour {
 		}
 		if (onLadder) {
 			horizontal = 0;
-
 			if(Input.GetAxis("Jump") > 0.01 && jumpPressed == false){
                 // Jump off of ladder
                 offLadder();
@@ -76,7 +95,7 @@ public class playerMove : MonoBehaviour {
 		}
 
 		// Pickup/drop items
-		if (Input.GetAxis ("Vertical") < -0.01 && Input.GetAxis ("Fire2") > 0.01) {
+		if (Input.GetAxisRaw ("Vertical") < 0 && Input.GetAxis ("X") > 0.01 && !xPressed) {
 			// Get items
 			GameObject[] items = GameObject.FindGameObjectsWithTag("Item");
 			GameObject closestItem = null;
@@ -87,7 +106,7 @@ public class playerMove : MonoBehaviour {
 				float itemDistance = Vector3.Distance(transform.position, item.transform.position);
 
 				if (itemDistance < pickupDistance){
-					if(closestItem == null || itemDistance < closestDist){
+					if((closestItem == null || itemDistance < closestDist) && item.GetComponent<Item>().isVisible){
 						closestItem = item;
 						closestDist = itemDistance;
 					}
@@ -95,10 +114,28 @@ public class playerMove : MonoBehaviour {
 			}
 
 			if (closestItem){
+				//Try to pick up item
 				if(inventory.Pickup(closestItem)){
-					Destroy(closestItem);
+					closestItem.SendMessage("SetItemState", false);
+				}else{
+					// Need to switch items
+					GameObject droppedItem = inventory.Drop();
+					inventory.Pickup(closestItem);
+					closestItem.SendMessage("SetItemState", false);
+					droppedItem.SendMessage("SetItemState", true);
+				}
+			}else{
+				// Not near an item, just drop primary item
+				GameObject droppedItem = inventory.Drop();
+				if(droppedItem){
+					droppedItem.SendMessage("SetItemState", true);
 				}
 			}
+		}
+
+		// Swap items between inventory slots
+		if (Input.GetAxisRaw ("Z") > 0 && !zPressed) {
+			inventory.Swap ();
 		}
 
         // Apply movement velocity
@@ -130,6 +167,18 @@ public class playerMove : MonoBehaviour {
 			jumpPressed = true;
 		} else {
 			jumpPressed = false;
+		}
+		// Update z state
+		if (Input.GetAxisRaw ("Z") > 0) {
+			zPressed = true;
+		} else {
+			zPressed = false;
+		}
+		// Update x state
+		if (Input.GetAxisRaw ("X") > 0) {
+			xPressed = true;
+		} else {
+			xPressed = false;
 		}
 	}
 
