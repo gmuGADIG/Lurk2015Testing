@@ -16,9 +16,13 @@ public class Damageable : MonoBehaviour {
 	}
 
 	public void TakeDamage(int damage, Vector2 direction) {
+		TakeDamage(null, damage, direction);
+	}
+
+	void TakeDamage(GameObject source, int damage, Vector2 direction) {
 		health -= damage;
 		onTakeDamage.Invoke(damage, direction);
-		SendMessage("OnTakeDamage", new Damage(damage, direction));
+		SendMessage("OnTakeDamage", new Damage(source, damage, direction));
 		if (health <= 0) {
 			health = 0;
 			Die();
@@ -29,7 +33,7 @@ public class Damageable : MonoBehaviour {
 		if (other.tag == damagingTag) {
 			Vector2 direction = transform.position - other.transform.position;
             Damager damager = other.GetComponent<Damager>();
-			TakeDamage(damager == null ? 1 : damager.damage, direction);
+			TakeDamage(other, damager == null ? 1 : damager.damage, direction);
 			if (damager != null) {
 				damager.onDealDamage.Invoke(this, direction);
 				damager.SendMessage("OnDealDamage", this);
@@ -70,10 +74,12 @@ public class Damageable : MonoBehaviour {
 public class DamageTakenEvent : UnityEvent<int, Vector2> { }
 
 public struct Damage {
-	float damage;
-	Vector2 direction;
+	public GameObject source;
+	public float damage;
+	public Vector2 direction;
 
-	public Damage(float damage, Vector2 direction) {
+	public Damage(GameObject source, float damage, Vector2 direction) {
+		this.source = source;
 		this.damage = damage;
 		this.direction = direction;
 	}

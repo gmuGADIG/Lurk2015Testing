@@ -5,11 +5,10 @@ using System.Collections.Generic;
 class ParabolicBird : MonoBehaviour {
 
 
-	public Transform pathTransform;
+	public Transform pathTransform = null;
 	public float start = 0;
 	public float speed = 5;
-	public Direction moveDirection;
-	public bool activateOnAwake;
+	public bool activateOnAwake = false;
 
 	private float x; //current 'x' position (local to parabola's space)
 	private bool activated = false;
@@ -29,7 +28,7 @@ class ParabolicBird : MonoBehaviour {
 
 	void Update() {
 		if (activated) {
-			x += speed * Time.deltaTime * (moveDirection == Direction.Left ? -1 : 1) / pathTransform.localScale.x;
+			x += speed * Time.deltaTime / pathTransform.localScale.x;
 			float y = x * x;
 			Vector3 pos = pathTransform.TransformPoint(x, y, 0);
 			transform.position = pos;
@@ -64,7 +63,5 @@ class ParabolicBird : MonoBehaviour {
 			Gizmos.color = gizmos_color;
 		}
 	}
-
-	public enum Direction { Left, Right }
 
 }
