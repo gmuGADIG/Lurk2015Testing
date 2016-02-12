@@ -10,6 +10,8 @@ public class RootController : MonoBehaviour {
 	//time waiting at peak
 	public float timeAtPeak = .25f;
 
+	public float upwardVelocity = 8f;
+
 	//time when this obect is instantiated
 	private float startTime;
 	//distance the root moves per fixed update
@@ -48,6 +50,16 @@ public class RootController : MonoBehaviour {
 		} else {
 			//bye bye
 			Destroy(gameObject);
+		}
+	}
+
+	void OnTriggerEnter2D(Collider2D other){
+
+		if(other.CompareTag("Player")){
+
+			Rigidbody2D rb2d = other.GetComponent<Rigidbody2D>();
+
+			rb2d.velocity = new Vector2(rb2d.velocity.x, upwardVelocity);
 		}
 	}
 }
