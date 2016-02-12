@@ -2,11 +2,6 @@
 using System.Collections;
 using UnityEngine.UI;
 
-/// <summary>
-/// Requires Item.cs, Throw.cs, and playerMove.cs
-/// Frequently referenced by playerMove.cs and Throw.cs
-/// </summary>
-
 public class Inventory : MonoBehaviour
 {
 	public GameObject[] inv = new GameObject[2];
@@ -29,7 +24,7 @@ public class Inventory : MonoBehaviour
 		inv [1] = temp;
 		UpdateSprites ();
 	}
-	
+
 	// Returns false if inventory slot 0 is full, true otherwise
 	public bool Pickup(GameObject item)
 	{
@@ -37,33 +32,11 @@ public class Inventory : MonoBehaviour
 		{
 			inv [0] = item;
 			UpdateSprites();
-			return true;
 		}
-		
-		return false;
-	}
+		else
+			return false;
 
-	// Returns null if inventory slot 0 is empty, the gameObject otherwise
-	public GameObject Drop()
-	{
-		if (inv [0] != null)
-		{
-			// TP to player (with a small offset to avoid ground clipping)
-			inv [0].transform.position = transform.position + new Vector3(0, 0.1f, 0);
-			GameObject tempObject = inv [0];
-			RemoveItem();
-			UpdateSprites();
-			return tempObject;
-		}
-		
-		return null;
-	}
-
-	public void Swap(){
-		GameObject[] tempInv = (GameObject[])inv.Clone();
-		inv [0] = tempInv [1];
-		inv [1] = tempInv [0];
-		UpdateSprites();
+		return true;
 	}
 
 	// Removes item0 and returns it
