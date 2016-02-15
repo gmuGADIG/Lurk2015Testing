@@ -1,31 +1,15 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class FollowPath : MonoBehaviour {
 
-	public Path path;
-	public float speed = 5;
-	public EndBehaviour endBehaviour = EndBehaviour.DoNothing;
-
-	float t = 0;
-
-	void Update() {
-		float dt = (speed * Time.deltaTime) / path.length;
-		t += dt;
-		switch (endBehaviour) {
-			case EndBehaviour.Loop:
-				t = Mathf.Repeat(t, 1);
-				break;
-			case EndBehaviour.Reverse:
-				if (t > 1 || t < 0) {
-					speed = -speed;
-				}
-				break;
-		}
-		transform.position = path.positionAt(t);
+	// Use this for initialization
+	void Start () {
+	
 	}
-
-	public enum EndBehaviour {
-		DoNothing, Loop, Reverse,
+	
+	// Update is called once per frame
+	void Update () {
+	
 	}
-
 }

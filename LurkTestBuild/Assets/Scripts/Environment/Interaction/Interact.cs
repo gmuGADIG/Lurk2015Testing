@@ -2,7 +2,9 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class Interact : MonoBehaviour {
+
+public class Interact : MonoBehaviour
+{
 
     //Used to describe the way the way the player can interact with the object
     public TextAsset interaction;
@@ -11,144 +13,91 @@ public class Interact : MonoBehaviour {
     //Used to see if the object has a conversation script
     public bool conversation;
     //Used to hold the notification Sprite that will appear above the an
-    //interactable object
+    //interable object
     public GameObject icon;
-    //cavas used for displaying the UI Elements
-    public Canvas canvas;
-    //prefab gameobject which has a panel child and a text child objects
+
+    //added by Ashley
     public GameObject display;
+    //public Canvas canvas;
+
+    //Used to hold all the players in the game in order to check if the are
+    //close enough to the object
+    private GameObject[] players;
+    //An instantiated copy of icon
+    private GameObject instanceIcon;
 
 
-    //collider used to tell if something is in the maxDistance of the object
-    private CircleCollider2D cc2d;
-    //number of players inside the radius of the collider, needed so that when two players
-    //are within the radius of the circle, the sprite/chat doesn't disappear when one of them exits
-    private int playersInCircle = 0;
-    //component used to display the text
-    private Text text;
-    //text that still has to be displayed while cycling through the interaction text
-    private string remaining;
-
-    private Conversation conversationScript;
-
-    void Start() {
+    void Start()
+    {
 
         //intantiate icon
-        icon = Instantiate(icon);
+        instanceIcon = Instantiate(icon);
         //set its position to just above this object
-        icon.transform.position = new Vector2(transform.position.x, transform.position.y + 1.5f);
+        instanceIcon.transform.position = new Vector2(transform.position.x, transform.position.y + 1.5f);
         //set its parent to this object so that if the parent moves, it moves
-        icon.transform.SetParent(transform);
+        instanceIcon.transform.SetParent(transform);
         //set it to not be active so that it is not visible
-        icon.SetActive(false);
+        instanceIcon.SetActive(false);
 
-        //change the name of the display object so that it is easier to tell
-        //which object it is for
-        display.name = "Interaction for " + gameObject.name;
-        //instantiate it
-        display = Instantiate(display);
-        //make it a child of the canvas
-        display.transform.SetParent(canvas.transform);
-        //make it inactive
-        display.SetActive(false);
+        //gather all the players in the game
+        //I assume the characters will either be tagged as character or player
+        players = GameObject.FindGameObjectsWithTag("Player");
 
-        if (conversation == true) {
-            conversationScript = GetComponent<Conversation>();
-        }
-
-        //get the text component from the child of the display
-        text = display.transform.FindChild("Text").gameObject.GetComponent<Text>();
-
-        //set the initial remaining text to be the same as interaction
-        remaining = interaction.text;
-
-        //adds the circle collider to this game object
-        cc2d = gameObject.AddComponent<CircleCollider2D>();
-        //makes it triggerable
-        cc2d.isTrigger = true;
-        //sets the radius of the circle to be the maxDistance
-        cc2d.radius = maxDistance;
     }
 
-    public void StartKey() {
+    void Update()
+    {
+        //loop through players
+        foreach (GameObject player in players)
+        {
+            //if the player is within the maximun distance in the x direction
+            //I don't know if there should be a y distance or not so I didn't make one
+            if ((transform.position.x - player.transform.position.x <= maxDistance) &&
+                (transform.position.x - player.transform.position.x >= -maxDistance))
+            {
 
-        //if the icon is being displayed
-        if (icon.activeSelf) {
-            //make it invisible
-            icon.SetActive(false);
+                //if arrow key up is being pressed
+                if (Input.GetKeyDown("up"))
+                {
 
-            //if the object has a conversation script
-            if (conversation == true) {
-                conversationScript.StartConvo();
-            } else {
-                //enable the display and set the text to be shown
-                display.SetActive(true);
-                text.text = remaining;
-            }
-        }
-    }
+                    //make the icon invisible
+                    instanceIcon.SetActive(false);
 
-    public void CycleKey() {
+                    //if the object has a conversation script
+                    if (conversation == true)
+                    {
 
-        //if there are still players in the circle and the icon is not being shown
-        if (playersInCircle > 0 && icon.activeSelf == false) {
+                        //I don't know how to run the conversation script nor do I have it
+                        //but I think it might be Invoke might work
 
-            if (conversation == true) {
+                        //Invoke("ConversationScript", 0);
 
-                conversationScript.CycleConvo();
+                    }
+                    else
+                    {
+                        display.GetComponent<Canvas>().enabled = true;
+                        display.GetComponent<Text>().text = interaction.text;
+                    }
 
-            } else {
-
-                //find where the text gets cut off and reset remaining to the text that
-                //still has to be displayed
-                TextGenerator t = text.cachedTextGenerator;
-                remaining = remaining.Substring(t.characterCountVisible);
-                text.text = remaining;
-
-                //if there is no more text to be displayed
-                if (remaining.Equals("")) {
-                    //disable the display and reset the remaining text to be the full
-                    //interaction text and turn the icon back on
-                    display.SetActive(false);
-                    remaining = interaction.text;
-                    End();
+                    //if the icon is invisible and the GUIText has an empty string
                 }
-            }
-        }
-    }
+                else if (instanceIcon.activeSelf == false && display.GetComponent<Text>().text.Equals(""))
+                {
 
-    public void End() {
-        icon.SetActive(true);
-    }
-
-    void OnTriggerEnter2D(Collider2D other) {
-
-        //if the circle touches a player
-        if (other.gameObject.CompareTag("Player")) {
-            //make the icon visible and increment the player counter
-            icon.SetActive(true);
-            playersInCircle++;
-        }
-    }
-
-    void OnTriggerExit2D(Collider2D other) {
-
-        //if a player leaves the circle
-        if (other.gameObject.CompareTag("Player")) {
-            //decrement the player counter
-            playersInCircle--;
-
-            //then check if there are no more players in the circle
-            if (playersInCircle == 0) {
-                //make the icon invisible, make the display inactive, and reset
-                //the remaining text back to the initial
-                icon.SetActive(false);
-                display.SetActive(false);
-                remaining = interaction.text;
-
-                if (conversation == true) {
-                    conversationScript.Close();
+                    //make it visible
+                    instanceIcon.SetActive(true);
                 }
+
+                //if the player is not in range of the object   
+            }
+            else
+            {
+
+                //set the text to an empty string
+                display.GetComponent<Text>().text = "";
+                display.GetComponent<Canvas>().enabled = false;
+                //make the icon invisible
+                instanceIcon.SetActive(false);
             }
         }
     }

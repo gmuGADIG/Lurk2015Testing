@@ -89,7 +89,7 @@ public class cameraFollow : MonoBehaviour {
 
 	void Move (Transform player1, Transform player2 = null) {
         Vector3 middle = player1.position;
-        if (player2) {
+        if (player2 != null) {
             middle = (player1.position + player2.position) / 2;	// Middle point between players
         }
         middle.z -= 10;	// Move camera to not clip with scene
