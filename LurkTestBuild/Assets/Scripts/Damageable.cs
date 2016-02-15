@@ -11,6 +11,7 @@ public class Damageable : MonoBehaviour {
 	public DamageTakenEvent onTakeDamage;
 	public UnityEvent onDeath;
 	
+	//have to overload; cant provide default values for non primitive-typed parameters! suck it Luke!
 	public void TakeDamage(int damage = 1) {
 		TakeDamage(damage, Vector2.zero);
 	}
@@ -22,9 +23,8 @@ public class Damageable : MonoBehaviour {
 	void TakeDamage(GameObject source, int damage, Vector2 direction) {
 		health -= damage;
 		onTakeDamage.Invoke(damage, direction);
-		SendMessage("OnTakeDamage", new Damage(source, damage, direction));
+		SendMessage("OnTakeDamage", new Damage(source, damage, direction), SendMessageOptions.DontRequireReceiver);
 		if (health <= 0) {
-			health = 0;
 			Die();
 		}
 	}
@@ -36,21 +36,22 @@ public class Damageable : MonoBehaviour {
 			TakeDamage(other, damager == null ? 1 : damager.damage, direction);
 			if (damager != null) {
 				damager.onDealDamage.Invoke(this, direction);
-				damager.SendMessage("OnDealDamage", this);
+				damager.SendMessage("OnDealDamage", this, SendMessageOptions.DontRequireReceiver);
 			}
 		}
 	}
 	
 	public void Die() {
+		health = 0;
 		onDeath.Invoke();
-		SendMessage("OnDeath");
+		SendMessage("OnDeath", SendMessageOptions.DontRequireReceiver);
 		switch (deathBehaviour) {
-		case DeathBehaviour.Destroy:
-			Destroy(gameObject);
-			break;
-		case DeathBehaviour.Deactivate:
-			gameObject.SetActive(false);
-			break;
+			case DeathBehaviour.Destroy:
+				Destroy(gameObject);
+				break;
+			case DeathBehaviour.Deactivate:
+				gameObject.SetActive(false);
+				break;
 		}
 	}
 	
