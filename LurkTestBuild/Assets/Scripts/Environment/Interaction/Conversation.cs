@@ -43,6 +43,17 @@ public class Conversation : MonoBehaviour {
 		remaining = conversation.text;
 	}
 
+    public void interact()
+    {
+        if (!convoDisplay.activeSelf)
+        {
+            StartConvo();
+        }
+        else {
+            CycleConvo();
+        }
+    }
+
 	public void StartConvo(){
 
 		//parse the text and replace the necesary phrases
@@ -55,7 +66,7 @@ public class Conversation : MonoBehaviour {
 
 		//used for animation testing
 		talkSprite.SetInteger("Anim_State", 0);
-	}
+    }
 
 	public void CycleConvo(){
 
