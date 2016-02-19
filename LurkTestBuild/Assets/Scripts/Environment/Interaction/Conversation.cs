@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 //THIS FILE DEPENDS ON INTERACT.CS
 
+
 public class Conversation : MonoBehaviour {
 
 	//The file with the conversation
