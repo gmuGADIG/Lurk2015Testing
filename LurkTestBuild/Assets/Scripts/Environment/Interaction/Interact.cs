@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-using UnityEngine.Events;
 
 public class Interact : MonoBehaviour
 {
@@ -20,7 +19,6 @@ public class Interact : MonoBehaviour
 	//prefab gameobject which has a panel child and a text child objects
 	public GameObject display;
 
-	public UnityEvent onInteract;
 
 	//collider used to tell if something is in the maxDistance of the object
 	private CircleCollider2D cc2d;
@@ -75,6 +73,7 @@ public class Interact : MonoBehaviour
 	}
 
     public void interact(){
+
         if(conversation == true){
             conversationScript.interact();
             return;
@@ -86,7 +85,6 @@ public class Interact : MonoBehaviour
         else{
             CycleKey();
         }
-        onInteract.Invoke();
     }
 
 	public void StartKey(){
