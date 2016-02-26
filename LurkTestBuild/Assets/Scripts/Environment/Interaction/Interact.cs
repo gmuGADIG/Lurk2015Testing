@@ -72,6 +72,21 @@ public class Interact : MonoBehaviour
 		cc2d.radius = maxDistance;
 	}
 
+    public void interact(){
+
+        if(conversation == true){
+            conversationScript.interact();
+            return;
+        }
+
+        if (!display.activeSelf){
+            StartKey();
+        }
+        else{
+            CycleKey();
+        }
+    }
+
 	public void StartKey(){
 
 		//if the icon is being displayed
@@ -80,16 +95,9 @@ public class Interact : MonoBehaviour
 			icon.SetActive(false);
 
 			//if the object has a conversation script
-			if (conversation == true)
-			{
-				conversationScript.StartConvo();
-			}
-			else
-			{
-				//enable the display and set the text to be shown
-				display.SetActive(true);
-				text.text = remaining;
-			}
+			//enable the display and set the text to be shown
+			display.SetActive(true);
+            text.text = remaining;
 		}
 	}
 
@@ -98,26 +106,19 @@ public class Interact : MonoBehaviour
 		//if there are still players in the circle and the icon is not being shown
 		if(playersInCircle > 0 && icon.activeSelf == false){
 
-			if(conversation == true){
-
-				conversationScript.CycleConvo();
-
-			}else{
-
-				//find where the text gets cut off and reset remaining to the text that
-				//still has to be displayed
-				TextGenerator t = text.cachedTextGenerator;
-				remaining = remaining.Substring(t.characterCountVisible);
-				text.text = remaining;
+			//find where the text gets cut off and reset remaining to the text that
+			//still has to be displayed
+			TextGenerator t = text.cachedTextGenerator;
+			remaining = remaining.Substring(t.characterCountVisible - 1);
+			text.text = remaining;
 		
-				//if there is no more text to be displayed
-				if (remaining.Equals("")) {
-					//disable the display and reset the remaining text to be the full
-					//interaction text and turn the icon back on
-					display.SetActive(false);
-					remaining = interaction.text;
-					End();
-				}
+			//if there is no more text to be displayed
+			if (remaining.Length<= 1){//remaining.Equals("")) {
+				//disable the display and reset the remaining text to be the full
+				//interaction text and turn the icon back on
+				display.SetActive(false);
+				remaining = interaction.text;
+				End();
 			}
 		}
 	}
