@@ -103,19 +103,17 @@ public class Interact : MonoBehaviour
 
 	public void CycleKey(){
 
-        Debug.Log("Cycle");
-
 		//if there are still players in the circle and the icon is not being shown
 		if(playersInCircle > 0 && icon.activeSelf == false){
 
 			//find where the text gets cut off and reset remaining to the text that
 			//still has to be displayed
 			TextGenerator t = text.cachedTextGenerator;
-			remaining = remaining.Substring(t.characterCountVisible);
+			remaining = remaining.Substring(t.characterCountVisible - 1);
 			text.text = remaining;
 		
 			//if there is no more text to be displayed
-			if (remaining.Equals("")) {
+			if (remaining.Length<= 1){//remaining.Equals("")) {
 				//disable the display and reset the remaining text to be the full
 				//interaction text and turn the icon back on
 				display.SetActive(false);
