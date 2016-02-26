@@ -68,6 +68,9 @@ public class playerMove : MonoBehaviour {
 	// Slow down when crouching
 	public float crouchPenalty = 2;
 
+	// Item cooldown counter
+	private float lastItemUse = 0;
+
     // Use this for initialization
     void Start () {
 		rb = GetComponent<Rigidbody2D> ();
@@ -134,6 +137,15 @@ public class playerMove : MonoBehaviour {
 				if(droppedItem){
 					droppedItem.SendMessage("SetItemState", true);
 				}
+			}
+		}else if(Input.GetAxisRaw("X") > 0 && !xPressed && Time.time > lastItemUse){
+			// Use item
+			float cooldown = inventory.UseItem();
+			if(cooldown >= 0){
+				// Add the cooldown to prevent spamming weapons
+				lastItemUse = Time.time + cooldown;
+			}else{
+				lastItemUse = Time.time + 0.2f;
 			}
 		}
 
