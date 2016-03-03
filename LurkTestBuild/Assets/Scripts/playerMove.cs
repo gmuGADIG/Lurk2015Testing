@@ -2,19 +2,23 @@
 using System.Collections;
 using UnityEngine.UI;
 
-/* +------------------------+
- * |Controls from design doc|
- * +------------------------+
- * Left/right arrow...move left/right
- * Space..............jump
- * Down + X...........pick up/drop item
- * Z..................swap item
- * X..................use item
+/* +------------------------------------------------------------+
+ * |                  Controls from design doc                  |
+ * +------------------------------------------------------------+
  * 
- * C (held)...........show aim line
- * C + X..............throw item
- * Down + Left/right..crouch
- * Up.................Interact/climb ladder
+ * [Key]______________[Action]__________________[Controller]_____
+ * 
+ * Left/right arrow...move left/right...........Stick left/right
+ * Space..............jump......................A
+ * Down + X...........pick up/drop item.........Down + B
+ * Z..................swap item.................B
+ * X..................use item..................X
+ * 
+ * C (held)...........show aim line.............Left Trigger/Bumper
+ * C + X..............throw item................Right trigger/Bumper
+ * Down + Left/right..crouch....................Stick down
+ * Up.................Interact..................Y
+ * Up.................Climb (ladder)............Stick Up
  * */
 
 public class playerMove : MonoBehaviour {
