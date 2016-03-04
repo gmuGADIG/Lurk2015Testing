@@ -30,7 +30,8 @@ public class playerMove : MonoBehaviour {
 	public float jumpStrength = 20;
 	public float ladderClimbSpeed = 2f;
 	public bool gender = true; //Male is true
-	public enum Class {Rogue, Warrior, Mage};
+	public enum Classes {Rogue, Warrior, Mage};
+	public Classes pClass = Classes.Rogue;
 	public string name = "Bob";
 
 	public int coins = 0;
