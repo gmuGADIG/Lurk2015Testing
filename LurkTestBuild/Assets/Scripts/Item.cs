@@ -11,11 +11,11 @@ public class Item : MonoBehaviour
 	// True when dropped, false when in inventory
 	public bool isVisible = true;
 	// Cache the sprite renderer
-	public SpriteRenderer sr;
+	SpriteRenderer sr;
 	// Cache the collider
-	public Collider2D col;
+	Collider2D col;
 	// Cache the rigidbody2d
-	public Rigidbody2D rb2d;
+	Rigidbody2D rb2d;
 
 	public void Start (){
 		sr = GetComponent <SpriteRenderer>();
@@ -33,7 +33,7 @@ public class Item : MonoBehaviour
 		}
 	}
 
-	public bool UseItem(){
+	public virtual bool UseItem(){
 		// Does nothing by default.
 		// Should be overridden in the extended script.
 		// True = sucess, false = fail
