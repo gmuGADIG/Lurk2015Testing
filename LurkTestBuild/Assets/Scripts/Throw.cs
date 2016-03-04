@@ -59,7 +59,7 @@ public class Throw : MonoBehaviour
 	#region Update
 	void FixedUpdate()
 	{
-		if(Input.GetAxisRaw ("C") == 1 && inv.GetItem() != null)
+		if(player.cInput == 1 && inv.GetItem() != null)
 		{
 			UpdateTrajectory();
 			UpdateRotation();
@@ -68,7 +68,7 @@ public class Throw : MonoBehaviour
 		}
         if (pressed == true)
 		{
-            if (Input.GetAxisRaw("X") == 1)
+            if (player.xInput == 1)
             {
                 MakeLineInvisable();
                 // Throw instance of object
@@ -87,7 +87,7 @@ public class Throw : MonoBehaviour
                     }
                 }
             }
-            else if (Input.GetAxisRaw("C") <= 0)
+            else if (player.cInput <= 0)
             {
                 MakeLineInvisable();
                 angle = 0;
