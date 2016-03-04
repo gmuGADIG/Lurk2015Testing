@@ -21,11 +21,13 @@ public class Damageable : MonoBehaviour {
 	}
 	
 	void TakeDamage(GameObject source, int damage, Vector2 direction) {
-		health -= damage;
-		onTakeDamage.Invoke(damage, direction);
-		SendMessage("OnTakeDamage", new Damage(source, damage, direction), SendMessageOptions.DontRequireReceiver);
-		if (health <= 0) {
-			Die();
+		if (damage > 0) {
+			health -= damage;
+			onTakeDamage.Invoke(damage, direction);
+			SendMessage("OnTakeDamage", new Damage(source, damage, direction), SendMessageOptions.DontRequireReceiver);
+			if (health <= 0) {
+				Die();
+			}
 		}
 	}
 	
@@ -33,7 +35,7 @@ public class Damageable : MonoBehaviour {
 		if (other.tag == damagingTag) {
 			Vector2 direction = transform.position - other.transform.position;
 			Damager damager = other.GetComponent<Damager>();
-			TakeDamage(other, damager == null ? 1 : damager.damage, direction);
+			TakeDamage(other, damager == null ? 1 : damager.GetDamage(this), direction);
 			if (damager != null) {
 				damager.onDealDamage.Invoke(this, direction);
 				damager.SendMessage("OnDealDamage", this, SendMessageOptions.DontRequireReceiver);
