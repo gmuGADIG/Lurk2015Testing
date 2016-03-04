@@ -24,9 +24,9 @@ using InControl;
 
 public class playerMove : MonoBehaviour {
 
-	public float maxSpeed = 10;
-	public float accel = 10;
-	public float decel = 1.2f;
+	public float speed = 1;
+//	public float accel = 10;
+//	public float decel = 1.2f;
 	public float jumpStrength = 20;
 	public float ladderClimbSpeed = 2f;
 	public bool gender = true; //Male is true
@@ -46,6 +46,7 @@ public class playerMove : MonoBehaviour {
     private int triggerCount;
 
 	private bool crouching = false;
+	private float initialHeight = 1.5f;
 
 	private bool direction = true;
     public bool getDirection() { return direction; }
@@ -89,6 +90,7 @@ public class playerMove : MonoBehaviour {
 		animator = GetComponent<Animator> ();
 		inventory = GetComponent<Inventory> ();
 		initialGravity = rb.gravityScale;
+		initialHeight = GetComponent<BoxCollider2D> ().size.y;
     }
 	
 	// Update is called once per frame
@@ -111,7 +113,6 @@ public class playerMove : MonoBehaviour {
 			transform.localScale = new Vector3(-1, 1, 1);
 		}
 		if (onLadder) {
-            horizontalInput = 0;
 			if(jumpInput > 0.01 && jumpPressed == false){
                 // Jump off of ladder
                 offLadder();
@@ -173,7 +174,7 @@ public class playerMove : MonoBehaviour {
 		}
 
         // Apply movement velocity
-		rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x + (horizontalInput * accel), -maxSpeed, maxSpeed)/((crouching ? crouchPenalty : 1)), Mathf.Clamp(rb.velocity.y, fallClamp, 9999));
+		rb.velocity = new Vector2(horizontalInput*speed/((crouching ? crouchPenalty : 1)), Mathf.Clamp(rb.velocity.y, fallClamp, 9999));
 
         // Check for ground collision
         Collider2D[] colResults = new Collider2D[1];
@@ -188,12 +189,12 @@ public class playerMove : MonoBehaviour {
 			// Crouch
 			animator.SetBool("crouching", true);
 			crouching = true;
-			GetComponent<BoxCollider2D>().size = new Vector2(1, 0.6f);
-			GetComponent<BoxCollider2D>().offset = new Vector2(0, -0.2f);
+			GetComponent<BoxCollider2D>().size = new Vector2(1, initialHeight * 0.6f);
+			GetComponent<BoxCollider2D>().offset = new Vector2(0, initialHeight * -0.2f);
 		} else {
 			animator.SetBool("crouching", false);
 			crouching = false;
-			GetComponent<BoxCollider2D>().size = new Vector2(1, 1);
+			GetComponent<BoxCollider2D>().size = new Vector2(1, initialHeight);
 			GetComponent<BoxCollider2D>().offset = new Vector2(0, 0);
 		}
 		// Update jump button state
@@ -229,7 +230,7 @@ public class playerMove : MonoBehaviour {
 			// Get on ladder
 			Vector3 ladderPos = col.transform.position;
 			ladderPos.y = transform.position.y;
-			transform.position = ladderPos;
+			//transform.position = ladderPos;
 			onLadder = true;
 			rb.gravityScale = 0;
 			fallClamp = 0;

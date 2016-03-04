@@ -1,0 +1,220 @@
+fileFormatVersion: 2
+guid: 8873229073542fa45800c499daf1a1f9
+timeCreated: 1457052892
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: fem warrior sword attack 2_0
+    21300002: fem warrior sword attack 2_1
+    21300004: fem warrior sword attack 2_2
+    21300006: fem warrior sword attack 2_3
+    21300008: fem warrior sword attack 2_4
+    21300010: fem warrior sword attack 2_5
+    21300012: fem warrior sword attack 2_6
+    21300014: fem warrior sword attack 2_7
+    21300016: fem warrior sword attack 2_8
+    21300018: fem warrior sword attack 2_9
+    21300020: fem warrior sword attack 2_10
+    21300022: fem warrior sword attack 2_11
+    21300024: fem warrior sword attack 2_12
+    21300026: fem warrior sword attack 2_13
+    21300028: fem warrior sword attack 2_14
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: fem warrior sword attack 2_0
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 741
+        width: 146
+        height: 291
+      alignment: 9
+      pivot: {x: .126287118, y: .0168962516}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior sword attack 2_1
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 736
+        width: 161
+        height: 285
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior sword attack 2_2
+      rect:
+        serializedVersion: 2
+        x: 645
+        y: 734
+        width: 176
+        height: 334
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior sword attack 2_3
+      rect:
+        serializedVersion: 2
+        x: 915
+        y: 738
+        width: 206
+        height: 294
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior sword attack 2_4
+      rect:
+        serializedVersion: 2
+        x: 1217
+        y: 741
+        width: 190
+        height: 313
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior sword attack 2_5
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 389
+        width: 246
+        height: 249
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior sword attack 2_6
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 389
+        width: 202
+        height: 240
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior sword attack 2_7
+      rect:
+        serializedVersion: 2
+        x: 646
+        y: 388
+        width: 196
+        height: 247
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior sword attack 2_8
+      rect:
+        serializedVersion: 2
+        x: 932
+        y: 387
+        width: 191
+        height: 253
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior sword attack 2_9
+      rect:
+        serializedVersion: 2
+        x: 1218
+        y: 386
+        width: 185
+        height: 260
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior sword attack 2_10
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 36
+        width: 178
+        height: 264
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior sword attack 2_11
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 36
+        width: 188
+        height: 270
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior sword attack 2_12
+      rect:
+        serializedVersion: 2
+        x: 648
+        y: 37
+        width: 186
+        height: 274
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior sword attack 2_13
+      rect:
+        serializedVersion: 2
+        x: 935
+        y: 38
+        width: 170
+        height: 279
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior sword attack 2_14
+      rect:
+        serializedVersion: 2
+        x: 1214
+        y: 38
+        width: 160
+        height: 289
+      alignment: 9
+      pivot: {x: .107553862, y: .0170132723}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
