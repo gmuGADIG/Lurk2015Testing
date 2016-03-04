@@ -105,4 +105,11 @@ public class Inventory : MonoBehaviour
 
 		return true;
 	}
+
+	public float UseItem(){
+		if (inv [0] != null) {
+			return inv [0].GetComponent<Item>().UseItem();
+		}
+		return -1;
+	}
 }

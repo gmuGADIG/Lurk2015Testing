@@ -33,11 +33,13 @@ public class Item : MonoBehaviour
 		}
 	}
 
-	public bool UseItem(){
+	public float UseItem(){
 		// Does nothing by default.
 		// Should be overridden in the extended script.
-		// True = sucess, false = fail
-		return true;
+		// Returns the cooldown in seconds
+		// Negative return means error
+		Debug.Log ("Item used");
+		return -1;
 	}
 	
 	public void SetItemState(bool state){
