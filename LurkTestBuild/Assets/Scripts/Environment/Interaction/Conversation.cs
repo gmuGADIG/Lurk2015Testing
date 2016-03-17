@@ -9,9 +9,6 @@ public class Conversation : Interactable {
     //GameObject used to hold the three child GameObjects
     public GameObject convoDisplay;
 
-    //the sprite sheet to be programmatically cut up
-    public Texture2D t2d;
-
 	//remaining amount of conversation that hasn't been shown
 	private string remaining;
 	//the UI element used to display text
@@ -19,64 +16,38 @@ public class Conversation : Interactable {
     //all the dialog of the txt file that comes after listing all the
     //characters who speak in the interaction
     private string dialog;
+    //string used to hold the npcs name if there is one
+    private string npcName;
     //the current piece of dialog being displayed
     private string displaying;
     //used to tell if the interaction has been started
     private bool started;
-
+    
+    //give speaker and emotion coords to display talk sprite
+    private TalkSpriteDisplay tsd;
     //the scripts containing the class, name and gender of the characters
     private playerMove[] playerScripts;
     //all the objects tagged with player
     private GameObject[] players;
     //specific use is to be determined
-    private int[] people;
-
-    //the cut up sprites
-    private Sprite[,] sr;
-
-    //left picture to be displayed
-    private SpriteRenderer leftSprite;
-    //right picture to be displayed
-    private SpriteRenderer rightSprite;
+    private int[] characters;
 
     new void Start()
     {
         //initially run Interactables start
         base.Start();
 
-        //make the conversation invisible
-        convoDisplay.SetActive(false);
-
         //get the text component from the conversation
         text = convoDisplay.transform.FindChild("Text").gameObject.GetComponent<Text>();
+
+        tsd = convoDisplay.GetComponent<TalkSpriteDisplay>();
 
         //get the players in the game and set the length of the scripts equal to that of players
         players = GameObject.FindGameObjectsWithTag("Player");
         playerScripts = new playerMove[players.Length];
 
-        //get the left and right sprite from the conversation
-        leftSprite = convoDisplay.transform.FindChild("Left Sprite").gameObject.GetComponent<SpriteRenderer>();
-        rightSprite = convoDisplay.transform.FindChild("Right Sprite").gameObject.GetComponent<SpriteRenderer>();
-
         //set the remaining amount of text to the text in conversation
         remaining = conversation.text;
-
-        //testing size
-        sr = new Sprite[2, 2];
-
-        //testing cut
-        for (int i = 0; i < 2; i++)
-        {
-            for (int j = 0; j < 2; j++)
-            {
-                Sprite newSprite = Sprite.Create(t2d, new Rect(j * 128, i * 128, 128, 128), new Vector2(0.5f, 0.5f));
-                sr[j, i] = newSprite;
-            }
-        }
-
-        //testing stuff
-        leftSprite.sprite = sr[0, 0];
-        rightSprite.sprite = sr[1, 1];
 
         //do important stuff
         SetUp();
@@ -129,12 +100,18 @@ public class Conversation : Interactable {
         int index = remaining.IndexOf("\r\n\r\n");
 
         //set the length of people to the proper amount
-        people = new int[index / 3 + 1];
+        characters = (index >= 9) ? new int[3] : new int[2];
 
         //get the characters involved in the conversation
-        for(int i = 0; i < index; i += 3)
+        for(int i = 0; i < characters.Length; i++)
         {
-            people[i / 3] = (int)char.GetNumericValue(remaining[i]);
+            characters[i] = (int)char.GetNumericValue(remaining[i * 3]);
+        }
+
+        //get the npcs name if there is an npc
+        if (characters.Length == 3)
+        {
+            npcName = remaining.Substring(8, index - 8);
         }
 
         //set the remaing to after the list of characters involved
@@ -144,6 +121,12 @@ public class Conversation : Interactable {
     }
 
 	public void StartConvo(){
+
+        //if there is an npc, set the right picture to the npc
+        if (characters.Length > 2)
+        {
+            tsd.setRight(characters[2] - 1, 0);
+        }
 
 		//show the first page of text
 		ShowNextText();
@@ -174,6 +157,8 @@ public class Conversation : Interactable {
     //closes the conversation panel
     protected override void End() {
 
+        Destroy(this);
+
         //sets all the conversation gameobjects to inactive
         convoDisplay.SetActive(false);
 
@@ -182,7 +167,7 @@ public class Conversation : Interactable {
 
         //if players are still in the circle, show the icon
         if (playersInCircle > 0) {
-            icon.SetActive(true);
+//            icon.SetActive(true);
         }
 
         //the convesation has ended
@@ -198,20 +183,26 @@ public class Conversation : Interactable {
         //get the emotion of the person who is currently speaking
         int emotion = (int)char.GetNumericValue(displaying[3]);
 
+
+        //order is rogue warrior mage
+        //sub order is female male
+
+
         //if there is an npc in the conversation
-        if ((people.Length > 2 && speakerNum == 2) || speakerNum == 1)
+        if ((characters.Length > 2 && speakerNum == 2) || speakerNum == 1)
         {
-            leftSprite.sprite = sr[speakerNum - 1, emotion - 1];
+            tsd.setLeft(speakerNum - 1, emotion - 1);
         }
         //if it is between the players
         else
         {
-            rightSprite.sprite = sr[speakerNum - 1, emotion - 1];
+            tsd.setRight(speakerNum - 1, emotion - 1);
         }
 
         //replace the character signifiers with immersive player stuff
-        displaying = displaying.Replace("*"+speakerNum+":"+emotion+"*", "Player "+speakerNum+":");
-
+        displaying = (speakerNum < 3) ? 
+            displaying.Replace("*" + speakerNum + ":" + emotion + "*", playerScripts[speakerNum - 1].name + ":") :
+            displaying.Replace("*" + speakerNum + ":" + emotion + "*", npcName + ":");
 	}
 
 	//sets the next panel of text
