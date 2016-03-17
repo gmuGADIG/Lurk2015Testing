@@ -3,7 +3,7 @@ using UnityEditor;
 using System;
 
 public class Spider : MonoBehaviour {
-	
+
 	[Header("Hanging/Ascending/Descending")]
 	public float descendSpeed = 10;
 	public float descendDistance = 10;
@@ -27,7 +27,7 @@ public class Spider : MonoBehaviour {
 	Damageable hitbox;
 	State state = State.Hanging;
 	Rigidbody2D body;
-	
+
 	//the layer the spider started with
 	int layer;
 
@@ -56,7 +56,7 @@ public class Spider : MonoBehaviour {
 		direction = UnityEngine.Random.value > .5f ? 1 : -1;
 		home = transform.position;
 		maxDecent = home + Vector3.down * descendDistance;
-		state = State.Crawling;
+		//state = State.Crawling;
 	}
 
 	void Update() {
@@ -166,7 +166,7 @@ public class Spider : MonoBehaviour {
 				Gizmos.DrawLine(transform.position, transform.position + Vector3.down * descendDistance);
 				break;
 			case State.Descending:
-			case State.Ascending:	
+			case State.Ascending:
 				Gizmos.DrawLine(home, maxDecent);
 				break;
 		}
