@@ -157,6 +157,8 @@ public class Conversation : Interactable {
     //closes the conversation panel
     protected override void End() {
 
+        Destroy(this);
+
         //sets all the conversation gameobjects to inactive
         convoDisplay.SetActive(false);
 
@@ -165,7 +167,7 @@ public class Conversation : Interactable {
 
         //if players are still in the circle, show the icon
         if (playersInCircle > 0) {
-            icon.SetActive(true);
+//            icon.SetActive(true);
         }
 
         //the convesation has ended
