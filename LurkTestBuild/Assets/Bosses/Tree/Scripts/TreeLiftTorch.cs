@@ -1,16 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Torch : MonoBehaviour {
+public class TreeLiftTorch : MonoBehaviour {
 	bool lit;
     bool touched;
     bool treeMoved;
     public Animator tree;
-    float startTime;
-    float journeyLength;
-    Vector2 up;
-    Vector2 down;
-    float moveTime = 0.0f;
     Animator burning;
 	// Use this for initialization
 	void Start () {
@@ -19,10 +14,7 @@ public class Torch : MonoBehaviour {
         treeMoved = false;
         burning = gameObject.GetComponent<Animator>();
         burning.SetBool("isLit", false);
-        //startTime = Time.time;
-        //up = new Vector2(tree.position.x, tree.position.y + 7.0f);
-        //down = new Vector2(tree.position.x, tree.position.y);
-        //journeyLength = Vector2.Distance(tree.position, up);
+
     }
     void Update()
     {
@@ -89,4 +81,8 @@ public class Torch : MonoBehaviour {
         }
     }
    
+    public bool isLit()
+    {
+        return lit;
+    }
 }

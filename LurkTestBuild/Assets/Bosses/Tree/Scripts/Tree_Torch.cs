@@ -3,19 +3,18 @@ using System.Collections;
 
 public class Tree_Torch : MonoBehaviour
 {
-    public GameObject Boss;
     bool lit;
-    public int health = 4;
+    int health = 4;
     bool touched;
-    public GameObject leftBranch;
-    public GameObject rightBranch;
-    public GameObject leftTorch;
-    public GameObject rightTorch;
     Animator burning;
+    public Animator leftBranch;
+    public Animator rightBranch;
     public Animator fire;
-    public int stage;
-    float startTime;
+    int stage;
+    public TreeLiftTorch left;
+    public TreeLiftTorch right;
     // Use this for initialization
+
     void Start()
     {
         lit = false;
@@ -25,28 +24,37 @@ public class Tree_Torch : MonoBehaviour
         fire.SetBool("isLit", false);
         //gameObject.GetComponent<Renderer>().material.color = Color.gray;
         //Debug.Log(health);
-        startTime = Time.time;
         stage = 1;
     }
+
     void Update()
-    { 
+    {
         if (lit)
         {
+            Debug.Log("lit");
             health -= 1;
             lit = false;
             StartCoroutine(stopBurning());
-            //gameObject.GetComponent<Renderer>().material.color = Color.gray;
             stage++;
-            StartCoroutine(WhipLeftBranch(new Vector3(leftTorch.transform.position.x, leftTorch.transform.position.y + 1.0f, leftTorch.transform.position.z), 1.0f));
-            StartCoroutine(WhipRightBranch(new Vector3(rightTorch.transform.position.x, rightTorch.transform.position.y + 1.0f, rightTorch.transform.position.z), 1.0f));
-           // Debug.Log(health);
-        }
-        if (health <= 0)
-        {
-            Destroy(transform.parent.gameObject);
+            if (left.isLit())
+            {
+                leftBranch.SetBool("whip", true);
+                StartCoroutine(stopLeftWhip());
+                Debug.Log("whip");
+            }
+            if (right.isLit())
+            {
+                rightBranch.SetBool("whip", true);
+                StartCoroutine(stopLeftWhip());
+            }
+            if (health <= 0)
+            {
+                Destroy(transform.parent.gameObject);
+            }
         }
     }
-    void OnTriggerEnter2D(Collider2D other)
+
+        void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Lantern" && !touched)
         {
@@ -74,63 +82,25 @@ public class Tree_Torch : MonoBehaviour
         fire.SetBool("isLit", false);
     }
 
-    public IEnumerator WhipLeftBranch(Vector3 newPosition, float delay)
+    IEnumerator stopLeftWhip()
     {
-        float elapsedTime = 0;
-        Vector2 startingPos = leftBranch.transform.position;
-        while (elapsedTime < delay)
-        {
-            leftBranch.transform.position = Vector3.Lerp(startingPos, newPosition, (elapsedTime / delay));
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        elapsedTime = 0;
-        while (elapsedTime < delay)
-        {
-            leftBranch.transform.position = Vector3.Lerp(newPosition, startingPos, (elapsedTime / delay));
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
+        yield return new WaitForSeconds(2.1f);
+        leftBranch.SetBool("whip", false);
     }
 
-    public IEnumerator WhipRightBranch(Vector3 newPosition, float delay)
+    IEnumerator stopRightWhip()
     {
-        float elapsedTime = 0;
-        Vector2 startingPos = rightBranch.transform.position;
-        while (elapsedTime < delay)
-        {
-            rightBranch.transform.position = Vector3.Lerp(startingPos, newPosition, (elapsedTime / delay));
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        elapsedTime = 0;
-        while (elapsedTime < delay)
-        {
-            rightBranch.transform.position = Vector3.Lerp(newPosition, startingPos, (elapsedTime / delay));
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
+        yield return new WaitForSeconds(2.1f);
+        rightBranch.SetBool("whip", false);
     }
 
-    /*IEnumerator WhipBranch(char direction, float delay){
-            yield return new WaitForSeconds(delay);
-            float journeyLength;
-            Vector2 slamAt;
-            if (direction == 'l')
-            {
-                journeyLength = Vector2.Distance(leftBranch.position, leftTorch.position);
-                slamAt = leftBranch.position + leftTorch.position;
-            }
-            else {
-                journeyLength = Vector2.Distance(rightTorch.position, rightBranch.position);
-                slamAt = rightBranch.position + rightTorch.position;
-            }
-            float distCovered = (Time.time - startTime) * 0.25f;
-            float fracJourney = distCovered / journeyLength;
-        if (direction == 'l')
-            leftBranch.GetComponent<Rigidbody2D>().velocity += 10.0f;
-        else
-            rightBranch.position = Vector3.Lerp(rightBranch.position, rightTorch.position, fracJourney);
+    public int getHealth()
+    {
+        return health;
+    }
 
-        }*/
+    public int getStage()
+    {
+        return stage;
+    }
 }

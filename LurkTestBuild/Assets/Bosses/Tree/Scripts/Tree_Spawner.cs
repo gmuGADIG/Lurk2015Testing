@@ -31,17 +31,17 @@ public class Tree_Spawner : MonoBehaviour {
             time += Time.deltaTime;
         else
         {
-            if (boss.stage == 1)
+            if (boss.getStage() == 1)
             {
                 randAttack1 = Random.Range(0, 2);
                 randAttack2 = -1;
             }
-            if (boss.stage >= 2) {
+            if (boss.getStage() >= 2) {
                 randAttack1 = Random.Range(0, 7);
                 attackDelay = 7.0f;
                 randAttack2 = -1;
             }
-            if (boss.stage == 3)
+            if (boss.getStage() == 3)
             {
                 randAttack1 = Random.Range(0, 7);
                 attackDelay = 6.0f;
@@ -76,8 +76,8 @@ public class Tree_Spawner : MonoBehaviour {
             //Stage 2
             if(randAttack1 == 3 || randAttack2 == 3)//Swat
             {
-                StartCoroutine(boss.WhipLeftBranch(aggro.position, 1.0f));
-                StartCoroutine(boss.WhipRightBranch(aggro.position, 1.0f));
+                //StartCoroutine(boss.WhipLeftBranch(aggro.position, 1.0f));
+                //StartCoroutine(boss.WhipRightBranch(aggro.position, 1.0f));
             }
             if(randAttack1 == 4 || randAttack2 == 4)
             {
@@ -91,8 +91,8 @@ public class Tree_Spawner : MonoBehaviour {
             }
             if (randAttack1 == 6 || randAttack2 == 6)
             {
-                StartCoroutine(boss.WhipLeftBranch(torches[0].position, 1.0f));
-                StartCoroutine(boss.WhipRightBranch(torches[1].position, 1.0f));
+                //StartCoroutine(boss.WhipLeftBranch(torches[0].position, 1.0f));
+                //StartCoroutine(boss.WhipRightBranch(torches[1].position, 1.0f));
             }
         }
 	}
