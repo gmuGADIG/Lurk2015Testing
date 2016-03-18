@@ -32,7 +32,7 @@ public class playerMove : MonoBehaviour {
 	public bool gender = true; //Male is true
 	public enum Classes {Rogue, Warrior, Mage};
 	public Classes pClass = Classes.Rogue;
-	public string name = "Bob";
+	public string pName = "Bob";
 
 	public int coins = 0;
 
