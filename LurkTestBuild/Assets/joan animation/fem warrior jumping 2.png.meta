@@ -1,0 +1,220 @@
+fileFormatVersion: 2
+guid: fa5ee2802835b7b4691fbd128a994c3b
+timeCreated: 1457052436
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: fem warrior jumping 2_0
+    21300002: fem warrior jumping 2_1
+    21300004: fem warrior jumping 2_2
+    21300006: fem warrior jumping 2_3
+    21300008: fem warrior jumping 2_4
+    21300010: fem warrior jumping 2_5
+    21300012: fem warrior jumping 2_6
+    21300014: fem warrior jumping 2_7
+    21300016: fem warrior jumping 2_8
+    21300018: fem warrior jumping 2_9
+    21300020: fem warrior jumping 2_10
+    21300022: fem warrior jumping 2_11
+    21300024: fem warrior jumping 2_12
+    21300026: fem warrior jumping 2_13
+    21300028: fem warrior jumping 2_14
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: fem warrior jumping 2_0
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 741
+        width: 154
+        height: 305
+      alignment: 9
+      pivot: {x: .344161779, y: 2.00115267e-07}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior jumping 2_1
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 738
+        width: 149
+        height: 302
+      alignment: 9
+      pivot: {x: .322825581, y: .00397355016}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior jumping 2_2
+      rect:
+        serializedVersion: 2
+        x: 690
+        y: 732
+        width: 142
+        height: 297
+      alignment: 9
+      pivot: {x: .356343448, y: 2.05505572e-07}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior jumping 2_3
+      rect:
+        serializedVersion: 2
+        x: 959
+        y: 725
+        width: 142
+        height: 268
+      alignment: 9
+      pivot: {x: .677458405, y: -.00447697425}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior jumping 2_4
+      rect:
+        serializedVersion: 2
+        x: 1228
+        y: 723
+        width: 174
+        height: 248
+      alignment: 9
+      pivot: {x: .748267174, y: .0338698365}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior jumping 2_5
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 370
+        width: 137
+        height: 303
+      alignment: 9
+      pivot: {x: .482482463, y: .083165735}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior jumping 2_6
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 373
+        width: 203
+        height: 316
+      alignment: 9
+      pivot: {x: .186711207, y: .0683525205}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior jumping 2_7
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 375
+        width: 158
+        height: 281
+      alignment: 9
+      pivot: {x: .53797394, y: .12810953}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior jumping 2_8
+      rect:
+        serializedVersion: 2
+        x: 949
+        y: 382
+        width: 170
+        height: 275
+      alignment: 9
+      pivot: {x: .507058561, y: .18762961}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior jumping 2_9
+      rect:
+        serializedVersion: 2
+        x: 1264
+        y: 386
+        width: 151
+        height: 296
+      alignment: 9
+      pivot: {x: .380800366, y: .178372145}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior jumping 2_10
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 39
+        width: 163
+        height: 260
+      alignment: 9
+      pivot: {x: .463191509, y: .101534829}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior jumping 2_11
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 46
+        width: 156
+        height: 198
+      alignment: 7
+      pivot: {x: .5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior jumping 2_12
+      rect:
+        serializedVersion: 2
+        x: 652
+        y: 46
+        width: 153
+        height: 199
+      alignment: 9
+      pivot: {x: .643790841, y: -.00614216086}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior jumping 2_13
+      rect:
+        serializedVersion: 2
+        x: 962
+        y: 47
+        width: 141
+        height: 248
+      alignment: 7
+      pivot: {x: .5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior jumping 2_14
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 56
+        width: 138
+        height: 286
+      alignment: 7
+      pivot: {x: .5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
