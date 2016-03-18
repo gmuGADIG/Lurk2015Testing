@@ -30,6 +30,9 @@ public class playerMove : MonoBehaviour {
 	public float jumpStrength = 20;
 	public float ladderClimbSpeed = 2f;
 	public bool gender = true; //Male is true
+	public enum Classes {Rogue, Warrior, Mage};
+	public Classes pClass = Classes.Rogue;
+	public string name = "Bob";
 
 	public int coins = 0;
 
@@ -87,7 +90,7 @@ public class playerMove : MonoBehaviour {
     // Use this for initialization
     void Start () {
 		rb = GetComponent<Rigidbody2D> ();
-		animator = GetComponent<Animator> ();
+		animator = GameObject.Find("Sprite").GetComponent<Animator> ();
 		inventory = GetComponent<Inventory> ();
 		initialGravity = rb.gravityScale;
 		initialHeight = GetComponent<BoxCollider2D> ().size.y;
@@ -173,17 +176,22 @@ public class playerMove : MonoBehaviour {
 			inventory.Swap ();
 		}
 
-        // Apply movement velocity
-		rb.velocity = new Vector2(horizontalInput*speed/((crouching ? crouchPenalty : 1)), Mathf.Clamp(rb.velocity.y, fallClamp, 9999));
-
         // Check for ground collision
         Collider2D[] colResults = new Collider2D[1];
 		grounded = Physics2D.OverlapAreaNonAlloc(top_left.position, bottom_right.position, colResults, ground_layers);
-		if (jumpInput > 0.01) {
-			if (grounded > 0 && jumpPressed == false) {
+		if (grounded > 0) {
+			//Player is on the gorund
+			animator.SetBool ("jumping", false);
+			animator.SetBool ("falling", false);
+			if (jumpInput > 0.01 && jumpPressed == false) {
 				jump ();
 			}
+
+		}else if(rb.velocity.y < 0){
+			//Player is not on the ground and is falling
+			animator.SetBool ("falling", true);
 		}
+			
 
 		if (grounded > 0 && verticalInput < -0.01) {
 			// Crouch
@@ -197,6 +205,7 @@ public class playerMove : MonoBehaviour {
 			GetComponent<BoxCollider2D>().size = new Vector2(1, initialHeight);
 			GetComponent<BoxCollider2D>().offset = new Vector2(0, 0);
 		}
+		animator.SetFloat ("horizontalSpeed", Mathf.Abs(horizontalInput));
 		// Update jump button state
 		if (jumpInput > 0.01) {
 			jumpPressed = true;
@@ -215,6 +224,11 @@ public class playerMove : MonoBehaviour {
 		} else {
 			xPressed = false;
 		}
+	}
+
+	void FixedUpdate(){
+		// Apply movement velocity
+		rb.velocity = new Vector2(horizontalInput*speed/(crouching ? crouchPenalty : 1), Mathf.Clamp(rb.velocity.y, fallClamp, 9999));
 	}
 
 
@@ -281,6 +295,8 @@ public class playerMove : MonoBehaviour {
 	// Jump
 	void jump() {
 		rb.velocity = new Vector2(rb.velocity.x, jumpStrength);
+		animator.SetBool ("jumping", true);
+		grounded = 0; // Not grounded for a minimum of one tick
 	}
 
 	bool getGender(){
