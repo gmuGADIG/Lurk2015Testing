@@ -1,0 +1,275 @@
+fileFormatVersion: 2
+guid: 5c2f834408b0d4249926d73f96d3f3b9
+timeCreated: 1457051776
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: walking final 2_0
+    21300002: walking final 2_1
+    21300004: walking final 2_2
+    21300006: walking final 2_3
+    21300008: walking final 2_4
+    21300010: walking final 2_5
+    21300012: walking final 2_6
+    21300014: walking final 2_7
+    21300016: walking final 2_8
+    21300018: walking final 2_9
+    21300020: walking final 2_10
+    21300022: walking final 2_11
+    21300024: walking final 2_12
+    21300026: walking final 2_13
+    21300028: walking final 2_14
+    21300030: walking final 2_15
+    21300032: walking final 2_16
+    21300034: walking final 2_17
+    21300036: walking final 2_18
+    21300038: walking final 2_19
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: walking final 2_0
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 996
+        width: 148
+        height: 305
+      alignment: 9
+      pivot: {x: .176698834, y: -.00287565636}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: walking final 2_1
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 1003
+        width: 140
+        height: 296
+      alignment: 9
+      pivot: {x: .329112023, y: .00299402187}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: walking final 2_2
+      rect:
+        serializedVersion: 2
+        x: 628
+        y: 1002
+        width: 131
+        height: 295
+      alignment: 9
+      pivot: {x: .385011643, y: .00901147909}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: walking final 2_3
+      rect:
+        serializedVersion: 2
+        x: 884
+        y: 1001
+        width: 137
+        height: 294
+      alignment: 7
+      pivot: {x: .5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: walking final 2_4
+      rect:
+        serializedVersion: 2
+        x: 1144
+        y: 1003
+        width: 143
+        height: 291
+      alignment: 7
+      pivot: {x: .5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: walking final 2_5
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 695
+        width: 147
+        height: 288
+      alignment: 7
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: walking final 2_6
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 694
+        width: 137
+        height: 289
+      alignment: 7
+      pivot: {x: .5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: walking final 2_7
+      rect:
+        serializedVersion: 2
+        x: 628
+        y: 692
+        width: 137
+        height: 292
+      alignment: 7
+      pivot: {x: .5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: walking final 2_8
+      rect:
+        serializedVersion: 2
+        x: 898
+        y: 691
+        width: 150
+        height: 295
+      alignment: 9
+      pivot: {x: .364133716, y: 2.06898832e-07}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: walking final 2_9
+      rect:
+        serializedVersion: 2
+        x: 1169
+        y: 690
+        width: 157
+        height: 298
+      alignment: 9
+      pivot: {x: .285533339, y: 2.04815962e-07}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: walking final 2_10
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 381
+        width: 161
+        height: 299
+      alignment: 9
+      pivot: {x: .28535822, y: 1.02065478e-07}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: walking final 2_11
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 381
+        width: 180
+        height: 300
+      alignment: 9
+      pivot: {x: .367087126, y: 1.01725263e-07}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: walking final 2_12
+      rect:
+        serializedVersion: 2
+        x: 605
+        y: 382
+        width: 203
+        height: 301
+      alignment: 9
+      pivot: {x: .425795972, y: -.00294367899}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: walking final 2_13
+      rect:
+        serializedVersion: 2
+        x: 857
+        y: 382
+        width: 220
+        height: 300
+      alignment: 9
+      pivot: {x: .435557425, y: 1.01725263e-07}
+      border: {x: 0, y: 1, z: 0, w: 0}
+    - name: walking final 2_14
+      rect:
+        serializedVersion: 2
+        x: 1115
+        y: 382
+        width: 229
+        height: 297
+      alignment: 9
+      pivot: {x: .44195956, y: 1.02752786e-07}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: walking final 2_15
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 72
+        width: 233
+        height: 294
+      alignment: 9
+      pivot: {x: .446758807, y: .00602784427}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: walking final 2_16
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 72
+        width: 202
+        height: 290
+      alignment: 9
+      pivot: {x: .416655451, y: 5.26165138e-08}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: walking final 2_17
+      rect:
+        serializedVersion: 2
+        x: 618
+        y: 70
+        width: 172
+        height: 290
+      alignment: 9
+      pivot: {x: .340298682, y: 1.84157798e-07}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: walking final 2_18
+      rect:
+        serializedVersion: 2
+        x: 891
+        y: 69
+        width: 164
+        height: 296
+      alignment: 9
+      pivot: {x: .327105254, y: .00299376412}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: walking final 2_19
+      rect:
+        serializedVersion: 2
+        x: 1168
+        y: 69
+        width: 151
+        height: 300
+      alignment: 9
+      pivot: {x: .265275776, y: .00295384717}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
