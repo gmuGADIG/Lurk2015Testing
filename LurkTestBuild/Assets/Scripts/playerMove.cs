@@ -62,6 +62,9 @@ public class playerMove : MonoBehaviour {
 	public float pickupDistance = 1f;
 	// Is space/jump down
 	private bool jumpPressed = false;
+	// Added when jump is held
+	private float jumpBoost = 0;
+	public float jumpBoostAmount = 2;
 	// Is x down
 	private bool xPressed = false;
 	// Is z down
@@ -184,6 +187,8 @@ public class playerMove : MonoBehaviour {
 			animator.SetBool ("jumping", false);
 			animator.SetBool ("falling", false);
 			if (jumpInput > 0.01 && jumpPressed == false) {
+				// Begin jump boost
+				jumpBoost = jumpBoostAmount;
 				jump ();
 			}
 
@@ -209,9 +214,14 @@ public class playerMove : MonoBehaviour {
 		// Update jump button state
 		if (jumpInput > 0.01) {
 			jumpPressed = true;
+			// Add jump boost
+			rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y + jumpBoost);
 		} else {
 			jumpPressed = false;
+			jumpBoost = 0;
 		}
+		// Decay jump boost so you don't just fly up
+		jumpBoost = jumpBoost*0.8f;
 		// Update z state
 		if (zInput > 0) {
 			zPressed = true;
