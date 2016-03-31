@@ -7,8 +7,10 @@ public class cameraFollow : MonoBehaviour {
 	Camera cam;							// Main Camera
 	Transform player1;					// Player1
 	Transform player2;					// Player2
+    Transform boss;
     GameObject distanceAlert;           // Alert for when players go off screen
 
+    public GameObject background;
 	public float minDist = 5f;			// Minimum distance to zoom
 	//public float maxDist = 10f;		// Maximum distance to zoom
 	public float zoomScale = 1f;		// Zoom scale (multiplied to distance to get camera size)
@@ -18,16 +20,22 @@ public class cameraFollow : MonoBehaviour {
     public float distanceAlertLerp = 8f;// Lerp factor for distance alert
 
 	bool setup = false;					// If setup is complete
-
+    bool bossFocus = false;
 	// Use this for initialization
 	void Start () {
 		FindObjects ();
 	}
 	
 	void Update () {
-        setup = FindObjects(); // Check for player updates/initial objects
-        if (setup) {
-            if (player1) {
+        setup = FindBoss();
+        bossFocus = setup;
+        if (!bossFocus)
+            setup = FindObjects(); // Check for player updates/initial objects
+
+        if(setup)
+        {
+            if (player1 && !bossFocus) {
+                Debug.Log("player");
                 // At least one player, move/zoom the camera
                 Move(player1, player2);
                 Zoom(player1, player2);
@@ -38,11 +46,28 @@ public class cameraFollow : MonoBehaviour {
                 } else {
                     distanceAlertRect.offsetMax = new Vector2(0, Mathf.Lerp(distanceAlertRect.offsetMax.y, 100, Time.deltaTime * distanceAlertLerp));
                 }
-            } else {
+            }
+            else if (player1 && bossFocus)
+            {
+                Debug.Log("boss");
+                Move(boss, null);
+                Zoom(boss, null);
+                RectTransform distanceAlertRect = distanceAlert.GetComponent<RectTransform>();
+                if (!IsVisible())
+                {
+                    DoDamage();
+                    distanceAlertRect.offsetMax = new Vector2(0, Mathf.Lerp(distanceAlertRect.offsetMax.y, -64, Time.deltaTime * distanceAlertLerp));
+                }
+                else {
+                    distanceAlertRect.offsetMax = new Vector2(0, Mathf.Lerp(distanceAlertRect.offsetMax.y, 100, Time.deltaTime * distanceAlertLerp));
+                }
+            }
+            else {
                 // Player must have left the game
                 setup = false;
             }
         }
+        
 	}
 
 	bool FindObjects () {
@@ -58,15 +83,30 @@ public class cameraFollow : MonoBehaviour {
         }
 
         // Find players
-        if (player1 == null || player2 == null) {
+        if (player1 == null || player2 == null)
+        {
             int playerCount = FindPlayers();
-            if(playerCount == 0) {
+            if (playerCount == 0)
+            {
                 return false;
             }
         }
-
         return true;
 	}
+
+    bool FindBoss()
+    {
+        GameObject[] bosses = GameObject.FindGameObjectsWithTag("Boss");
+        if (bosses.Length == 0)
+        {
+            return false;
+        }
+        else
+        {
+            boss = bosses[0].transform;
+            return true;
+        }
+    }
 
     int FindPlayers() {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
@@ -87,18 +127,19 @@ public class cameraFollow : MonoBehaviour {
         return players.Length;
     }
 
-	void Move (Transform player1, Transform player2 = null) {
-        Vector3 middle = player1.position;
-        if (player2 != null) {
-            middle = (player1.position + player2.position) / 2;	// Middle point between players
+
+    void Move (Transform target1, Transform target2 = null) {
+        Vector3 middle = target1.position;
+        if (target2 != null && !bossFocus) {
+            middle = (target1.position + target2.position) / 2;	// Middle point between players
         }
         middle.z -= 10;	// Move camera to not clip with scene
 		transform.position = Vector3.Lerp(transform.position, middle, Time.deltaTime*lerpT);	// Lerp to location
 	}
 
-	void Zoom (Transform player1, Transform player2 = null) {
-        if (player2) {
-            float distance = Vector3.Distance(player1.position, player2.position);  // Distance between players
+	void Zoom (Transform target1, Transform target2 = null) {
+        if (target2 && !bossFocus) {
+            float distance = Vector3.Distance(target1.position, target2.position);  // Distance between players
 
             // Check camera bounds
             if (distance < minDist)
@@ -109,7 +150,7 @@ public class cameraFollow : MonoBehaviour {
 
             cam.orthographicSize = Mathf.Log(distance * zoomScale, logBase);    // Set size of camera
         } else {
-            cam.orthographicSize = Mathf.Log(8 * zoomScale, logBase);    // Set size of camera
+            cam.orthographicSize = Mathf.Log(50 * zoomScale, logBase);    // Set size of camera
         }
     }
 
