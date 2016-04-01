@@ -101,8 +101,8 @@ public class playerMove : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        InputDevice device = InputManager.ActiveDevice;
-        InputControl control = device.GetControl(InputControlType.Action1);
+        //InputDevice device = InputManager.ActiveDevice;
+        //InputControl control = device.GetControl(InputControlType.Action1);
 
 //        horizontalInput = device.LeftStickX + device.DPadX + Input.GetAxis("Horizontal"); // Add the controls together so either can be used
 //        verticalInput = device.LeftStickY + device.DPadY + Input.GetAxis("Vertical"); // Add the controls together so either can be used
