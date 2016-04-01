@@ -19,6 +19,8 @@ public class cameraFollow : MonoBehaviour {
 	public int damage = 1;				// Amount of damage to be given/sec when off camera
     public float distanceAlertLerp = 8f;// Lerp factor for distance alert
 
+	private float lastDamage = 0;
+
 	bool setup = false;					// If setup is complete
     bool bossFocus = false;
 	// Use this for initialization
@@ -162,9 +164,11 @@ public class cameraFollow : MonoBehaviour {
 	}
 
 	void DoDamage () {
-		float dam = Time.deltaTime * damage;
-
-		// deal dam to players
-
+		if (Time.time > lastDamage + 1) {
+			// deal damage to players
+			player1.GetComponent<Damageable> ().TakeDamage (1);
+			player2.GetComponent<Damageable> ().TakeDamage (1);
+			lastDamage += 1;
+		}
 	}
 }
