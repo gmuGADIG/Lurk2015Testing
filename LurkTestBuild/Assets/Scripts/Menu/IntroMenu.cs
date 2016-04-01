@@ -50,15 +50,15 @@ public class IntroMenu : MonoBehaviour {
 
 		// If the player presses the "Escape" key, exit the current menu and go back to the previous menu.
 		// If there are no menus open, open the Quit Menu
-		if(Input.GetButtonDown("Escape") && gameSettingsMenuCanvas.enabled == true) {
+		if(Input.GetButtonDown("Cancel") && gameSettingsMenuCanvas.enabled == true) {
 			CloseGameSettingsMenu();
-		} else if(Input.GetButtonDown("Escape") && videoSettingsMenuCanvas.enabled == true) {
+		} else if(Input.GetButtonDown("Cancel") && videoSettingsMenuCanvas.enabled == true) {
 			CloseVideoSettingsMenu();
-		} else if(Input.GetButtonDown("Escape") && audioSettingsMenuCanvas.enabled == true) {
+		} else if(Input.GetButtonDown("Cancel") && audioSettingsMenuCanvas.enabled == true) {
 			CloseAudioSettingsMenu();
-		} else if(Input.GetButtonDown("Escape") && optionsMenuCanvas.enabled == true) {
+		} else if(Input.GetButtonDown("Cancel") && optionsMenuCanvas.enabled == true) {
 			CloseOptionsMenu();
-		} else if (Input.GetButtonDown("Escape")) {
+		} else if (Input.GetButtonDown("Cancel")) {
 			quitMenuBool = !quitMenuBool;
 		}
 
