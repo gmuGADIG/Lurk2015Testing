@@ -23,6 +23,7 @@ public class FollowerEnemy : Enemy
     Vector2 direction;
     Vector3 jumpPos;
     bool isJumping = false;
+    SpriteRenderer rend;
 
 
     List<GameObject> path;
@@ -38,6 +39,7 @@ public class FollowerEnemy : Enemy
         path = new List<GameObject>();
         platforms = new Hashtable();
         targetPlatform = null;
+        rend = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -51,7 +53,6 @@ public class FollowerEnemy : Enemy
             RaycastHit2D hit = Physics2D.Raycast(aggro.transform.position - aggroCollideDist, -transform.up, .1f, platform);
             if (hit.collider != null)
             {
-                Debug.Log("hit");
                 //get current aggro and enemy platforms
                 currentAggroPlatform = hit.collider.gameObject;
                 currentEnemyPlatform = getPlatform();
@@ -95,9 +96,14 @@ public class FollowerEnemy : Enemy
                             {
                                 jumpPos = new Vector3(currentEnemyPlatform.transform.position.x + currentEnemyPlatform.GetComponent<Collider2D>().bounds.extents.x - .2f, transform.position.y, 0);
                             }
-                            else
+                            else if (targetPlatform == currentEnemyPlatform.GetComponent<PlatformJumping>().jumpDownLeft || targetPlatform == currentEnemyPlatform.GetComponent<PlatformJumping>().jumpUpLeft)
                             {
                                 jumpPos = new Vector3(currentEnemyPlatform.transform.position.x - currentEnemyPlatform.GetComponent<Collider2D>().bounds.extents.x + .2f, transform.position.y, 0);
+                            }
+                            else
+                            {
+                                platforms.Clear();
+                                path.Clear();
                             }
                         }
                     }
@@ -127,6 +133,7 @@ public class FollowerEnemy : Enemy
                                 {
                                     //get direction to jumpPos and move enemy
                                     direction = new Vector2(targetPlatform.transform.position.x - transform.position.x, 0);
+                                    CheckForFlip(direction);
                                     direction.Normalize();
                                     transform.Translate(direction * 5 * Time.deltaTime);
                                 }
@@ -138,6 +145,7 @@ public class FollowerEnemy : Enemy
                                 {
                                     //get direction to targetPlatform and move enemy
                                     direction = new Vector2(targetPlatform.transform.position.x - transform.position.x, 0);
+                                    CheckForFlip(direction);
                                     direction.Normalize();
                                     transform.Translate(direction * 7.5f * Time.deltaTime);
                                 }
@@ -147,6 +155,7 @@ public class FollowerEnemy : Enemy
                         {
                             //get direction to aggro and move enemy
                             direction = new Vector2(aggro.transform.position.x - transform.position.x, 0);
+                            CheckForFlip(direction);
                             direction.Normalize();
                             transform.Translate(direction * 5 * Time.deltaTime);
                         }
@@ -168,13 +177,25 @@ public class FollowerEnemy : Enemy
         }
     }
 
+    void CheckForFlip(Vector2 direction)
+    {
+        if (direction.x > 0 && rend.flipX)
+        {
+            rend.flipX = false;
+        }
+        else if (direction.x < 0 && !rend.flipX)
+        {
+            rend.flipX = true;
+        }
+    }
+
     //get force for jumping
     Vector2 CalculateForce()
     {
 
 
         Vector3 targetPos = targetPlatform.transform.position;
-        targetPos.y += .5f;
+        //targetPos.y += .5f;
         Vector3 dir = targetPos - transform.position;
         if (dir.x < 0)
         {
@@ -190,7 +211,7 @@ public class FollowerEnemy : Enemy
         float height = dir.y;
         float xz = dirFlat.magnitude;
 
-        float v0y = height / 2 + .29f * Physics.gravity.magnitude * 4;
+        float v0y = height / 1.9f + .29f * Physics.gravity.magnitude * 3.61f;
         float v0xz = xz / 2 + xz;
 
         Vector3 result = dirFlat.normalized;
