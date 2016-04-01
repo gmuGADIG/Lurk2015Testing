@@ -104,12 +104,12 @@ public class playerMove : MonoBehaviour {
         InputDevice device = InputManager.ActiveDevice;
         InputControl control = device.GetControl(InputControlType.Action1);
 
-        horizontalInput = device.LeftStickX + device.DPadX + Input.GetAxis("Horizontal"); // Add the controls together so either can be used
-        verticalInput = device.LeftStickY + device.DPadY + Input.GetAxis("Vertical"); // Add the controls together so either can be used
-        zInput = device.Action2 + Input.GetAxis("Z"); // Add the controls together so either can be used
-        xInput = device.Action3 + Input.GetAxis("X"); // Add the controls together so either can be used
-        cInput = device.RightBumper + Input.GetAxis("C"); // Add the controls together so either can be used
-        jumpInput = device.Action1 + Input.GetAxis("Jump"); // Add the controls together so either can be used
+//        horizontalInput = device.LeftStickX + device.DPadX + Input.GetAxis("Horizontal"); // Add the controls together so either can be used
+//        verticalInput = device.LeftStickY + device.DPadY + Input.GetAxis("Vertical"); // Add the controls together so either can be used
+//        zInput = device.Action2 + Input.GetAxis("Z"); // Add the controls together so either can be used
+//        xInput = device.Action3 + Input.GetAxis("X"); // Add the controls together so either can be used
+//        cInput = device.RightBumper + Input.GetAxis("C"); // Add the controls together so either can be used
+//        jumpInput = device.Action1 + Input.GetAxis("Jump"); // Add the controls together so either can be used
 
         if (horizontalInput > 0) {
 			direction = true;
