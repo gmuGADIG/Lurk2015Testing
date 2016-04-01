@@ -93,7 +93,7 @@ public class playerMove : MonoBehaviour {
     // Use this for initialization
     void Start () {
 		rb = GetComponent<Rigidbody2D> ();
-		animator = GameObject.Find("Sprite").GetComponent<Animator> ();
+		animator = GetComponentInChildren<Animator> ();
 		inventory = GetComponent<Inventory> ();
 		initialGravity = rb.gravityScale;
 		initialHeight = GetComponent<BoxCollider2D> ().size.y;
