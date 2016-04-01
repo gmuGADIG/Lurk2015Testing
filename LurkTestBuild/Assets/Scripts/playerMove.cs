@@ -146,12 +146,15 @@ public class playerMove : MonoBehaviour {
 				//Try to pick up item
 				if(inventory.Pickup(closestItem)){
 					closestItem.SendMessage("SetItemState", false);
+                    closestItem.SendMessage("SetTransform", this.transform, SendMessageOptions.DontRequireReceiver);
 				}else{
 					// Need to switch items
 					GameObject droppedItem = inventory.Drop();
 					inventory.Pickup(closestItem);
 					closestItem.SendMessage("SetItemState", false);
-					droppedItem.SendMessage("SetItemState", true);
+                    closestItem.SendMessage("SetTransform", this.transform, SendMessageOptions.DontRequireReceiver);
+
+                    droppedItem.SendMessage("SetItemState", true);
 				}
 			}else{
 				// Not near an item, just drop primary item
