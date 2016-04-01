@@ -32,7 +32,7 @@ public class Tree_Torch : MonoBehaviour
         if (lit)
         {
             Debug.Log("lit");
-            health -= 1;
+            health--;
             lit = false;
             StartCoroutine(stopBurning());
             stage++;
