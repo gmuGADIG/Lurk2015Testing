@@ -35,7 +35,7 @@ public class cameraFollow : MonoBehaviour {
         if(setup)
         {
             if (player1 && !bossFocus) {
-                Debug.Log("player");
+                //Debug.Log("player");
                 // At least one player, move/zoom the camera
                 Move(player1, player2);
                 Zoom(player1, player2);
@@ -49,7 +49,7 @@ public class cameraFollow : MonoBehaviour {
             }
             else if (player1 && bossFocus)
             {
-                Debug.Log("boss");
+                //Debug.Log("boss");
                 Move(boss, null);
                 Zoom(boss, null);
                 RectTransform distanceAlertRect = distanceAlert.GetComponent<RectTransform>();

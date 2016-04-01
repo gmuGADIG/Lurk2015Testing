@@ -4,14 +4,17 @@ using System.Collections;
 public class Respawn : MonoBehaviour
 {
 	// Store Checkpoint
+	public GameObject cp;
 
-	public void setCheckpoint(/*checkpoint*/)
+	public void setCheckpoint(GameObject go)
 	{
-		// cp = checkpoint;
+		cp = go;
 	}
 
 	private void OnDeath()
 	{
-		// Move player to checkpoint
+		Vector3 pos = cp.transform.position;
+		pos.y += GetComponent<BoxCollider2D> ().size.y;
+		transform.position = pos;
 	}
 }
