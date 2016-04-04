@@ -130,7 +130,9 @@ public class playerMove : MonoBehaviour {
 		if (verticalInput < -0.01 && xInput > 0.01 && !xPressed) {
 			// Get items
 			GameObject[] items = GameObject.FindGameObjectsWithTag("Item");
-			GameObject closestItem = null;
+            GameObject[] lanterns = GameObject.FindGameObjectsWithTag("Lantern");
+
+            GameObject closestItem = null;
 			float closestDist = Mathf.Infinity;
 
 			foreach(GameObject item in items){
@@ -145,17 +147,33 @@ public class playerMove : MonoBehaviour {
 				}
 			}
 
-			if (closestItem){
+            foreach (GameObject item in lanterns)
+            {
+                // If item is within reach
+                float itemDistance = Vector3.Distance(transform.position, item.transform.position);
+
+                if (itemDistance < pickupDistance)
+                {
+                    if ((closestItem == null || itemDistance < closestDist) && item.GetComponent<Item>().isVisible)
+                    {
+                        closestItem = item;
+                        closestDist = itemDistance;
+                    }
+                }
+            }
+
+            if (closestItem){
 				//Try to pick up item
-				if(inventory.Pickup(closestItem)){
-					closestItem.SendMessage("SetItemState", false);
+				if(inventory.Pickup(closestItem))
+                {
                     closestItem.SendMessage("SetTransform", this.transform, SendMessageOptions.DontRequireReceiver);
+                    closestItem.SendMessage("SetItemState", false);
 				}else{
 					// Need to switch items
 					GameObject droppedItem = inventory.Drop();
 					inventory.Pickup(closestItem);
-					closestItem.SendMessage("SetItemState", false);
                     closestItem.SendMessage("SetTransform", this.transform, SendMessageOptions.DontRequireReceiver);
+                    closestItem.SendMessage("SetItemState", false);
 
                     droppedItem.SendMessage("SetItemState", true);
 				}

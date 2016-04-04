@@ -17,7 +17,7 @@ public class Torch : MonoBehaviour
 		GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
 		player1 = players [0].GetComponent<Respawn> ();
 		if (players.Length > 1)
-			player2 = players [2].GetComponent<Respawn> ();
+			player2 = players [1].GetComponent<Respawn> ();
 
     }
     void Update()
