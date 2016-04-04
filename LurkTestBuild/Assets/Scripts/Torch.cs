@@ -27,13 +27,13 @@ public class Torch : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.name == "Lantern" && !lit)
+        if (other.tag == "Lantern" && !lit)
         {
             lit = true;
             burning.SetBool("isLit", true);
             player1.setCheckpoint(this.gameObject);
-			if (player2 != null)
-				player2.setCheckpoint (this.gameObject);
+            if (player2 != null)
+                player2.setCheckpoint(this.gameObject);
         }
     }
 
