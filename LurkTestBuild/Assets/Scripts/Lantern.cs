@@ -3,24 +3,31 @@ using System.Collections;
 
 public class Lantern : Item {
 
-    Transform player;
+    private Transform player;
+    private bool held;
+    public Vector3 lanternPos = new Vector3(0, 1, 0);
 
 	// Use this for initialization
-	void Start () {
-        sr = GetComponent<SpriteRenderer>();
-        col = GetComponent<Collider2D>();
-        rb2d = GetComponent<Rigidbody2D>();
-    }
+	void Start ()
+    {
+        base.Start();
+	}
 	
 	// Update is called once per frame
-	void Update () {
-    }
-    override public void SetItemState(bool state)
+	void Update ()
     {
-        this.transform.position = player.transform.position;
-        col.isTrigger = !state;
-        //col.enabled = state;
+        base.Update();
+        if(held)
+        {
+            Vector3 tar = player.transform.position + lanternPos;
+            this.transform.position = Vector3.Lerp(transform.position, tar, 1);
+        }
+	}
+    public void SetItemState(bool state)
+    {
+        col.enabled = state;
         rb2d.isKinematic = !state;
+        held = true;
     }
 
     public void SetTransform(Transform p)
