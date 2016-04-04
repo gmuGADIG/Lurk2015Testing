@@ -42,7 +42,7 @@ public class Item : MonoBehaviour
 		return -1;
 	}
 	
-	public void SetItemState(bool state){
+	virtual public void SetItemState(bool state){
 		isVisible = state;
 		col.enabled = state;
 		rb2d.isKinematic = !state;

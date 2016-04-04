@@ -17,7 +17,7 @@ public class Torch : MonoBehaviour
 		GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
 		player1 = players [0].GetComponent<Respawn> ();
 		if (players.Length > 1)
-			player2 = players [2].GetComponent<Respawn> ();
+			player2 = players [1].GetComponent<Respawn> ();
 
     }
     void Update()
@@ -27,7 +27,7 @@ public class Torch : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Lantern" && !lit)
+        if (other.name == "Lantern" && !lit)
         {
             lit = true;
             burning.SetBool("isLit", true);
