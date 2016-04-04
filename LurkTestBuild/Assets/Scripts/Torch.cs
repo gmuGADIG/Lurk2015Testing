@@ -27,7 +27,7 @@ public class Torch : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Lantern" && !lit)
+        if (other.name == "Lantern" && !lit)
         {
             lit = true;
             burning.SetBool("isLit", true);
