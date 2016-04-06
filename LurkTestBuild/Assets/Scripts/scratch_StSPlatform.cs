@@ -52,6 +52,6 @@ public class scratch_StSPlatform : MonoBehaviour {
 	//An array of positions?
 	public void Activate()
     {
-        isActive = true;
+        isActive = !isActive;
     }
 }
