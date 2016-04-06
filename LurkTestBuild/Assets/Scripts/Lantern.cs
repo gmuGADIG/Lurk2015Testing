@@ -27,7 +27,7 @@ public class Lantern : Item {
     {
         col.enabled = state;
         rb2d.isKinematic = !state;
-        held = true;
+        held = !state;
     }
 
     public void SetTransform(Transform p)
