@@ -19,7 +19,7 @@ public class Item : MonoBehaviour
 
 	public void Start (){
 		sr = GetComponent <SpriteRenderer>();
-		col = GetComponent <Collider2D>();
+		col = GetComponent <BoxCollider2D>();
 		rb2d = GetComponent <Rigidbody2D>();
 	}
 

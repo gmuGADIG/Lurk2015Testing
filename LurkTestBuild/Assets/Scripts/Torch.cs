@@ -8,6 +8,7 @@ public class Torch : MonoBehaviour
     private Animator burning;
     private Respawn player1;
     private Respawn player2;
+    public GameObject actionObj;
     
     void Start()
     {
@@ -55,6 +56,7 @@ public class Torch : MonoBehaviour
             }
             lit = true;
             burning.SetBool("isLit", true);
+            actionObj.SendMessage("Activate");
             player1.setCheckpoint(this.gameObject);
             if (player2 != null)
                 player2.setCheckpoint(this.gameObject);
