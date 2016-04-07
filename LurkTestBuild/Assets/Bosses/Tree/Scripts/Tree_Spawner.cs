@@ -13,6 +13,7 @@ public class Tree_Spawner : MonoBehaviour {
     public GameObject rootMan;
     public Transform[] rootManSpawners;
     public GameObject[] roots;
+	public GameObject root;
     /*public GameObject woodMan;
     public Transform[] woodSpawn;
     public GameObject shadow;*/  
@@ -22,6 +23,7 @@ public class Tree_Spawner : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         time = 0.0f;
+		roots = GameObject.FindGameObjectsWithTag ("Root");
 	}
 	
 	// Update is called once per frame
@@ -33,7 +35,7 @@ public class Tree_Spawner : MonoBehaviour {
             if (boss.getStage() == 1) //Stage 1
             {
                 attackDelay = 10.0f;
-                randAttack1 = Random.Range(0, 4);
+                randAttack1 = Random.Range(0, 3);
                 if (randAttack1 == 0) //Spiders
                 {
                     for (int s = 0; s < spiderSpawners_Stage1.Length; s++)
@@ -47,8 +49,10 @@ public class Tree_Spawner : MonoBehaviour {
                 }
                 else //Roots
                 {
-                    int r = Random.Range(0, roots.Length + 1);
-                    roots[r].GetComponent<Animator>().SetBool("Rise", true);
+                    int r = Random.Range(0, roots.Length);
+					//Debug.Log (r);
+					root = roots [r].transform.GetChild (0).gameObject;
+                    root.GetComponent<Animator>().SetBool("Rise", true);
                 }
             }
             else if (boss.getStage() == 2) //Stage 2
