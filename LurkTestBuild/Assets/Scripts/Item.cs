@@ -19,7 +19,7 @@ public class Item : MonoBehaviour
 
 	public void Start (){
 		sr = GetComponent <SpriteRenderer>();
-		col = GetComponent <Collider2D>();
+		col = GetComponent <BoxCollider2D>();
 		rb2d = GetComponent <Rigidbody2D>();
 	}
 
@@ -42,7 +42,7 @@ public class Item : MonoBehaviour
 		return -1;
 	}
 	
-	public void SetItemState(bool state){
+	virtual public void SetItemState(bool state){
 		isVisible = state;
 		col.enabled = state;
 		rb2d.isKinematic = !state;
