@@ -4,60 +4,56 @@ using UnityEngine.UI;
 
 public class Dialogue : MonoBehaviour {
 
-	public float					startDialogue = 5f;
-	public Canvas					oldManDialogueCanvas;
-	public GameObject				speechBubble;
 
-	public float					textSpeed = 0.08f;
-	public GameObject				oldManText;
-	public string					oldManFullText = "Greetings traveler! My name is old man.";
-	public string[]					dialogueList = {"Greetings traveler! My name is old man.", "Are you a male or a female?"};
-	public bool						question = false;
+	public GameObject				dialogue1Box;
+	public GameObject				dialogue1Text;
 
-	public GameObject				maleChoice;
-	public GameObject				femaleChoice;
+	public string[]					dialogueList = {};
 
-	public bool						player1Bool = true;
-	public bool						player2Bool = true;
+	public bool 					question = true;
 
-	public GameObject				redArrow;
-	public GameObject				blueArrow;
+	// TypewriterEffect
+	private float					textSpeed = 0.08f;
 
-	void Start () {
-		oldManDialogueCanvas.GetComponent<Canvas>().enabled = false;
-		speechBubble.GetComponent<SpriteRenderer>().enabled = false;
+	IEnumerator Start () {
+		dialogue1Box.SetActive(false);
 
-		maleChoice.GetComponent<Text>().enabled = false;
-		femaleChoice.GetComponent<Text>().enabled = false;
+		yield return new WaitForSeconds(5f);
 
-		redArrow.GetComponent<SpriteRenderer>().enabled = false;
-		blueArrow.GetComponent<SpriteRenderer>().enabled = false;
+		StartCoroutine(RunDialogue(0, 2));
 
-		StartCoroutine(WaitForDialogue());
+		Debug.Log("Hello");
 	}
 
 	void Update () {
 		if(question == true) {
-			
+
+			/*
+			maleChoice.GetComponent<Text>().enabled = true;
+			femaleChoice.GetComponent<Text>().enabled = true;
+
+			redArrow.GetComponent<SpriteRenderer>().enabled = true;
+			blueArrow.GetComponent<SpriteRenderer>().enabled = true;
+
 			// Player 1
 			if(Input.GetButtonDown("Vertical") && Input.GetAxis("Vertical") > 0) {
 				Vector3 temp = redArrow.transform.localPosition;
 				temp.y = 0.03f;
 				redArrow.transform.localPosition = temp;
 
-				player1Bool = true;
+				player1Male = true;
 			} else if (Input.GetButtonDown("Vertical") && Input.GetAxis("Vertical") < 0) {
 				Vector3 temp = redArrow.transform.localPosition;
 				temp.y = -0.4f;
 				redArrow.transform.localPosition = temp;
 
-				player1Bool = false;
+				player1Male = false;
 			}
 
-			if((player1Bool == true) && Input.GetButtonDown("Submit")) {
+			if((player1Male == true) && Input.GetButtonDown("Submit")) {
 				Debug.Log("Player 1 chooses male.");
 			}
-			if((player1Bool == false) && Input.GetButtonDown("Submit")) {
+			if((player1Male == false) && Input.GetButtonDown("Submit")) {
 				Debug.Log("Player 1 chooses female.");
 			}
 
@@ -67,56 +63,45 @@ public class Dialogue : MonoBehaviour {
 				temp.y = 0.08f;
 				blueArrow.transform.localPosition = temp;
 
-				player2Bool = true;
+				player2Male = true;
 			} else if (Input.GetButtonDown("Horizontal") && Input.GetAxis("Horizontal") < 0) {
 				Vector3 temp = blueArrow.transform.localPosition;
 				temp.y = -0.39f;
 				blueArrow.transform.localPosition = temp;
 
-				player2Bool = false;
+				player2Male = false;
 			}
 
-			if((player2Bool == true) && Input.GetButtonDown("Z")) {
+			if((player2Male == true) && Input.GetButtonDown("Z")) {
 				Debug.Log("Player 2 chooses male.");
 			}
-			if((player2Bool == false) && Input.GetButtonDown("Z")) {
+			if((player2Male == false) && Input.GetButtonDown("Z")) {
 				Debug.Log("Player 2 chooses female.");
 			}
+			*/
 		}
 	}
 
-	IEnumerator WaitForDialogue() {
-		yield return new WaitForSeconds(startDialogue);
+	IEnumerator RunDialogue(int firstString, int lastString) {
+		dialogue1Box.SetActive(true);
 
-		oldManDialogueCanvas.GetComponent<Canvas>().enabled = true;
-		speechBubble.GetComponent<SpriteRenderer>().enabled = true;
-
-		StartCoroutine(StartDialogue());
-	}
-
-	IEnumerator StartDialogue() {
-		for(int i = 0; i < dialogueList.Length; i++) {
-			oldManText.GetComponent<Text>().text = "";
-			yield return StartCoroutine(StartTypewriter(i));
+		for(int i = firstString; i <= lastString; i++) {
+			yield return StartCoroutine(RunTypewriter(i));
 		}
 
-		if(question == true) {
-			maleChoice.GetComponent<Text>().enabled = true;
-			femaleChoice.GetComponent<Text>().enabled = true;
-
-			redArrow.GetComponent<SpriteRenderer>().enabled = true;
-			blueArrow.GetComponent<SpriteRenderer>().enabled = true;
-		}
+		dialogue1Box.SetActive(false);
 	}
 
-	IEnumerator StartTypewriter(int i) {
+	IEnumerator RunTypewriter(int i) {
+		dialogue1Text.GetComponent<Text>().text = "";
+
+		yield return new WaitForSeconds(1f);
+
 		foreach (char letter in dialogueList[i].ToCharArray()) {
-			if(letter == '?') {
-				question = true;
-			}
-			oldManText.GetComponent<Text>().text += letter;
+			dialogue1Text.GetComponent<Text>().text += letter;
 			yield return new WaitForSeconds(textSpeed);
 		}
-		yield return new WaitForSeconds(1.0f);
+
+		yield return new WaitForSeconds(1f);
 	}
 }
