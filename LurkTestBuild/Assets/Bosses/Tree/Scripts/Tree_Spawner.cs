@@ -8,8 +8,13 @@ public class Tree_Spawner : MonoBehaviour {
     public Transform[] torches;
    
     public GameObject spider;
-    public Transform[] spiderSpawners_Stage1;
-    public Transform[] spiderSpawners_Stage2;
+	GameObject[] spiders;
+	bool spawnedSpider;
+
+	GameObject[] rootMen;
+	bool spawnedRootMan;
+
+	public Transform[] spiderSpawners;
     public GameObject rootMan;
     public Transform[] rootManSpawners;
     public GameObject[] roots;
@@ -24,6 +29,10 @@ public class Tree_Spawner : MonoBehaviour {
 	void Start () {
         time = 0.0f;
 		roots = GameObject.FindGameObjectsWithTag ("Root");
+		spiders = new GameObject[4];
+		spawnedSpider = false;
+		rootMen = new GameObject[2];
+		spawnedRootMan = false;
 	}
 	
 	// Update is called once per frame
@@ -32,74 +41,187 @@ public class Tree_Spawner : MonoBehaviour {
             time += Time.deltaTime;
         else
         {
-            if (boss.getStage() == 1) //Stage 1
-            {
-                attackDelay = 10.0f;
-                randAttack1 = Random.Range(0, 3);
-                if (randAttack1 == 0) //Spiders
-                {
-                    for (int s = 0; s < spiderSpawners_Stage1.Length; s++)
-                        Instantiate(spider, spiderSpawners_Stage1[s].position, transform.rotation);
-                }
-                else if (randAttack1 == 1) //rootMen
-                {
-                    for (int rm = 0; rm < rootManSpawners.Length; rm++)
-                        Instantiate(rootMan, rootManSpawners[rm].position, transform.rotation);
+			
+			if (boss.getStage () == 1) { //Stage 1
+				attackDelay = 3.0f;
+				randAttack1 = Random.Range (0, 3);
+				//Debug.Log (randAttack1);
+				if (randAttack1 == 0) { //Spiders
+					spawnedSpider = false;
+					for (int s = 0; s < spiderSpawners.Length / 2; s++) {
+						//Debug.Log (spiders [s]);
+						if (spiders [s] == null) {
+							spiders [s] = (GameObject)Instantiate (spider, spiderSpawners [s].position, transform.rotation);
+							spawnedSpider = true;
+						}
+					}
+					if (!spawnedSpider)
+						randAttack1 = Random.Range (1, 3);
+				} 
 
-                }
-                else //Roots
-                {
-                    int r = Random.Range(0, roots.Length);
-					//Debug.Log (r);
+				if (randAttack1 == 1) { //rootMen
+					spawnedRootMan = false;
+					for (int rm = 0; rm < rootManSpawners.Length; rm++){
+						if (rootMen [rm] == null) {
+							rootMen [rm] = (GameObject)Instantiate (rootMan, rootManSpawners [rm].position, transform.rotation);
+							spawnedRootMan = true;
+						}
+
+					}
+					if (!spawnedRootMan)
+						randAttack1 = 2;
+				} 
+
+				if (randAttack1 == 2) { //Roots
+					int r = Random.Range (0, roots.Length);
 					root = roots [r].transform.GetChild (0).gameObject;
-                    root.GetComponent<Animator>().SetBool("Rise", true);
-                }
-            }
-            else if (boss.getStage() == 2) //Stage 2
-            {
-                attackDelay = 7.0f;
-                randAttack1 = Random.Range(0, 8);
-                if (randAttack1 == 0) //Spiders
-                {
-                    for (int s = 0; s < spiderSpawners_Stage1.Length; s++)
-                        Instantiate(spider, spiderSpawners_Stage1[s].position, transform.rotation);
-                }
-                else if (randAttack1 == 1)
-                {
-                    for (int s = 0; s < spiderSpawners_Stage2.Length; s++)
-                        Instantiate(spider, spiderSpawners_Stage2[s].position, transform.rotation);
-                }
-                else if (randAttack1 == 2) //rootMen
-                {
-                    for (int rm = 0; rm < rootManSpawners.Length; rm++)
-                        Instantiate(rootMan, rootManSpawners[rm].position, transform.rotation);
+					root.GetComponent<Animator> ().SetBool ("Rise", true);
+				}
+			} 
+			else if (boss.getStage () == 2) { //Stage 2
+				attackDelay = 7.0f;
+				randAttack1 = Random.Range (0, 7);
+				
+				if (randAttack1 == 0) { //Spiders
+					spawnedSpider = false;
+					for (int s = 0; s < spiderSpawners.Length / 2; s++) {
+						if (spiders [s] == null) {
+							spiders [s] = (GameObject)Instantiate (spider, spiderSpawners [s].position, transform.rotation);
+							spawnedSpider = true;
+						}
+					}
+					if (!spawnedSpider)
+						randAttack1 = Random.Range (2, 7);
+				} 
+				else if (randAttack1 == 1) {
+					spawnedSpider = false;
+					for (int s = 2; s < spiderSpawners.Length; s++) {
+						if (spiders [s] == null) {
+							spiders [s] = (GameObject)Instantiate (spider, spiderSpawners [s].position, transform.rotation);
+							spawnedSpider = true;
+						}
+					}
+					if (!spawnedSpider)
+						randAttack1 = Random.Range (2, 7);
+				} 
 
-                }
-                else if (randAttack1 == 3)//Roots
-                {
-                    //for (int r = 0; r < numOfRoots; r++)
-                    //{
-                        
-                   // }
-                }
+				if (randAttack1 == 2) { //rootMen
+					spawnedRootMan = false;
+					for (int rm = 0; rm < rootManSpawners.Length; rm++){
+						if (rootMen [rm] == null) {
+							rootMen [rm] = (GameObject)Instantiate (rootMan, rootManSpawners [rm].position, transform.rotation);
+							spawnedRootMan = true;
+						}
+
+					}
+					if (!spawnedRootMan)
+						randAttack1 = Random.Range (3, 7);
+				} 
+
+				if (randAttack1 == 3) {//Roots
+					int r = Random.Range (0, roots.Length);
+					root = roots [r].transform.GetChild (0).gameObject;
+					root.GetComponent<Animator> ().SetBool ("Rise", true);
+
+					int ro = Random.Range (0, roots.Length);
+					while (r == ro)
+						ro = Random.Range (0, roots.Length);
+					
+					root = roots [ro].transform.GetChild (0).gameObject;
+					root.GetComponent<Animator> ().SetBool ("Rise", true);
+				}
                
-                /*if (randAttack1 == 3 || randAttack2 == 3)//Swat
-                {
-                    //StartCoroutine(boss.WhipRightBranch(aggro.position, 1.0f));
-                }
-                if (randAttack1 == 6 || randAttack2 == 6)
-                {
-                    //StartCoroutine(boss.WhipLeftBranch(torches[0].position, 1.0f));
-                }
-                if (randAttack1 == 5 || randAttack2 == 5)
+				else if (randAttack1 == 4) {//Swat
+					boss.leftBranch.SetBool ("whip", true);
+					StartCoroutine (boss.stopLeftWhip ());
+				}
+				else if (randAttack1 == 5) {
+					boss.rightBranch.SetBool ("whip", true);
+					StartCoroutine (boss.stopRightWhip ());
+				}
+				/*if (randAttack1 == 5 || randAttack2 == 5)
                 {
                     for (int w = 0; w < woodSpawn.Length; w++)
                         Instantiate(spider, woodSpawn[w].position, transform.rotation);
-                }
-                */
-            }
-            else if (boss.getStage() == 3)
-                attackDelay = 6.0f;
+                }*/
+			} else if (boss.getStage () == 3) {
+				attackDelay = 6.0f;
+
+				randAttack1 = Random.Range (0, 7);
+
+				if (randAttack1 == 0 || randAttack2 == 0) { //Spiders
+					spawnedSpider = false;
+					for (int s = 0; s < spiderSpawners.Length / 2; s++) {
+						if (spiders [s] == null) {
+							spiders [s] = (GameObject)Instantiate (spider, spiderSpawners [s].position, transform.rotation);
+							spawnedSpider = true;
+						}
+					}
+					if (!spawnedSpider) {
+						randAttack1 = Random.Range (2, 7);
+						randAttack2 = Random.Range (2, 7);
+					}
+				} 
+				if (randAttack1 == 1 || randAttack2 == 1) {
+					spawnedSpider = false;
+					for (int s = 2; s < spiderSpawners.Length; s++) {
+						if (spiders [s] == null) {
+							spiders [s] = (GameObject)Instantiate (spider, spiderSpawners [s].position, transform.rotation);
+							spawnedSpider = true;
+						}
+					}
+					if (!spawnedSpider) {
+						randAttack1 = Random.Range (2, 7);
+						randAttack2 = Random.Range (2, 7);
+					}
+				} 
+
+				if (randAttack1 == 2 || randAttack2 == 2) { //rootMen
+					spawnedRootMan = false;
+					for (int rm = 0; rm < rootManSpawners.Length; rm++){
+						if (rootMen [rm] == null) {
+							rootMen [rm] = (GameObject)Instantiate (rootMan, rootManSpawners [rm].position, transform.rotation);
+							spawnedRootMan = true;
+						}
+					}
+					if (!spawnedRootMan) {
+						randAttack1 = Random.Range (3, 7);
+						randAttack2 = Random.Range (3, 7);
+					}
+				}
+
+				if (randAttack1 == 3 || randAttack2 == 3)//Roots
+				{
+					int r1 = Random.Range (0, roots.Length);
+					root = roots [r1].transform.GetChild (0).gameObject;
+					root.GetComponent<Animator> ().SetBool ("Rise", true);
+
+					int r2 = Random.Range (0, roots.Length);
+					while (r1 == r2)
+						r2 = Random.Range (0, roots.Length);
+
+					root = roots [r2].transform.GetChild (0).gameObject;
+					root.GetComponent<Animator> ().SetBool ("Rise", true);
+
+					int r3 = Random.Range (0, roots.Length);
+					while (r1 == r3 || r2 == r3)
+						r3 = Random.Range (0, roots.Length);
+
+					root = roots [r3].transform.GetChild (0).gameObject;
+					root.GetComponent<Animator> ().SetBool ("Rise", true);
+				}
+
+				if (randAttack1 == 4 || randAttack2 == 4)//Swat
+				{
+					boss.leftBranch.SetBool("whip", true);
+					StartCoroutine(boss.stopLeftWhip());
+				}
+				if (randAttack1 == 5 || randAttack2 == 5)
+				{
+					boss.rightBranch.SetBool("whip", true);
+					StartCoroutine(boss.stopRightWhip());
+				}
+			}
             
             
             time = 0.0f;
