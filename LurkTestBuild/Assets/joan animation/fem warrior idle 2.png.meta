@@ -1,0 +1,220 @@
+fileFormatVersion: 2
+guid: f24e9262c218d1740bc523b0dc9be9b4
+timeCreated: 1457053735
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: fem warrior idle 2_0
+    21300002: fem warrior idle 2_1
+    21300004: fem warrior idle 2_2
+    21300006: fem warrior idle 2_3
+    21300008: fem warrior idle 2_4
+    21300010: fem warrior idle 2_5
+    21300012: fem warrior idle 2_6
+    21300014: fem warrior idle 2_7
+    21300016: fem warrior idle 2_8
+    21300018: fem warrior idle 2_9
+    21300020: fem warrior idle 2_10
+    21300022: fem warrior idle 2_11
+    21300024: fem warrior idle 2_12
+    21300026: fem warrior idle 2_13
+    21300028: fem warrior idle 2_14
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: fem warrior idle 2_0
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 627
+        width: 164
+        height: 312
+      alignment: 9
+      pivot: {x: .3583408, y: .0473847985}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior idle 2_1
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 628
+        width: 172
+        height: 310
+      alignment: 9
+      pivot: {x: .364929736, y: .0374712534}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior idle 2_2
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 628
+        width: 186
+        height: 308
+      alignment: 9
+      pivot: {x: .375096142, y: .0445717163}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior idle 2_3
+      rect:
+        serializedVersion: 2
+        x: 675
+        y: 628
+        width: 200
+        height: 306
+      alignment: 9
+      pivot: {x: .399679869, y: .044863034}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior idle 2_4
+      rect:
+        serializedVersion: 2
+        x: 907
+        y: 629
+        width: 193
+        height: 306
+      alignment: 9
+      pivot: {x: .385098308, y: .044863034}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior idle 2_5
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 315
+        width: 180
+        height: 309
+      alignment: 9
+      pivot: {x: .382666141, y: .0512623228}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior idle 2_6
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 315
+        width: 184
+        height: 309
+      alignment: 9
+      pivot: {x: .390956223, y: .0512623228}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior idle 2_7
+      rect:
+        serializedVersion: 2
+        x: 449
+        y: 315
+        width: 189
+        height: 309
+      alignment: 9
+      pivot: {x: .416189998, y: .0410097986}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior idle 2_8
+      rect:
+        serializedVersion: 2
+        x: 673
+        y: 315
+        width: 193
+        height: 310
+      alignment: 9
+      pivot: {x: .423398674, y: .04428396}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior idle 2_9
+      rect:
+        serializedVersion: 2
+        x: 911
+        y: 315
+        width: 184
+        height: 310
+      alignment: 9
+      pivot: {x: .390956372, y: .047690507}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior idle 2_10
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 2
+        width: 172
+        height: 310
+      alignment: 9
+      pivot: {x: .3587901, y: .0510969833}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior idle 2_11
+      rect:
+        serializedVersion: 2
+        x: 245
+        y: 1
+        width: 164
+        height: 311
+      alignment: 9
+      pivot: {x: .32614544, y: .0475371853}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior idle 2_12
+      rect:
+        serializedVersion: 2
+        x: 478
+        y: 1
+        width: 173
+        height: 310
+      alignment: 9
+      pivot: {x: .286357552, y: .0476905294}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior idle 2_13
+      rect:
+        serializedVersion: 2
+        x: 710
+        y: 1
+        width: 179
+        height: 310
+      alignment: 9
+      pivot: {x: .264021039, y: .0510970019}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fem warrior idle 2_14
+      rect:
+        serializedVersion: 2
+        x: 928
+        y: 0
+        width: 165
+        height: 308
+      alignment: 9
+      pivot: {x: .333598942, y: .0514288135}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
