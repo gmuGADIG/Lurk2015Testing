@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using InControl;
+using System;
 
 /* +----------------------------------------------------------------+
  * |                    Controls from design doc                    |
@@ -74,6 +75,9 @@ public class playerMove : MonoBehaviour {
 
 	// Item cooldown counter
 	private float lastItemUse = 0;
+
+	// Damage applied regardless of item held
+	public int baseDamage = 2;
 
 
 
@@ -184,9 +188,24 @@ public class playerMove : MonoBehaviour {
 					droppedItem.SendMessage("SetItemState", true);
 				}
 			}
-		}else if(xInput > 0 && !xPressed && Time.time > lastItemUse){
+		}else if(xInput > 0 && !xPressed && Time.time > lastItemUse && cInput == 0){
 			// Use item
 			float cooldown = inventory.UseItem();
+			// Deal base damage to enemy in front
+			RaycastHit2D[] hit;
+			hit = Physics2D.RaycastAll(transform.position, transform.right * (direction ? 1 : -1), 1f);
+			foreach(RaycastHit2D hitOjb in hit){
+				try{
+					if(hitOjb.transform.tag == "Enemy" || hitOjb.transform.tag == "Boss"){
+						hitOjb.transform.gameObject.GetComponent<Damageable>().TakeDamage(baseDamage, transform.right * (direction ? 1 : -1));
+						Debug.Log ("Delt " + baseDamage + " base damage");
+					}
+				}catch(Exception e){
+					// No enemy to damage
+				}
+			}
+
+
 			if(cooldown >= 0){
 				// Add the cooldown to prevent spamming weapons
 				lastItemUse = Time.time + cooldown;
