@@ -24,7 +24,8 @@ public class Spider : MonoBehaviour {
 	public float leapImpulse = 50;	//Ns impulse to leap with (strength of leap)
 	public float leapAngle = 45; //degrees angle to leap
 
-	Damageable hitbox;
+	LineRenderer thread;
+	// Damageable hitbox;
 	State state = State.Hanging;
 	Rigidbody2D body;
 
@@ -51,12 +52,14 @@ public class Spider : MonoBehaviour {
 
 	void Awake() {
 		layer = gameObject.layer;
-		hitbox = GetComponent<Damageable>();
+		// hitbox = GetComponent<Damageable>();
 		body = GetComponent<Rigidbody2D>();
 		direction = UnityEngine.Random.value > .5f ? 1 : -1;
 		home = transform.position;
 		maxDecent = home + Vector3.down * descendDistance;
-		//state = State.Crawling;
+		thread = GetComponentInChildren<LineRenderer>();
+		thread.useWorldSpace = true;
+		thread.SetVertexCount(2);
 	}
 
 	void Update() {
@@ -64,6 +67,7 @@ public class Spider : MonoBehaviour {
 		switch (state) {
 			//hanging spider states
 			case State.Hanging:
+				UpdateThread();
 				body.isKinematic = true;
 				RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, Vector2.down);
 				foreach (RaycastHit2D hit in hits) {
@@ -77,6 +81,7 @@ public class Spider : MonoBehaviour {
 				}
 				break;
 			case State.Descending:
+				UpdateThread();
 				body.isKinematic = true;
 				t += (descendSpeed / descendDistance) * Time.deltaTime;
 				Tween();
@@ -85,6 +90,7 @@ public class Spider : MonoBehaviour {
 				}
 				break;
 			case State.Ascending:
+				UpdateThread();
 				body.isKinematic = true;
 				t -= (ascendSpeed / descendDistance) * Time.deltaTime;
 				Tween();
@@ -93,6 +99,7 @@ public class Spider : MonoBehaviour {
 				}
 				break;
 			case State.Grappling:
+				thread.enabled = false;
 				if (grappleHitbox) {
 					gameObject.layer = LayerMask.NameToLayer(noPlayerCollisionLayerName);
 					Vector3 pos = grappleHitbox.transform.position;
@@ -111,6 +118,7 @@ public class Spider : MonoBehaviour {
 				break;
 			//ground spider states
 			case State.Crawling:
+				thread.enabled = false;
 				body.isKinematic = false;
 				timeSinceLastDirectionChangeRoll += Time.deltaTime;
 				while (timeSinceLastDirectionChangeRoll >= directionChangeRollInterval) {
@@ -136,6 +144,7 @@ public class Spider : MonoBehaviour {
 				}
 				break;
 			case State.Crouching:
+				thread.enabled = false;
 				body.isKinematic = false;
 				crouchTimer += Time.deltaTime;
 				if (crouchTimer >= crouchTime) {
@@ -149,9 +158,19 @@ public class Spider : MonoBehaviour {
 				}
 				break;
 			case State.Leaping:
+				thread.enabled = false;
 				body.isKinematic = false;
 				break;
 		}
+	}
+
+	void UpdateThread() {
+		thread.enabled = true;
+		Vector3 a = home;
+		Vector3 b = transform.position;
+		a.z = b.z = thread.transform.position.z;
+		thread.SetPosition(0, a);
+		thread.SetPosition(1, b);
 	}
 
 	void Tween() {
