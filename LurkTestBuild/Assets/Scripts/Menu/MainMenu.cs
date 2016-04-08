@@ -38,17 +38,17 @@ public class MainMenu : MonoBehaviour {
 	}
 
 	void Update () {
-		if(Input.GetButtonDown("Escape") && gameSettingsMenuCanvas.enabled == true) {
+		if(Input.GetButtonDown("Cancel") && gameSettingsMenuCanvas.enabled == true) {
 			gameSettingsMenuCanvas.enabled = false;
-		} else if(Input.GetButtonDown("Escape") && videoSettingsMenuCanvas.enabled == true) {
+		} else if(Input.GetButtonDown("Cancel") && videoSettingsMenuCanvas.enabled == true) {
 			videoSettingsMenuCanvas.enabled = false;
-		} else if(Input.GetButtonDown("Escape") && audioSettingsMenuCanvas.enabled == true) {
+		} else if(Input.GetButtonDown("Cancel") && audioSettingsMenuCanvas.enabled == true) {
 			audioSettingsMenuCanvas.enabled = false;
-		} else if(Input.GetButtonDown("Escape") && optionsMenuCanvas.enabled == true) {
+		} else if(Input.GetButtonDown("Cancel") && optionsMenuCanvas.enabled == true) {
 			optionsMenuCanvas.enabled = false;
-		} else if(Input.GetButtonDown("Escape") && quitMenuCanvas.enabled == true) {
+		} else if(Input.GetButtonDown("Cancel") && quitMenuCanvas.enabled == true) {
 			quitMenuCanvas.enabled = false;
-		} else if (Input.GetButtonDown("Escape")) {
+		} else if (Input.GetButtonDown("Cancel")) {
 			mainMenuBool = !mainMenuBool;
 		}
 
