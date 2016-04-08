@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using InControl;
+using System;
 
 /* +----------------------------------------------------------------+
  * |                    Controls from design doc                    |
@@ -32,7 +33,7 @@ public class playerMove : MonoBehaviour {
 	public bool gender = true; //Male is true
 	public enum Classes {Rogue, Warrior, Mage};
 	public Classes pClass = Classes.Rogue;
-	public string name = "Bob";
+	public string pName = "Bob";
 
 	public int coins = 0;
 
@@ -62,6 +63,9 @@ public class playerMove : MonoBehaviour {
 	public float pickupDistance = 1f;
 	// Is space/jump down
 	private bool jumpPressed = false;
+	// Added when jump is held
+	private float jumpBoost = 0;
+	public float jumpBoostAmount = 2;
 	// Is x down
 	private bool xPressed = false;
 	// Is z down
@@ -71,6 +75,9 @@ public class playerMove : MonoBehaviour {
 
 	// Item cooldown counter
 	private float lastItemUse = 0;
+
+	// Damage applied regardless of item held
+	public int baseDamage = 2;
 
 
 
@@ -90,7 +97,7 @@ public class playerMove : MonoBehaviour {
     // Use this for initialization
     void Start () {
 		rb = GetComponent<Rigidbody2D> ();
-		animator = GameObject.Find("Sprite").GetComponent<Animator> ();
+		animator = GetComponentInChildren<Animator> ();
 		inventory = GetComponent<Inventory> ();
 		initialGravity = rb.gravityScale;
 		initialHeight = GetComponent<BoxCollider2D> ().size.y;
@@ -98,15 +105,15 @@ public class playerMove : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        InputDevice device = InputManager.ActiveDevice;
-        InputControl control = device.GetControl(InputControlType.Action1);
+        //InputDevice device = InputManager.ActiveDevice;
+        //InputControl control = device.GetControl(InputControlType.Action1);
 
-        horizontalInput = device.LeftStickX + device.DPadX + Input.GetAxis("Horizontal"); // Add the controls together so either can be used
-        verticalInput = device.LeftStickY + device.DPadY + Input.GetAxis("Vertical"); // Add the controls together so either can be used
-        zInput = device.Action2 + Input.GetAxis("Z"); // Add the controls together so either can be used
-        xInput = device.Action3 + Input.GetAxis("X"); // Add the controls together so either can be used
-        cInput = device.RightBumper + Input.GetAxis("C"); // Add the controls together so either can be used
-        jumpInput = device.Action1 + Input.GetAxis("Jump"); // Add the controls together so either can be used
+//        horizontalInput = device.LeftStickX + device.DPadX + Input.GetAxis("Horizontal"); // Add the controls together so either can be used
+//        verticalInput = device.LeftStickY + device.DPadY + Input.GetAxis("Vertical"); // Add the controls together so either can be used
+//        zInput = device.Action2 + Input.GetAxis("Z"); // Add the controls together so either can be used
+//        xInput = device.Action3 + Input.GetAxis("X"); // Add the controls together so either can be used
+//        cInput = device.RightBumper + Input.GetAxis("C"); // Add the controls together so either can be used
+//        jumpInput = device.Action1 + Input.GetAxis("Jump"); // Add the controls together so either can be used
 
         if (horizontalInput > 0) {
 			direction = true;
@@ -127,7 +134,9 @@ public class playerMove : MonoBehaviour {
 		if (verticalInput < -0.01 && xInput > 0.01 && !xPressed) {
 			// Get items
 			GameObject[] items = GameObject.FindGameObjectsWithTag("Item");
-			GameObject closestItem = null;
+            GameObject[] lanterns = GameObject.FindGameObjectsWithTag("Lantern");
+
+            GameObject closestItem = null;
 			float closestDist = Mathf.Infinity;
 
 			foreach(GameObject item in items){
@@ -142,16 +151,35 @@ public class playerMove : MonoBehaviour {
 				}
 			}
 
-			if (closestItem){
+            foreach (GameObject item in lanterns)
+            {
+                // If item is within reach
+                float itemDistance = Vector3.Distance(transform.position, item.transform.position);
+
+                if (itemDistance < pickupDistance)
+                {
+                    if ((closestItem == null || itemDistance < closestDist) && item.GetComponent<Item>().isVisible)
+                    {
+                        closestItem = item;
+                        closestDist = itemDistance;
+                    }
+                }
+            }
+
+            if (closestItem){
 				//Try to pick up item
-				if(inventory.Pickup(closestItem)){
-					closestItem.SendMessage("SetItemState", false);
+				if(inventory.Pickup(closestItem))
+                {
+                    closestItem.SendMessage("SetTransform", this.transform, SendMessageOptions.DontRequireReceiver);
+                    closestItem.SendMessage("SetItemState", false);
 				}else{
 					// Need to switch items
 					GameObject droppedItem = inventory.Drop();
 					inventory.Pickup(closestItem);
-					closestItem.SendMessage("SetItemState", false);
-					droppedItem.SendMessage("SetItemState", true);
+                    closestItem.SendMessage("SetTransform", this.transform, SendMessageOptions.DontRequireReceiver);
+                    closestItem.SendMessage("SetItemState", false);
+
+                    droppedItem.SendMessage("SetItemState", true);
 				}
 			}else{
 				// Not near an item, just drop primary item
@@ -160,9 +188,24 @@ public class playerMove : MonoBehaviour {
 					droppedItem.SendMessage("SetItemState", true);
 				}
 			}
-		}else if(xInput > 0 && !xPressed && Time.time > lastItemUse){
+		}else if(xInput > 0 && !xPressed && Time.time > lastItemUse && cInput == 0){
 			// Use item
 			float cooldown = inventory.UseItem();
+			// Deal base damage to enemy in front
+			RaycastHit2D[] hit;
+			hit = Physics2D.RaycastAll(transform.position, transform.right * (direction ? 1 : -1), 1f);
+			foreach(RaycastHit2D hitOjb in hit){
+				try{
+					if(hitOjb.transform.tag == "Enemy" || hitOjb.transform.tag == "Boss"){
+						hitOjb.transform.gameObject.GetComponent<Damageable>().TakeDamage(baseDamage, transform.right * (direction ? 1 : -1));
+						Debug.Log ("Delt " + baseDamage + " base damage");
+					}
+				}catch(Exception e){
+					// No enemy to damage
+				}
+			}
+
+
 			if(cooldown >= 0){
 				// Add the cooldown to prevent spamming weapons
 				lastItemUse = Time.time + cooldown;
@@ -184,6 +227,8 @@ public class playerMove : MonoBehaviour {
 			animator.SetBool ("jumping", false);
 			animator.SetBool ("falling", false);
 			if (jumpInput > 0.01 && jumpPressed == false) {
+				// Begin jump boost
+				jumpBoost = jumpBoostAmount;
 				jump ();
 			}
 
@@ -209,9 +254,14 @@ public class playerMove : MonoBehaviour {
 		// Update jump button state
 		if (jumpInput > 0.01) {
 			jumpPressed = true;
+			// Add jump boost
+			rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y + jumpBoost);
 		} else {
 			jumpPressed = false;
+			jumpBoost = 0;
 		}
+		// Decay jump boost so you don't just fly up
+		jumpBoost = jumpBoost*0.8f;
 		// Update z state
 		if (zInput > 0) {
 			zPressed = true;

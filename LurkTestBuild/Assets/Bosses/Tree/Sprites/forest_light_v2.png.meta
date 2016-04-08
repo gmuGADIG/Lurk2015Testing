@@ -1,0 +1,269 @@
+fileFormatVersion: 2
+guid: 53607103f4e0c1d469f8b09917115694
+timeCreated: 1457051282
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: forest_light_v2_0
+    21300002: forest_light_v2_1
+    21300004: forest_light_v2_2
+    21300006: forest_light_v2_3
+    21300008: forest_light_v2_4
+    21300010: forest_light_v2_5
+    21300012: forest_light_v2_6
+    21300014: forest_light_v2_7
+    21300016: forest_light_v2_8
+    21300018: forest_light_v2_9
+    21300020: forest_light_v2_10
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: forest_light_v2_0
+      rect:
+        serializedVersion: 2
+        x: 203
+        y: 206
+        width: 104
+        height: 250
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 52, y: 213}
+        - {x: 28, y: 250}
+        - {x: 7, y: 250}
+        - {x: 1, y: 249}
+        - {x: -52, y: 210}
+        - {x: -52, y: 0}
+        - {x: 43, y: 0}
+        - {x: 47, y: 8}
+        - {x: 52, y: 88}
+    - name: forest_light_v2_1
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 206
+        width: 104
+        height: 295
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16, y: 295}
+        - {x: -51, y: 281}
+        - {x: -52, y: 274}
+        - {x: -52, y: 0}
+        - {x: 49, y: 0}
+        - {x: 52, y: 32}
+        - {x: 52, y: 264}
+        - {x: 42, y: 295}
+    - name: forest_light_v2_2
+      rect:
+        serializedVersion: 2
+        x: 485
+        y: 206
+        width: 104
+        height: 308
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -52, y: 308}
+        - {x: -52, y: 0}
+        - {x: 43, y: 0}
+        - {x: 52, y: 6}
+        - {x: 52, y: 308}
+    - name: forest_light_v2_3
+      rect:
+        serializedVersion: 2
+        x: 626
+        y: 206
+        width: 104
+        height: 295
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16, y: 295}
+        - {x: -51, y: 281}
+        - {x: -52, y: 274}
+        - {x: -52, y: 0}
+        - {x: 49, y: 0}
+        - {x: 52, y: 32}
+        - {x: 52, y: 264}
+        - {x: 42, y: 295}
+    - name: forest_light_v2_4
+      rect:
+        serializedVersion: 2
+        x: 767
+        y: 206
+        width: 104
+        height: 250
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 52, y: 213}
+        - {x: 28, y: 250}
+        - {x: 7, y: 250}
+        - {x: 1, y: 249}
+        - {x: -52, y: 210}
+        - {x: -52, y: 0}
+        - {x: 43, y: 0}
+        - {x: 47, y: 8}
+        - {x: 52, y: 88}
+    - name: forest_light_v2_5
+      rect:
+        serializedVersion: 2
+        x: 908
+        y: 206
+        width: 104
+        height: 250
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -42, y: 250}
+        - {x: -52, y: 243}
+        - {x: -52, y: 13}
+        - {x: -50, y: 4}
+        - {x: -46, y: 0}
+        - {x: 51, y: 0}
+        - {x: 52, y: 19}
+        - {x: 52, y: 220}
+        - {x: 34, y: 250}
+    - name: forest_light_v2_6
+      rect:
+        serializedVersion: 2
+        x: 1049
+        y: 206
+        width: 104
+        height: 295
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -52, y: 295}
+        - {x: -52, y: 0}
+        - {x: 52, y: 0}
+        - {x: 52, y: 290}
+        - {x: 33, y: 295}
+    - name: forest_light_v2_7
+      rect:
+        serializedVersion: 2
+        x: 1190
+        y: 206
+        width: 104
+        height: 308
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 15, y: 308}
+        - {x: -52, y: 308}
+        - {x: -52, y: 0}
+        - {x: 43, y: 0}
+        - {x: 47, y: 8}
+        - {x: 52, y: 28}
+        - {x: 52, y: 256}
+    - name: forest_light_v2_8
+      rect:
+        serializedVersion: 2
+        x: 1331
+        y: 206
+        width: 104
+        height: 295
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -52, y: 295}
+        - {x: -52, y: 0}
+        - {x: 52, y: 0}
+        - {x: 52, y: 290}
+        - {x: 33, y: 295}
+    - name: forest_light_v2_9
+      rect:
+        serializedVersion: 2
+        x: 1472
+        y: 206
+        width: 104
+        height: 250
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -42, y: 250}
+        - {x: -52, y: 243}
+        - {x: -52, y: 13}
+        - {x: -50, y: 4}
+        - {x: -46, y: 0}
+        - {x: 51, y: 0}
+        - {x: 52, y: 19}
+        - {x: 52, y: 220}
+        - {x: 34, y: 250}
+    - name: forest_light_v2_10
+      rect:
+        serializedVersion: 2
+        x: 1613
+        y: 206
+        width: 104
+        height: 205
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 52, y: 205}
+        - {x: -52, y: 205}
+        - {x: -52, y: 0}
+        - {x: 43, y: 0}
+        - {x: 47, y: 8}
+        - {x: 52, y: 66}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

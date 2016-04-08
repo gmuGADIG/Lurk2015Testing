@@ -11,27 +11,26 @@ public class Throw : MonoBehaviour
 	public float forceMult = 10;
 	public float timeSeg = .05f;			// time per segment (in seconds) (resolution)
 	public int maxVerts = 51;				// Maximum number of vertices to use for line (length)
-	public float rotSpeed = 20f;            // Degrees to rotate/sec
-    float angle = 0f;                       // Direction of throw
+    private float angle = 0f;                       // Direction of throw
 
     #region LineProperties
     public Color startColor = Color.yellow;
 	public Color endColor = Color.yellow;
-	float startAlpha = .75f;
-	float endAlpha = .75f;
-	float startWidth = .1f;
-	float endWidth = .1f;
+	private float startAlpha = .75f;
+	private float endAlpha = .75f;
+	private float startWidth = .1f;
+	private float endWidth = .1f;
 	public Material mat;
 	float z = -1f;					        // Z height to draw line
-    List<Vector3> points = new List<Vector3>();
+	private List<Vector3> points = new List<Vector3>();
 	#endregion
 
-	LineRenderer line;
-	Vector2 force;
-	bool pressed = false;
-	GameObject thrown;
-	Inventory inv;
-    playerMove player;
+	private LineRenderer line;
+	private Vector2 force;
+	private bool pressed = false;
+	private GameObject thrown;
+	private Inventory inv;
+	private playerMove player;
 	#endregion
 
 	#region Awake
@@ -41,7 +40,7 @@ public class Throw : MonoBehaviour
 		force = transform.right * forceMult;
         player = GetComponent<playerMove>();
         inv = GetComponent<Inventory>();
-
+		angle = 30;
 	}
 
     private void setupLine()
@@ -90,7 +89,7 @@ public class Throw : MonoBehaviour
             else if (player.cInput <= 0)
             {
                 MakeLineInvisable();
-                angle = 0;
+                angle = 30;
                 force = transform.right * forceMult;
                 pressed = false;
             }
@@ -150,12 +149,12 @@ public class Throw : MonoBehaviour
 	#region UpdateRotation
 	void UpdateRotation()
 	{
-		angle += rotSpeed * Time.deltaTime; // Change direction by rotSpeed * time since last update
-
-        if (angle >= 90)
-            rotSpeed *= -1;
-        else if (angle <= 0)
-            rotSpeed *= -1;
+		if (Input.GetAxisRaw ("Horizontal") > 0)
+			angle = 30;
+		else if (Input.GetAxisRaw ("Horizontal") < 0)
+			angle = 180 - 30;
+		else if(Input.GetAxisRaw("Vertical") > 0)
+			angle = 90;
 
 
         force = Quaternion.Euler (0, 0, angle) * standardForce;
