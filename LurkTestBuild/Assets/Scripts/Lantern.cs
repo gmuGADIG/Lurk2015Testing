@@ -22,7 +22,7 @@ public class Lantern : Item {
         if(held)
         {
             Vector3 tar = player.transform.position + lanternPos;
-            this.transform.position = Vector3.Lerp(transform.position, tar, .5f);
+            this.transform.position = Vector3.Lerp(transform.position, tar, .1f);
         }
 	}
     public void SetItemState(bool state)
