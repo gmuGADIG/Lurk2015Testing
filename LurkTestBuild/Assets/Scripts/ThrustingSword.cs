@@ -16,11 +16,13 @@ public class ThrustingSword : Item
 
     public override float UseItem()
     {
+        base.UseItem();
+
         if (player == null)
             getPlayer();
 
         RaycastHit2D[] hit;
-        hit = Physics2D.RaycastAll(transform.position, transform.right * (player.getDirection() ? 1 : -1), 5f);
+        hit = Physics2D.RaycastAll(player.transform.position, player.transform.right * (player.getDirection() ? 1 : -1), 5f);
         for (int i = 0; i < hit.Length; i++)
         {
             RaycastHit2D hitOjb = hit[i];
@@ -49,7 +51,7 @@ public class ThrustingSword : Item
                 // No enemy to damage
             }
         }
-        return base.UseItem();
+        return cooldown;
     }
 
     private void setupLR()
