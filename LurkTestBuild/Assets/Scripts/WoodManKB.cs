@@ -8,7 +8,8 @@ public class WoodManKB : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D coll){
 		if (coll.gameObject.tag == "Player") {
 			Rigidbody2D rgbd = coll.gameObject.GetComponent<Rigidbody2D>();
-			rgbd.AddForce((rgbd.transform.position - transform.position).normalized * knockbackImpulse, ForceMode2D.Impulse);
+            Debug.Log((rgbd.transform.position - transform.position).normalized * knockbackImpulse);
+            rgbd.AddForce(((Vector2)(rgbd.transform.position - transform.position).normalized )* knockbackImpulse, ForceMode2D.Force);
 		}
 
 	}
