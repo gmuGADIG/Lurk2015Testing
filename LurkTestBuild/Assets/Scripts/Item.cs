@@ -33,7 +33,7 @@ public class Item : MonoBehaviour
 		}
 	}
 
-	public float UseItem(){
+	public virtual float UseItem(){
 		// Does nothing by default.
 		// Should be overridden in the extended script.
 		// Returns the cooldown in seconds
