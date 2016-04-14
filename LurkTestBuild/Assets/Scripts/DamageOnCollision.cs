@@ -4,10 +4,14 @@ public class DamageOnCollision : MonoBehaviour {
 
 	public int damage;
 
+	public string noDamageTag = "Player";
+
 	void OnCollisionEnter2D(Collision2D collision) {
-		Damageable hitbox = collision.gameObject.GetComponent<Damageable>();
-		if (hitbox != null) {
-			hitbox.TakeDamage(damage);
+		if (collision.gameObject.tag != noDamageTag) {
+			Damageable hitbox = collision.gameObject.GetComponent<Damageable>();
+			if (hitbox != null) {
+				hitbox.TakeDamage(damage);
+			}
 		}
 	}
 
