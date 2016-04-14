@@ -6,12 +6,11 @@ public class Weapon : Item
     public float cooldown = 3f;
     public int dam = 5;
     public float dist = 1f; // Length of the weapon
-    private playerMove player;
+    protected playerMove player;
 
     public override float UseItem()
     {
-        base.UseItem();
-
+		Debug.Log ("Weapon");
         if (player == null)
             getPlayer();
 
@@ -37,7 +36,7 @@ public class Weapon : Item
         return cooldown;
     }
 
-    private void getPlayer()
+    protected void getPlayer()
     {
         player = GetComponentInParent<playerMove>();
     }
