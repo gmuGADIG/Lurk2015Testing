@@ -318,7 +318,7 @@ public class playerMove : MonoBehaviour {
 		triggerCount--;
 		
 		// Player leaves ladder from top or bottom
-		if (onLadder && col.transform.tag == "Ladder" && triggerCount == 0 && rb.velocity.y <= 0) {
+		if (onLadder && col.transform.tag == "Ladder" && triggerCount == 0 && rb.velocity.y <= 0 && Mathf.Abs(rb.velocity.x) != 0) {
 			// allColiders.Count == 0 prevents falling between leaving one ladder
 			// and then entering another on the next frame
 			// Essentially: we must be sure we aren't on ANY collider anymore
