@@ -19,7 +19,7 @@ public class Item : MonoBehaviour
 
 	public void Start (){
 		sr = GetComponent <SpriteRenderer>();
-		col = GetComponent <Collider2D>();
+		col = GetComponent <BoxCollider2D>();
 		rb2d = GetComponent <Rigidbody2D>();
 	}
 
@@ -33,7 +33,7 @@ public class Item : MonoBehaviour
 		}
 	}
 
-	public float UseItem(){
+	public virtual float UseItem(){
 		// Does nothing by default.
 		// Should be overridden in the extended script.
 		// Returns the cooldown in seconds
