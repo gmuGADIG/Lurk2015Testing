@@ -35,6 +35,7 @@ public class Inventory : MonoBehaviour
 	{
 		if (inv [0] == null)
 		{
+            item.transform.parent = transform;
 			inv [0] = item;
 			UpdateSprites();
 			return true;
@@ -48,9 +49,10 @@ public class Inventory : MonoBehaviour
 	{
 		if (inv [0] != null)
 		{
-			// TP to player (with a small offset to avoid ground clipping)
-			inv [0].transform.position = transform.position + new Vector3(0, 0.1f, 0);
-			GameObject tempObject = inv [0];
+            // TP to player (with a small offset to avoid ground clipping)
+            GameObject tempObject = inv[0];
+            tempObject.transform.parent = null;
+            tempObject.transform.position = transform.position + new Vector3(0, 0.1f, 0);
 			RemoveItem();
 			UpdateSprites();
 			return tempObject;
