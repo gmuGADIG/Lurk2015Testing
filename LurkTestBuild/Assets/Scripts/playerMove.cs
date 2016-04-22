@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using InControl;
+using System;
 
 /* +----------------------------------------------------------------+
  * |                    Controls from design doc                    |
@@ -75,6 +76,9 @@ public class playerMove : MonoBehaviour {
 	// Item cooldown counter
 	private float lastItemUse = 0;
 
+	// Damage applied regardless of item held
+	public int baseDamage = 2;
+
 
 
     // Controls to standardize inputs
@@ -130,7 +134,9 @@ public class playerMove : MonoBehaviour {
 		if (verticalInput < -0.01 && xInput > 0.01 && !xPressed) {
 			// Get items
 			GameObject[] items = GameObject.FindGameObjectsWithTag("Item");
-			GameObject closestItem = null;
+            GameObject[] lanterns = GameObject.FindGameObjectsWithTag("Lantern");
+
+            GameObject closestItem = null;
 			float closestDist = Mathf.Infinity;
 
 			foreach(GameObject item in items){
@@ -145,9 +151,25 @@ public class playerMove : MonoBehaviour {
 				}
 			}
 
-			if (closestItem){
+            foreach (GameObject item in lanterns)
+            {
+                // If item is within reach
+                float itemDistance = Vector3.Distance(transform.position, item.transform.position);
+
+                if (itemDistance < pickupDistance)
+                {
+                    if ((closestItem == null || itemDistance < closestDist) && item.GetComponent<Item>().isVisible)
+                    {
+                        closestItem = item;
+                        closestDist = itemDistance;
+                    }
+                }
+            }
+
+            if (closestItem){
 				//Try to pick up item
-				if(inventory.Pickup(closestItem)){
+				if(inventory.Pickup(closestItem))
+                {
                     closestItem.SendMessage("SetTransform", this.transform, SendMessageOptions.DontRequireReceiver);
                     closestItem.SendMessage("SetItemState", false);
 				}else{
@@ -156,6 +178,7 @@ public class playerMove : MonoBehaviour {
 					inventory.Pickup(closestItem);
                     closestItem.SendMessage("SetTransform", this.transform, SendMessageOptions.DontRequireReceiver);
                     closestItem.SendMessage("SetItemState", false);
+
                     droppedItem.SendMessage("SetItemState", true);
 				}
 			}else{
@@ -165,9 +188,24 @@ public class playerMove : MonoBehaviour {
 					droppedItem.SendMessage("SetItemState", true);
 				}
 			}
-		}else if(xInput > 0 && !xPressed && Time.time > lastItemUse){
+		}else if(xInput > 0 && !xPressed && Time.time > lastItemUse && cInput == 0){
 			// Use item
 			float cooldown = inventory.UseItem();
+			// Deal base damage to enemy in front
+			RaycastHit2D[] hit;
+			hit = Physics2D.RaycastAll(transform.position, transform.right * (direction ? 1 : -1), 1f);
+			foreach(RaycastHit2D hitOjb in hit){
+				try{
+					if(hitOjb.transform.tag == "Enemy" || hitOjb.transform.tag == "Boss"){
+						hitOjb.transform.gameObject.GetComponent<Damageable>().TakeDamage(baseDamage, transform.right * (direction ? 1 : -1));
+						Debug.Log ("Delt " + baseDamage + " base damage");
+					}
+				}catch(Exception e){
+					// No enemy to damage
+				}
+			}
+
+
 			if(cooldown >= 0){
 				// Add the cooldown to prevent spamming weapons
 				lastItemUse = Time.time + cooldown;
@@ -280,7 +318,7 @@ public class playerMove : MonoBehaviour {
 		triggerCount--;
 		
 		// Player leaves ladder from top or bottom
-		if (onLadder && col.transform.tag == "Ladder" && triggerCount == 0 && rb.velocity.y <= 0) {
+		if (onLadder && col.transform.tag == "Ladder" && triggerCount == 0 && rb.velocity.y <= 0 && Mathf.Abs(rb.velocity.x) != 0) {
 			// allColiders.Count == 0 prevents falling between leaving one ladder
 			// and then entering another on the next frame
 			// Essentially: we must be sure we aren't on ANY collider anymore

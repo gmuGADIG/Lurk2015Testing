@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 // http://forum.unity3d.com/threads/projectile-prediction-line.143636/
 public class Throw : MonoBehaviour
@@ -11,7 +12,8 @@ public class Throw : MonoBehaviour
 	public float forceMult = 10;
 	public float timeSeg = .05f;			// time per segment (in seconds) (resolution)
 	public int maxVerts = 51;				// Maximum number of vertices to use for line (length)
-    private float angle = 0f;                       // Direction of throw
+    private float angle = 0f;               // Direction of throw
+	public float lanternBoost = 4;          // Added velocity to compensate for added lantern mass
 
     #region LineProperties
     public Color startColor = Color.yellow;
@@ -77,12 +79,18 @@ public class Throw : MonoBehaviour
                 {
                     obj.transform.position = transform.position;
                     obj.SendMessage("SetItemState", true);
+					float extraForce = 1;
+					try{
+						extraForce = (obj.GetComponent<Lantern>() ? lanternBoost : 1);
+					}catch(Exception e){
+						// Not a lantern
+					}
                     if (player.getDirection())
-                        obj.GetComponent<Rigidbody2D>().velocity = force;
+						obj.GetComponent<Rigidbody2D>().velocity = force * extraForce;
                     else
                     {
                         force.x = -force.x;
-                        obj.GetComponent<Rigidbody2D>().velocity = force;
+						obj.GetComponent<Rigidbody2D>().velocity = force * extraForce;
                     }
                 }
             }

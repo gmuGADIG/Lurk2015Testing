@@ -3,25 +3,54 @@ using System.Collections;
 
 public class Lantern : Item {
 
-    Transform player;
+    private Transform player;
+    private bool held;
+    public Vector3 lanternPos = new Vector3(0, 1, 0);
+	Rigidbody2D rb;
+	private Vector2 lastVel;
+    public GameObject lantern;
 
 	// Use this for initialization
-	void Start () {
-        sr = GetComponent<SpriteRenderer>();
-        col = GetComponent<Collider2D>();
-        rb2d = GetComponent<Rigidbody2D>();
-    }
+	void Start ()
+    {
+        base.Start();
+		rb = GetComponent<Rigidbody2D> ();
+	}
 	
 	// Update is called once per frame
-	void Update () {
-    }
-    override public void SetItemState(bool state)
+	void Update ()
     {
-        this.transform.position = player.transform.position;
-        col.isTrigger = !state;
-        //col.enabled = state;
+        base.Update();
+        if (held) {
+			Vector3 tar = player.transform.position + lanternPos;
+			rb.position = Vector3.Lerp (transform.position, tar, .5f);
+		}
+		if (rb.velocity.y > 0 && lastVel.y < 0) {
+			StopRotation();
+		}
+		lastVel = rb.velocity;
+	}
+    public void SetItemState(bool state)
+    {
+        col.enabled = state;
         rb2d.isKinematic = !state;
+        held = !state;
+		if(state){
+			StopRotation();
+		}
     }
+
+	private void StopRotation(){
+		foreach (Transform child in lantern.GetComponentInChildren<Transform>()) 
+		{
+			if (child.name == "Lantern") // Find the physical lantern
+			{
+				// Stop rotation
+				lantern.transform.rotation = Quaternion.identity;
+				child.GetComponent<Rigidbody2D>().angularVelocity = 0;
+			}
+		}
+	}
 
     public void SetTransform(Transform p)
     {
