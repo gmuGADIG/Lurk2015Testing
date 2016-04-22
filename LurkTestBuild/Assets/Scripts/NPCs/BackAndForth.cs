@@ -17,11 +17,19 @@ public class BackAndForth : MonoBehaviour {
     public bool wantsCollider = false;
     public LayerMask solidLayer;
     public Transform sightStart, sightEnd;
+	public float knockbackImpulse = 15;
+	Animator animate;
 
+	void Start(){
+		animate = GetComponent<Animator> ();
+		animate.SetInteger ("Action", 1);
+		animate.Play ("ForestBeast Run");
+	}
 	// Update is called once per frame
 	void Update () {
         CheckForFlip();
-        Move();
+		if (animate.GetInteger("Action") == 1)
+        	Move();
 	}
     
     void CheckForFlip() {
@@ -32,6 +40,35 @@ public class BackAndForth : MonoBehaviour {
     }
 
     void Move() {
+		Debug.Log ("move");
         this.transform.position = new Vector2(this.transform.position.x + this.transform.localScale.x * speed, this.transform.position.y);
+		//if (animate.GetInteger (0) == 0)
+			//animate.Stop ();
+		//animate.SetInteger ("Action", 1);
+		if (animate.GetInteger("Action") != 1) {
+			Debug.Log("Switch");
+			animate.SetInteger ("Action", 1);
+			animate.Play ("ForestBeast Run");
+		}
     }
+
+	void OnTriggerEnter2D(Collider2D coll){
+		if (coll.gameObject.tag == "Player") {
+			StartCoroutine (Attack (coll));
+		}
+
+	}
+
+	IEnumerator Attack(Collider2D coll){
+		//this.transform.position = this.transform.position;
+		Debug.Log ("hit");
+		animate.SetInteger ("Action", 2);
+		animate.Play ("ForestBeast Attack");
+		yield return new WaitForSeconds (0.5f);
+		Rigidbody2D rgbd = coll.gameObject.GetComponent<Rigidbody2D>();
+		Debug.Log((rgbd.transform.position - transform.position).normalized * knockbackImpulse);
+		rgbd.AddForce(((Vector2)(rgbd.transform.position - transform.position).normalized )* knockbackImpulse, ForceMode2D.Force);
+		yield return new WaitForSeconds (0.5f);
+		Move ();
+	}
 }

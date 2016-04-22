@@ -22,7 +22,7 @@ public class DistanceAggro : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.Log(timer);
+        //Debug.Log(timer);
         float player1distance = Mathf.Abs((player1.transform.position - this.transform.position).magnitude);
         float player2distance = Mathf.Abs((player2.transform.position - this.transform.position).magnitude);
         GameObject target;
@@ -51,3 +51,4 @@ public class DistanceAggro : MonoBehaviour {
 
     }
 }
+
