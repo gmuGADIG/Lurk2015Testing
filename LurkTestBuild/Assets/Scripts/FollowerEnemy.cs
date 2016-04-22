@@ -70,8 +70,15 @@ public class FollowerEnemy : Enemy
                         path.Insert(path.Count, currentAggroPlatform);
                     }
                 }
+                else
+                {
+                    if (currentEnemyPlatform == currentAggroPlatform)
+                    {
+                        path.Insert(path.Count, currentAggroPlatform);
+                    }
+                }
             }
-
+          //  targetPlatform = path[0];
             //player movement
             //check for path to follow
             if (path.Count > 0)
@@ -132,10 +139,10 @@ public class FollowerEnemy : Enemy
                                 else
                                 {
                                     //get direction to jumpPos and move enemy
-                                    direction = new Vector2(targetPlatform.transform.position.x - transform.position.x, 0);
-                                    CheckForFlip(direction);
-                                    direction.Normalize();
-                                    transform.Translate(direction * 5 * Time.deltaTime);
+                                        direction = new Vector2(targetPlatform.transform.position.x - transform.position.x, 0);
+                                        CheckForFlip(direction);
+                                        direction.Normalize();
+                                        transform.Translate(direction * 5 * Time.deltaTime);
                                 }
                             }
                             else
@@ -154,10 +161,17 @@ public class FollowerEnemy : Enemy
                         else
                         {
                             //get direction to aggro and move enemy
-                            direction = new Vector2(aggro.transform.position.x - transform.position.x, 0);
-                            CheckForFlip(direction);
-                            direction.Normalize();
-                            transform.Translate(direction * 5 * Time.deltaTime);
+                            if (Vector3.Distance(transform.position, aggro.transform.position) > 1)
+                            {
+                                direction = new Vector2(aggro.transform.position.x - transform.position.x, 0);
+                                CheckForFlip(direction);
+                                direction.Normalize();
+                                transform.Translate(direction * 5 * Time.deltaTime);
+                            }
+                            else
+                            {
+                                //attack
+                            }
                         }
                     }
                 }
