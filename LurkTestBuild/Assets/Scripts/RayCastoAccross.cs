@@ -1,21 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class RayCastoAccross : MonoBehaviour {
-
-    [SerializeField]
-    private float speed = 10f;
+    [SerializeField] private LayerMask playerLayer;
+    [SerializeField] private float speed = 10f;
     [SerializeField] private float sightDistance = 10f;
-    public LayerMask playerLayer;
+    [SerializeField] private float meleeDistance = 1f;
     [SerializeField] private float pushForce;
 
+    public float damage = 2f;
     public float timeToDeletion = 10f;
     private float timer = 0f;
     private bool going = false;
     private Animator anim;
+    private HashSet<GameObject> alreadyHit;
 	// Use this for initialization
     void Start() {
         anim = GetComponent<Animator>();
+        alreadyHit = new HashSet<GameObject>();
     }
 	
 	// Update is called once per frame
@@ -27,14 +30,19 @@ public class RayCastoAccross : MonoBehaviour {
         }
         if (going) {
             Run();
+            DamagePlayers();
         }
 	}
 
-    void OnCollisionEnter2D(Collision2D other) {
-        if(other.gameObject.tag == "Player") {
-            other.gameObject.SendMessage("TakeDamage", 20);
-            other.gameObject.GetComponent<Rigidbody2D>().AddForce((other.gameObject.transform.position - this.transform.position).normalized * pushForce);
-            this.gameObject.layer = LayerMask.NameToLayer("no player collision");
+    void DamagePlayers() {
+        RaycastHit2D[] players = Physics2D.LinecastAll(transform.position, transform.position + transform.right * meleeDistance, playerLayer);
+        foreach(RaycastHit2D player in players) {
+            if (!alreadyHit.Contains(player.collider.gameObject))
+            {
+                player.collider.gameObject.SendMessage("TakeDamage", damage);
+                player.collider.gameObject.GetComponent<Rigidbody2D>().AddForce((player.collider.gameObject.transform.position - this.transform.position).normalized * pushForce);
+                alreadyHit.Add(player.collider.gameObject);
+            }
         }
     }
 
