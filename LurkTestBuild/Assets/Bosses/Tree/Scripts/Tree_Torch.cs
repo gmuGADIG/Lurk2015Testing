@@ -32,7 +32,7 @@ public class Tree_Torch : MonoBehaviour
         if (lit)
         {
             Debug.Log("lit");
-            health -= 1;
+            health--;
             lit = false;
             StartCoroutine(stopBurning());
             stage++;
@@ -82,13 +82,13 @@ public class Tree_Torch : MonoBehaviour
         fire.SetBool("isLit", false);
     }
 
-    IEnumerator stopLeftWhip()
+    public IEnumerator stopLeftWhip()
     {
         yield return new WaitForSeconds(2.1f);
         leftBranch.SetBool("whip", false);
     }
 
-    IEnumerator stopRightWhip()
+    public IEnumerator stopRightWhip()
     {
         yield return new WaitForSeconds(2.1f);
         rightBranch.SetBool("whip", false);

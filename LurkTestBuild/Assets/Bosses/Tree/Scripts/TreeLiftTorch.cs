@@ -2,9 +2,9 @@
 using System.Collections;
 
 public class TreeLiftTorch : MonoBehaviour {
-	bool lit;
-    bool touched;
-    bool treeMoved;
+    public bool lit;
+    public bool touched;
+    public bool treeMoved;
     public Animator tree;
     Animator burning;
 	// Use this for initialization
@@ -18,7 +18,6 @@ public class TreeLiftTorch : MonoBehaviour {
     }
     void Update()
     {
-        Debug.Log(treeMoved);
         if (lit && !treeMoved)
         {
             liftTree(true);
@@ -26,25 +25,25 @@ public class TreeLiftTorch : MonoBehaviour {
 
         if (!lit && treeMoved)
         {
-            Debug.Log("move");
             liftTree(false);
         }
     }
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Lantern" && !touched)
+        if (other.tag != "Boss")
+            Debug.Log(other.name);
+        if (other.tag == "Lantern" && !touched && !lit)
         {
+            Debug.Log("Lantern");
             lit = true;
             burning.SetBool("isLit", true);
-            //gameObject.GetComponent<Renderer>().material.color = Color.yellow;
             touched = true;
         }
-        //need to add animation for actually lighting the torch. Placeholder will just change the color
-        if (other.tag == "Branch" && !touched)
+        if (other.tag == "Branch" && !touched && lit)
         {
+            Debug.Log("branch");
             lit = false;
             burning.SetBool("isLit", false);
-            //gameObject.GetComponent<Renderer>().material.color = Color.gray;
             touched = true;
         }
     }
@@ -54,10 +53,12 @@ public class TreeLiftTorch : MonoBehaviour {
         if (other.tag == "Lantern" && touched)
         {
             touched = false;
+            Debug.Log("Lantern gone");
         }
         if (other.tag == "Branch" && touched)
         {
             touched = false;
+            Debug.Log("branch gone");
         }
     }
 

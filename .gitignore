@@ -23,3 +23,7 @@ LurkTestBuild/ProjectSettings/ProjectVersion.txt
 LurkTestBuild/ProjectSettings/ProjectSettings.asset
 TutorialFile
 TutorialFile
+Library/ProjectSettings.asset
+ProjectSettings/TagManager.asset
+ProjectSettings/ProjectSettings.asset
+LurkTestBuild/ProjectSettings/ProjectVersion.txt
